@@ -1,3 +1,52 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Group Utilities */
+@layer components {
+    .container {
+        @apply w-4/5 mx-auto 
+    }
+
+    .btn {
+        @apply text-white text-lg text-center px-7 py-2 block rounded-full duration-150 outline-blue-700 cursor-pointer hover:-translate-y-1 hover:shadow-2xl   
+    }
+
+    .btn-primary {
+        @apply bg-Primary hover:shadow-Primary
+    }
+
+    .btn-secondary {
+        @apply bg-Secondary hover:shadow-Secondary
+    }
+
+    .link-hover {
+        @apply hover:text-Primary duration-300
+    }
+
+    .shape-bg-one {
+        @apply rounded-tl-[32%_30%] rounded-tr-[68%_24%] rounded-br-[70%_76%] rounded-bl-[30%_70%]
+    }
+
+    .shape-bg-two {
+        @apply rounded-tl-[27%_79%] rounded-tr-[73%_49%] rounded-br-[38%_51%] rounded-bl-[32%_21%]
+    }
+
+    .shape-bg-three {
+        @apply rounded-tl-[58%_34%] rounded-tr-[42%_62%] rounded-br-[66%_38%] rounded-bl-[34%_66%]   
+    }
+
+    .gradient-bg {
+        @apply bg-gradient-to-r from-[#ebf1ff] from-0% to-[#c6d8fc] to-100%
+    }
+
+    .secret-before{
+        @apply before:content-[""] before:h-2 before:w-2 before:bg-transparent before:rounded-full before:absolute 
+    }
+
+    .secret-after{
+        @apply after:content-[""] after:h-2 after:w-2 after:bg-transparent after:rounded-full after:absolute 
+    }
+}
+
