@@ -1,14 +1,14 @@
+import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import {
-	Blog,
-	Consult,
-	Dashboard,
-	Home,
-	Login,
-	Recipes,
-	Register,
-} from '../pages';
+
 import App from '../App';
+const Home = lazy(() => import('../pages/Home'));
+const Recipes = lazy(() => import('../pages/Recipes'));
+const Dashboard = lazy(() => import('../pages/Dashboard'));
+const Consult = lazy(() => import('../pages/Consult'));
+const Blog = lazy(() => import('../pages/Blog'));
+const Login = lazy(() => import('../pages/Login'));
+const Register = lazy(() => import('../pages/Register'));
 
 const routes = createBrowserRouter([
 	{
