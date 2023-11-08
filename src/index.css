@@ -6,11 +6,11 @@
 /* Group Utilities */
 @layer components {
     .container {
-        @apply w-4/5 mx-auto 
+        @apply w-11/12 mx-auto 
     }
 
     .btn {
-        @apply text-white text-lg text-center px-7 py-2 block rounded-full duration-150 outline-blue-700 cursor-pointer hover:-translate-y-1 hover:shadow-2xl   
+        @apply text-white text-lg text-center px-7 py-2 rounded-full duration-150 outline-blue-700 cursor-pointer hover:-translate-y-1 hover:shadow-2xl   
     }
 
     .btn-primary {
