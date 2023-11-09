@@ -1,7 +1,7 @@
 export default function Recipes() {
     return (
-        <div>
+        <section className="page-content">
             Recipe
-        </div>
+        </section>
     );
 }

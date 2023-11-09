@@ -1,7 +1,7 @@
 export default function Register() {
     return (
-        <div>
+        <section className="page-content">
             Register
-        </div>
+        </section>
     );
 }

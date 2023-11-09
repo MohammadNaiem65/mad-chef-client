@@ -1,7 +1,7 @@
 export default function Consult() {
     return (
-        <div>
+        <section className="page-content">
             Consult
-        </div>
+        </section>
     );
 }

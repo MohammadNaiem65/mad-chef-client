@@ -6,9 +6,11 @@ function App() {
 	return (
 		<>
 			<Navbar />
-			<Suspense fallback={<h1>Loading...</h1>}>
-				<Outlet />
-			</Suspense>
+			<div className='min-h-[calc(100dvh-29.475rem)] md:min-h-[calc(100vh-21.5rem)]'>
+				<Suspense fallback={<h1>Loading...</h1>}>
+					<Outlet />
+				</Suspense>
+			</div>
 			<Footer />
 		</>
 	);

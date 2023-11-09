@@ -3,7 +3,7 @@ import { lgLogo } from '../assets';
 
 export default function Footer() {
 	return (
-		<section className='md:h-64 px-[5%] pb-4 bg-[#495579] text-stone-300 md:flex'>
+		<section className='md:h-64 lg:h-60 px-[5%] pb-4 lg:pb-0 bg-[#495579] text-stone-300 md:flex'>
 			<div className=''>
 				{/* Left Side Container */}
 				<Link to='/home'>
