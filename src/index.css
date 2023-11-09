@@ -10,7 +10,7 @@
     }
 
     .btn {
-        @apply text-white text-lg text-center px-7 py-2 rounded-full duration-150 outline-blue-700 cursor-pointer hover:-translate-y-1 hover:shadow-2xl   
+        @apply text-white text-lg text-center font-semibold px-7 py-2 outline-blue-700 rounded-full duration-150 cursor-pointer hover:-translate-y-1 hover:shadow-2xl   
     }
 
     .btn-primary {
