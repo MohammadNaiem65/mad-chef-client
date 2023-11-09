@@ -1,7 +1,3 @@
 export default function Home() {
-    return (
-        <div>
-            Home
-        </div>
-    );
+	return <div className='min-h-[calc(100dvh-29.475rem)]'>Home</div>;
 }
