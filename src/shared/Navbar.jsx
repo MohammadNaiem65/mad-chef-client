@@ -49,7 +49,7 @@ export default function Navbar() {
 	};
 
 	return (
-		<div className='min-h-[4.625rem] md:h-[5.5rem] lg:min-h-[7rem] px-9 md:px-8 lg:px-16 border-b-2 border-slate-300 font-semibold font-Vollokorn text-lg flex justify-between items-center gap-x-6 relative'>
+		<div className='min-h-[4.625rem] md:h-[5.5rem] lg:min-h-[7rem] px-9 md:px-8 lg:px-16 border-b-2 border-slate-300 font-semibold font-Vollokorn text-lg flex justify-between items-center gap-x-6 relative z-[1000]'>
 			<Link to='/' className='relative z-[99]'>
 				<picture className='md:-my-3'>
 					<source media='(min-width:427px)' srcSet={lgLogo}  />
@@ -76,7 +76,7 @@ export default function Navbar() {
 						initial='initial'
 						animate='animate'
 						exit='exit'
-						className='h-screen w-full text-4xl bg-Secondary absolute inset-0 flex flex-col justify-center items-center origin-top gap-y-5'>
+						className='h-screen w-full text-4xl bg-Secondary absolute inset-0 flex flex-col justify-center items-center origin-top gap-y-5 '>
 						<motion.div
 							variants={containerVariants}
 							initial='initial'

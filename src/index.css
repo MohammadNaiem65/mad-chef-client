@@ -6,7 +6,7 @@
 /* Group Utilities */
 @layer components {
     .container {
-        @apply w-11/12 mx-auto 
+        @apply md:w-11/12 mx-auto 
     }
 
     .btn {
