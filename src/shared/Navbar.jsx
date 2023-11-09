@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AnimatePresence, delay, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { FaBars, FaXmark } from 'react-icons/fa6';
 import { lgLogo, smLogo } from '../assets';
 import LgActiveLink from './LgActiveLink';
@@ -27,7 +27,7 @@ export default function Navbar() {
 			scaleY: 0,
 			transition: {
 				duration: 0.7,
-				delay: 0.8,
+				delay: 1,
 				ease: 'backOut',
 			},
 		},
