@@ -26,8 +26,8 @@ export default function Navbar() {
 		exit: {
 			scaleY: 0,
 			transition: {
-				duration: 0.7,
-				delay: 1,
+				duration: 0.6,
+				delay: 1	,
 				ease: 'backOut',
 			},
 		},
@@ -49,17 +49,17 @@ export default function Navbar() {
 	};
 
 	return (
-		<div className='min-h-[4.625rem] md:min-h-[7rem] px-9 md:px-16 border-b-2 border-slate-300 font-semibold font-Vollokorn text-lg flex justify-between items-center gap-x-6 relative'>
+		<div className='min-h-[4.625rem] md:h-[5.5rem] lg:min-h-[7rem] px-9 md:px-8 lg:px-16 border-b-2 border-slate-300 font-semibold font-Vollokorn text-lg flex justify-between items-center gap-x-6 relative'>
 			<Link to='/' className='relative z-[99]'>
-				<picture>
-					<source media='(min-width:427px)' srcSet={lgLogo} />
+				<picture className='md:-my-3'>
+					<source media='(min-width:427px)' srcSet={lgLogo}  />
 					<source media='(max-width:426px)' srcSet={smLogo} />
 					<img src={lgLogo} alt='logo' />
 				</picture>
 			</Link>
 
 			{/* show only in large device */}
-			<div className='text-lg hidden md:flex items-center gap-x-6'>
+			<div className='text-lg hidden lg:flex items-center gap-x-6'>
 				{routes.slice(0, -1).map((route, index) => (
 					<LgActiveLink key={index} route={route} />
 				))}
@@ -95,7 +95,7 @@ export default function Navbar() {
 			</AnimatePresence>
 
 			{/* For small device */}
-			<div className='md:hidden relative'>
+			<div className='lg:hidden relative'>
 				{!showNav ? (
 					<FaBars
 						onClick={() => setShowNav((prev) => !prev)}
