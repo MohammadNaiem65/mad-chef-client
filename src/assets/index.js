@@ -5,5 +5,8 @@ export { default as knife } from './knife.png';
 export { default as spoon } from './spoon.png';
 export { default as pan } from './pan.png';
 export { default as regionFood } from './region-food.jpg';
+export { default as regionFoodMd } from './region-food-md.jpg';
 export { default as taste } from './taste.jpeg';
+export { default as tasteMd } from './taste-md.jpeg';
 export { default as allFood } from './italy.jpg';
+export { default as allFoodMd } from './italy-md.jpg';
