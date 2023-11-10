@@ -2,10 +2,13 @@ import { motion } from 'framer-motion';
 import {
 	regionFood,
 	regionFoodMd,
+	regionFoodLg,
 	taste,
 	tasteMd,
+	tasteLg,
 	allFood,
 	allFoodMd,
+	allFoodLg,
 } from '../../assets';
 
 const cardDetails = [
@@ -16,7 +19,7 @@ const cardDetails = [
 
 export default function FeatureRecipes() {
 	return (
-		<section className='w-10/12 md:w-11/12 mx-auto my-16 flex flex-col md:flex-row gap-y-5 md:gap-x-3'>
+		<section className='w-10/12 md:w-11/12 lg:w-10/12 mx-auto my-16 flex flex-col md:flex-row gap-y-5 md:gap-x-3'>
 			{cardDetails.map((card) => {
 				const { id, img, title, sub } = card;
 				return (
@@ -27,7 +30,17 @@ export default function FeatureRecipes() {
 						className='flex justify-center items-center relative overflow-hidden'>
 						<picture>
 							<source
-								media='(max-width:769px)'
+								media='(min-width:769px )'
+								srcSet={
+									img === 'region'
+										? regionFoodLg
+										: img === 'taste'
+										? tasteLg
+										: allFoodLg
+								}
+							/>
+							<source
+								media='(max-width:768px)'
 								srcSet={
 									img === 'region'
 										? regionFoodMd
@@ -37,7 +50,7 @@ export default function FeatureRecipes() {
 								}
 							/>
 							<source
-								media='(max-width:426px)'
+								media='(max-width:425px)'
 								srcSet={
 									img === 'region'
 										? regionFood
@@ -45,7 +58,6 @@ export default function FeatureRecipes() {
 										? taste
 										: allFood
 								}
-								className='w-[22.125rem] h-36 object-cover brightness-50 rounded relative z-10'
 							/>
 							<motion.img
 								variants={{
@@ -55,13 +67,13 @@ export default function FeatureRecipes() {
 										duration: 0.3,
 									},
 								}}
-								className='w-[22.125rem] h-36 object-cover brightness-50 rounded relative z-10'
+								className='w-[22.125rem] lg:w-[26rem] h-36 lg:h-52 object-cover brightness-50 rounded relative z-10'
 								src={
 									img === 'region'
-										? regionFood
+										? regionFoodLg
 										: img === 'taste'
-										? taste
-										: allFood
+										? tasteLg
+										: allFoodLg
 								}
 								alt={title}
 							/>
