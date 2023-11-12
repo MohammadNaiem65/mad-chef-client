@@ -1,5 +1,5 @@
 import HorizontalCard from './HorizontalCard';
-import InvertedCard from './InvertedCard';
+import VerticalCard from './VerticalCard';
 
 const arr = [1, 2, 3, 4, 5, 6];
 
@@ -17,22 +17,24 @@ export default function TopChefs() {
 			</h2>
 
 			{/* Section content */}
-			<div className='mt-8 px-5 flex flex-col gap-y-5'>
+			<section className='mt-8 px-5 flex flex-col gap-y-5'>
+				{/* Left side container */}
 				<div className='grid gap-y-5'>
 					{arr.slice(0, 2).map((e) => (
-						<InvertedCard key={e} e={e} />
+						<VerticalCard key={e} e={e} />
 					))}
 
 					<HorizontalCard e={arr[2]} />
 				</div>
+				{/* Right side container */}
 				<div className='grid gap-y-5'>
 					<HorizontalCard e={arr[3]} />
 
 					{arr.slice(4).map((e) => (
-						<InvertedCard key={e} e={e} />
+						<VerticalCard key={e} e={e} />
 					))}
 				</div>
-			</div>
+			</section>
 		</section>
 	);
 }

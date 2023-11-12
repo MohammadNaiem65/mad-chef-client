@@ -40,13 +40,5 @@
     .gradient-bg {
         @apply bg-gradient-to-r from-[#ebf1ff] from-0% to-[#c6d8fc] to-100%
     }
-
-    .secret-before{
-        @apply before:content-[""] before:h-2 before:w-2 before:bg-transparent before:rounded-full before:absolute 
-    }
-
-    .secret-after{
-        @apply after:content-[""] after:h-2 after:w-2 after:bg-transparent after:rounded-full after:absolute 
-    }
 }
 
