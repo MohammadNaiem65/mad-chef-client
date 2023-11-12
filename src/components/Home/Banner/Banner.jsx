@@ -27,7 +27,7 @@ export default function Banner() {
 						<h2 className='text-[2.6rem] text-Primary font-semibold font-Popins relative z-10 '>
 							Mad Chef
 						</h2>
-						<p className='font-Popins '>
+						<p className='font-Popins text-slate-500'>
 							Discover Delicious and Healthy Dishes to Delight and
 							Satisfy Your Family&apos;s Plates
 						</p>
