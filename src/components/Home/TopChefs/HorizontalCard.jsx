@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { modelImg } from '../../../assets';
 
-export default function HorizontalCard() {
+export default function HorizontalCard({ e }) {
 	const name = 'Naiem';
 	const rating = 5;
 	const yearsOfExperience = 3;
@@ -14,7 +14,7 @@ export default function HorizontalCard() {
 		<>
 			{/* Show in large devices */}
 			<div className='h-full p-5 md:p-0 bg-white rounded hidden md:flex flex-col md:flex-row md:justify-evenly items-center relative overflow-hidden'>
-				{/* Left side container */}
+				{/* image */}
 				<div className='image-container w-48 h-48 mb-5 md:mb-0 shape-bg-three overflow-hidden shadow-lg shadow-Primary z-30'>
 					<img
 						src={modelImg}
@@ -23,7 +23,7 @@ export default function HorizontalCard() {
 					/>
 				</div>
 
-				{/* Right side container */}
+				{/* content */}
 				<div className='w-1/2 text-slate-500'>
 					<div className='mb-3'>
 						<p className='text-lg font-semibold text-black'>
@@ -58,7 +58,7 @@ export default function HorizontalCard() {
 				</div>
 
 				{/* Right-Bottom blob */}
-				<div className='h-36 aspect-square shape-bg-one bg-Primary bg-opacity-20 absolute -right-12 -bottom-6'></div>
+				<div className='h-36 aspect-square shape-bg-one bg-Primary bg-opacity-20 absolute -right-12 -bottom-6' />
 			</div>
 
 			{/* Show in small devices */}
@@ -86,7 +86,7 @@ export default function HorizontalCard() {
 						</p>
 					</div>
 
-					<h3 className='text-lg text-black mt-2'>{name}</h3>
+					<h3 className='text-lg text-black mt-2'>{e}</h3>
 					<p>Experience: {yearsOfExperience} Years</p>
 					<div className='flex justify-between items-center '>
 						<p>Recipes: {availableRecipes.length}</p>
