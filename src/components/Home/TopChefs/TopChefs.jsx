@@ -5,11 +5,11 @@ const arr = [1, 2, 3, 4, 5, 6];
 
 export default function TopChefs() {
 	return (
-		<section className='md:w-11/12 lg:w-10/12 mt-16 md:mx-auto relative'>
+		<section className='md:w-11/12 lg:w-10/12 mt-16 lg:mt-20 md:mx-auto relative'>
 			{/* Section title */}
-			<h2 className='text-2xl text-center text-slate-700 font-semibold font-Vollokornn italic relative transform z-10'>
+			<h2 className='section-title'>
 				America&apos;s
-				<span className='ml-3 font-semibold text-Primary relative cursor-pointer z-10 hover:text-white after:duration-200 after:contents-[""] after:h-[6px] after:w-[112%] after:bg-Accent after:absolute after:bottom-[2px] after:-left-[6px] after:-z-10 hover:after:h-[88%] '>
+				<span className='section-title-span after:w-[112%]'>
 					Best Chefs
 				</span>
 				<br />

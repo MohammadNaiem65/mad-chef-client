@@ -1,4 +1,4 @@
-import { Banner, FeatureRecipes, TopChefs } from '../components/Home';
+import { Banner, FeatureRecipes, Reviews, TopChefs } from '../components/Home';
 
 export default function Home() {
 	return (
@@ -6,6 +6,7 @@ export default function Home() {
 			<Banner />
 			<FeatureRecipes />
 			<TopChefs />
+			<Reviews />
 		</div>
 	);
 }
