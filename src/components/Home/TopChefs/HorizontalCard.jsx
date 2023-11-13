@@ -32,7 +32,7 @@ export default function HorizontalCard({ e }) {
 
 				{/* content */}
 				<div className='w-1/2 text-slate-500'>
-					<p className='text-lg font-semibold text-black'>{name}</p>
+					<p className='text-lg font-semibold text-black'>{e}</p>
 					<p className='text-yellow-300 flex items-center gap-[2px]'>
 						{rating && <Rating rating={rating} />}
 					</p>
