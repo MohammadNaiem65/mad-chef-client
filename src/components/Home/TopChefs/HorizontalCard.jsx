@@ -13,7 +13,7 @@ export default function HorizontalCard({ e }) {
 	return (
 		<>
 			{/* Show in large devices */}
-			<div className='h-full p-5 md:p-0 bg-white rounded hidden md:flex flex-col md:flex-row md:justify-evenly items-center relative overflow-hidden'>
+			<div className='h-full p-5 md:p-0 bg-white rounded hidden md:col-span-2 md:flex flex-col md:flex-row md:justify-evenly items-center relative overflow-hidden'>
 				{/* image */}
 				<div className='image-container w-48 h-48 mb-5 md:mb-0 shape-bg-three overflow-hidden shadow-lg shadow-Primary z-30'>
 					<img
