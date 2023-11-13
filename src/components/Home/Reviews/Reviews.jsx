@@ -14,7 +14,7 @@ export default function Reviews() {
 			</h2>
 
 			<div className='outer-container mt-8 overflow-hidden'>
-				<div className='inner-container w-fit flex gap-5'>
+				<div className='inner-container w-fit flex gap-5 md:gap-3'>
 					{[...reviews, ...reviews].map((review) => (
 						<Review key={review} count={review} />
 					))}

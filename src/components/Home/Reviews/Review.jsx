@@ -8,7 +8,7 @@ export default function Review({ count }) {
 	const name = 'Naiem';
 
 	return (
-		<div className='review h-72 w-[88vw] relative'>
+		<div className='h-72 md:h-80 w-[88vw] md:w-96 relative roundeds overflow-hidden'>
 			<img src={modelImg} alt='' className='w-full h-full object-cover' />
 			<div className='w-full h-full flex justify-center items-end text-white bg-gradient-to-t from-black to-transparent to-80% absolute inset-0'>
 				<div className='text-center text-xs mb-5 px-3'>
