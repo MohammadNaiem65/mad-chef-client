@@ -65,7 +65,7 @@ export default function VerticalCard({ e }) {
 				</div>
 
 				{/* Right-Bottom blob */}
-				<div className='h-36 aspect-square shape-bg-one bg-Primary bg-opacity-20 absolute -right-6 -bottom-16 z-10' />
+				<div className='shape-bg-one h-36 aspect-square bg-Primary bg-opacity-20 absolute -right-6 -bottom-16 z-10' />
 			</div>
 		</div>
 	);
