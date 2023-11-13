@@ -7,15 +7,6 @@
 animation: scroll 20s linear infinite;
 }
 
-.review {
-    -webkit-mask-image: linear-gradient(
-        rgb(0, 0, 0 / 1),
-        rgb(0, 0, 0 / .3),
-        rgb(0, 0, 0 / 0),
-    );
-    mask-image: linear-gradient(red, transparent);
-}
-
 @keyframes scroll {
     to {
         transform: translate(calc(-50% - .5rem));
