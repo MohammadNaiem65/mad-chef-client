@@ -14,3 +14,4 @@ export { default as allFood } from './italy.jpg';
 export { default as allFoodMd } from './italy-md.jpg';
 export { default as allFoodLg } from './italy-lg.jpg';
 export { default as modelImg } from './model.jpeg';
+export { default as newsletterBgImg } from './bg-image.png'

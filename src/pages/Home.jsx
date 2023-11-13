@@ -1,4 +1,10 @@
-import { Banner, FeatureRecipes, Reviews, TopChefs } from '../components/Home';
+import {
+	Banner,
+	FeatureRecipes,
+	NewsLetter,
+	Reviews,
+	TopChefs,
+} from '../components/Home';
 
 export default function Home() {
 	return (
@@ -7,6 +13,7 @@ export default function Home() {
 			<FeatureRecipes />
 			<TopChefs />
 			<Reviews />
+			<NewsLetter />
 		</div>
 	);
 }
