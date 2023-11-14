@@ -1,12 +1,12 @@
 const features = [
-	{ title: 'Unlimited Blogs', description: 'Access unlimited blogs' },
+	{ title: 'Unlimited Blogs', description: 'Access unlimited blogs.' },
 	{
 		title: 'Get 1 to 1 Support',
-		description: 'Get in person help when stuck',
+		description: 'Get in person help from chef.',
 	},
 	{
 		title: 'Mad Community',
-		description: 'Get full access to Mad Community',
+		description: 'Get full access to Mad Community.',
 	},
 ];
 
@@ -18,25 +18,25 @@ export default function Packages() {
 				<span className='section-title-span  after:w-[118%]'>Plan</span>
 			</h2>
 
-			<div className='w-3/5 mx-auto mt-8 text-slate-500 flex justify-evenly'>
+			<div className='lg:w-3/5 mx-auto mt-8 text-slate-500 lg:flex justify-evenly'>
 				{/* Basic */}
-				<div className='w-96 h-[31rem] bg-white rounded-lg duration-300 hover:drop-shadow-xl hover:scale-105'>
+				<div className='w-11/12 lg:w-96 h-[31rem] mx-auto bg-white rounded-lg duration-300 hover:drop-shadow-xl hover:scale-105'>
 					<div>
 						<div className='flex items-center'>
-							<h3 className='text-2xl font-Popins font-semibold text-slate-700 mt-10 ml-14'>
+							<h3 className='text-2xl font-Popins font-semibold text-slate-700 mt-6 lg:mt-10 ml-10 lg:ml-14'>
 								Basic
 							</h3>
-							<span className='ml-5 mt-10 px-3 py-1 font-semibold text-white text-sm bg-Primary/70 rounded'>
+							<span className='ml-5 mt-6 lg:mt-10 px-3 py-1 font-semibold text-white text-sm bg-Primary/70 rounded'>
 								Most Popular
 							</span>
 						</div>
-						<p className='px-14 mt-2 text-sm'>
+						<p className='px-10 lg:px-14 mt-2 text-sm'>
 							A starter package for everyone whom are confident to
 							learn alone.
 						</p>
 					</div>
 
-					<div className='h-20 w-11/12 mx-auto my-6 px-8 bg-Primary/10 flex justify-between items-center rounded'>
+					<div className='h-20 w-11/12 mx-auto my-6 px-6 lg:px-8 bg-Primary/10 flex justify-between items-center rounded'>
 						<p>
 							<span className='text-3xl font-Vollokorn font-semibold text-slate-700'>
 								Free
@@ -46,7 +46,7 @@ export default function Packages() {
 						<p className='font-semibold text-lg'>Forever</p>
 					</div>
 
-					<div className='px-14'>
+					<div className='px-10 lg:px-14'>
 						{features.map((feature, index) => (
 							<div
 								key={index}
@@ -79,27 +79,30 @@ export default function Packages() {
 				</div>
 
 				{/* Pro */}
-				<div className='w-96 h-[31rem] rounded-lg bg-gradient-to-bl from-[#FADADF] to-[#CCC8FD] duration-300 hover:drop-shadow-xl hover:scale-105'>
+				<div className='w-11/12 lg:w-96 h-[31rem] mx-auto rounded-lg bg-gradient-to-bl from-[#FADADF] to-[#CCC8FD] duration-300 hover:drop-shadow-xl hover:scale-105'>
 					<div>
-						<h3 className='text-2xl font-Popins font-semibold text-slate-700 mt-10 ml-14'>
+						<h3 className='text-2xl font-Popins font-semibold text-slate-700 mt-6 pt-6 lg:mt-10 ml-10 lg:ml-14'>
 							Pro
 						</h3>
-						<p className='px-14 mt-2 text-sm'>
+						<p className='px-10 lg:px-14 mt-2 text-sm'>
 							For those, who are more passionate about cooking.
 						</p>
 					</div>
 
-					<div className='h-20 w-11/12 mx-auto my-6 px-8 bg-Primary/10 flex justify-between items-center rounded'>
+					<div className='h-20 w-11/12 mx-auto my-6 px-6 lg:px-8 bg-Primary/10 flex justify-between items-center rounded'>
 						<p>
-							<span className='text-3xl font-Vollokorn font-semibold text-slate-700'>
+							<span className='mr-2 text-3xl font-Vollokorn font-semibold text-slate-700 line-through'>
 								$5
+							</span>
+							<span className='text-3xl font-Vollokorn font-semibold text-slate-700'>
+								$4
 							</span>
 							/month
 						</p>
-						<p className='font-semibold text-lg'>Save 10%</p>
+						<p className='font-semibold text-lg'>Save 20%</p>
 					</div>
 
-					<div className='px-14'>
+					<div className='px-10 lg:px-14'>
 						{features.map((feature, index) => (
 							<div
 								key={index}
