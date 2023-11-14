@@ -18,9 +18,9 @@ export default function Packages() {
 				<span className='section-title-span  after:w-[118%]'>Plan</span>
 			</h2>
 
-			<div className='lg:w-3/5 mx-auto mt-8 text-slate-500 lg:flex justify-evenly'>
+			<div className='md:w-11/12 lg:w-3/5 mx-auto mt-8 text-slate-500 md:flex gap-x-3 justify-evenly'>
 				{/* Basic */}
-				<div className='w-11/12 lg:w-96 h-[31rem] mx-auto bg-white rounded-lg duration-300 hover:drop-shadow-xl hover:scale-105'>
+				<div className='w-11/12 lg:w-96 h-[31rem] mx-auto bg-white rounded-lg duration-300 drop-shadow-xl hover:scale-105'>
 					<div>
 						<div className='flex items-center'>
 							<h3 className='text-2xl font-Popins font-semibold text-slate-700 mt-6 lg:mt-10 ml-10 lg:ml-14'>
@@ -79,9 +79,9 @@ export default function Packages() {
 				</div>
 
 				{/* Pro */}
-				<div className='w-11/12 lg:w-96 h-[31rem] mx-auto rounded-lg bg-gradient-to-bl from-[#FADADF] to-[#CCC8FD] duration-300 hover:drop-shadow-xl hover:scale-105'>
+				<div className='w-11/12 lg:w-96 h-[31rem] mx-auto rounded-lg bg-gradient-to-bl from-[#FADADF] to-[#CCC8FD] duration-300 drop-shadow-xl hover:scale-105'>
 					<div>
-						<h3 className='text-2xl font-Popins font-semibold text-slate-700 mt-6 pt-6 lg:mt-10 ml-10 lg:ml-14'>
+						<h3 className='text-2xl font-Popins font-semibold text-slate-700 mt-6 pt-6 md:pt-0 lg:mt-10 ml-10 lg:ml-14'>
 							Pro
 						</h3>
 						<p className='px-10 lg:px-14 mt-2 text-sm'>
