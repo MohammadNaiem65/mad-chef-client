@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import {
 	Banner,
 	FeatureRecipes,
@@ -9,13 +10,16 @@ import {
 
 export default function Home() {
 	return (
-		<div>
+		<>
+			<Helmet>
+				<title>Mad Chef</title>
+			</Helmet>
 			<Banner />
 			<FeatureRecipes />
 			<TopChefs />
 			<Reviews />
 			<Packages />
 			<NewsLetter />
-		</div>
+		</>
 	);
 }
