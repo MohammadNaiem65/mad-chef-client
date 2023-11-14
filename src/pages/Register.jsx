@@ -8,7 +8,7 @@ export default function Register() {
 	const [passwordType, setPasswordType] = useState(true);
 
 	return (
-		<section className='w-11/12 md:w-1/3 mx-auto my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 rounded'>
+		<section className='w-11/12 md:w-4/5 lg:w-1/3 mx-auto my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 rounded'>
 			{/* Set title */}
 			<Helmet>
 				<title>Register - Mad Chef</title>
@@ -31,7 +31,7 @@ export default function Register() {
 						id='email'
 						name='email'
 						placeholder='Enter your email.'
-						className='w-full px-3 py-1 text-sm outline-Primary rounded'
+						className='w-full px-3 py-1 text-sm md:text-base outline-Primary rounded'
 						required
 					/>
 				</>
@@ -49,7 +49,7 @@ export default function Register() {
 							id='password'
 							name='password'
 							placeholder='Enter your password.'
-							className='w-full px-3 py-1 text-sm outline-Primary rounded'
+							className='w-full px-3 py-1 text-sm md:text-base outline-Primary rounded'
 							required
 						/>
 						<p
@@ -73,7 +73,7 @@ export default function Register() {
 							id='confirm-password'
 							name='confirmPassword'
 							placeholder='Confirm your password.'
-							className='w-full px-3 py-1 text-sm outline-Primary rounded'
+							className='w-full px-3 py-1 text-sm md:text-base outline-Primary rounded'
 							required
 						/>
 						<p
