@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { FaFacebook, FaInstagram, FaPinterest } from 'react-icons/fa6';
 import { newsletterBgImg } from '../../assets';
 
@@ -8,14 +9,14 @@ const Newsletter = () => {
 
 	return (
 		<div
-			className='h-[28rem] w-full mt-20 font-Popins flex flex-col justify-center items-center text-center text-slate-500'
+			className='h-[28rem] w-full mt-20 font-Popins flex flex-col justify-center items-center text-center text-slate-500 relative'
 			style={{
 				backgroundImage: `url("${newsletterBgImg}")`,
 				backgroundRepeat: 'no-repeat',
 				backgroundPosition: 'center',
 			}}>
+			{/*title */}
 			<h1 className='section-title uppercase'>
-				{/*title */}
 				Hey you, Sign Up and <br />
 				<span className='section-title-span after:w-[112%] mr-2'>
 					CONNECT
@@ -25,6 +26,7 @@ const Newsletter = () => {
 					Mad Chef
 				</span>
 			</h1>
+
 			<form>
 				<div className='text-lg mt-6 md:flex gap-5'>
 					<div className='w-72 relative'>
@@ -72,7 +74,7 @@ const Newsletter = () => {
 					</label>
 				</div>
 			</form>
-			
+
 			{/* Social Links */}
 			<div className='mt-5'>
 				<p>Connect with us:</p>
@@ -82,6 +84,19 @@ const Newsletter = () => {
 					<FaPinterest className='text-red-700 cursor-pointer' />
 				</p>
 			</div>
+
+			<motion.div
+				initial={{ left: '-12rem' }}
+				whileInView={{ left: '-5rem' }}
+				transition={{ duration: 1, delay: 0.3 }}
+				className='shape-bg-one h-64 block md:hidden aspect-square bg-Primary bg-opacity-20 absolute top-[45%] -translate-y-1/2 rotate-45'
+			/>
+			<motion.div
+				initial={{ right: '-8rem' }}
+				whileInView={{ right: '-5rem' }}
+				transition={{ duration: 1, delay: 0.3 }}
+				className='shape-bg-one h-28 block md:hidden aspect-square bg-Primary bg-opacity-20 absolute -bottom-0 -translate-x-1/2 -translate-y-1/2 rotate-[35deg]'
+			/>
 		</div>
 	);
 };
