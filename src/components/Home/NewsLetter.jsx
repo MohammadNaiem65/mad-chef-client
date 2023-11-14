@@ -71,7 +71,7 @@ const Newsletter = () => {
 						Accept Terms and Conditions
 					</label>
 				</div>
-			</form>{' '}
+			</form>
 			
 			{/* Social Links */}
 			<div className='mt-5'>

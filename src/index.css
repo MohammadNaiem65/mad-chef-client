@@ -46,7 +46,7 @@
     }
 
     .gradient-bg {
-        @apply bg-gradient-to-r from-[#ebf1ff] from-0% to-[#c6d8fc] to-100%
+        @apply bg-gradient-to-r from-[#ebf1ff] to-[#c6d8fc]
     }
 }
 

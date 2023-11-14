@@ -1,7 +1,130 @@
+const features = [
+	{ title: 'Unlimited Blogs', description: 'Access unlimited blogs' },
+	{
+		title: 'Get 1 to 1 Support',
+		description: 'Get in person help when stuck',
+	},
+	{
+		title: 'Mad Community',
+		description: 'Get full access to Mad Community',
+	},
+];
+
 export default function Packages() {
-    return (
-        <section>
-            Packages
-        </section>
-    );
+	return (
+		<section className='mt-20'>
+			<h2 className='section-title'>
+				Choose Your{' '}
+				<span className='section-title-span  after:w-[118%]'>Plan</span>
+			</h2>
+
+			<div className='w-3/5 mx-auto mt-8 text-slate-500 flex justify-evenly'>
+				{/* Basic */}
+				<div className='w-96 h-[31rem] bg-white rounded-lg duration-300 hover:drop-shadow-xl hover:scale-105'>
+					<div>
+						<div className='flex items-center'>
+							<h3 className='text-2xl font-Popins font-semibold text-slate-700 mt-10 ml-14'>
+								Basic
+							</h3>
+							<span className='ml-5 mt-10 px-3 py-1 font-semibold text-white text-sm bg-Primary/70 rounded'>
+								Most Popular
+							</span>
+						</div>
+						<p className='px-14 mt-2 text-sm'>
+							A starter package for everyone whom are confident to
+							learn alone.
+						</p>
+					</div>
+
+					<div className='h-20 w-11/12 mx-auto my-6 px-8 bg-Primary/10 flex justify-between items-center rounded'>
+						<p>
+							<span className='text-3xl font-Vollokorn font-semibold text-slate-700'>
+								Free
+							</span>
+							/month
+						</p>
+						<p className='font-semibold text-lg'>Forever</p>
+					</div>
+
+					<div className='px-14'>
+						{features.map((feature, index) => (
+							<div
+								key={index}
+								className='mb-2 flex items-center gap-x-3'>
+								<p
+									className={`w-10 h-10 text-xl font-semibold border-2 flex justify-center items-center rounded-full ${
+										index === 0
+											? 'text-white border-Primary/90 bg-Primary/90'
+											: 'text-slate-700 border-slate-200 '
+									}`}>
+									{index + 1}
+								</p>
+								<div>
+									<p className='text-lg font-semibold'>
+										{feature.title}
+									</p>
+									<p className='text-sm'>
+										{feature.description}
+									</p>
+								</div>
+							</div>
+						))}
+					</div>
+
+					<button
+						className='w-11/12 block mx-auto mt-6 py-2 text-slate-700 font-semibold text-xl bg-Primary/20 rounded'
+						disabled='disabled'>
+						Current
+					</button>
+				</div>
+
+				{/* Pro */}
+				<div className='w-96 h-[31rem] rounded-lg bg-gradient-to-bl from-[#FADADF] to-[#CCC8FD] duration-300 hover:drop-shadow-xl hover:scale-105'>
+					<div>
+						<h3 className='text-2xl font-Popins font-semibold text-slate-700 mt-10 ml-14'>
+							Pro
+						</h3>
+						<p className='px-14 mt-2 text-sm'>
+							For those, who are more passionate about cooking.
+						</p>
+					</div>
+
+					<div className='h-20 w-11/12 mx-auto my-6 px-8 bg-Primary/10 flex justify-between items-center rounded'>
+						<p>
+							<span className='text-3xl font-Vollokorn font-semibold text-slate-700'>
+								$5
+							</span>
+							/month
+						</p>
+						<p className='font-semibold text-lg'>Save 10%</p>
+					</div>
+
+					<div className='px-14'>
+						{features.map((feature, index) => (
+							<div
+								key={index}
+								className='mb-2 flex items-center gap-x-3'>
+								<p
+									className={`w-10 h-10 text-xl text-white font-semibold border-2 border-Primary/90 bg-Primary/90 flex justify-center items-center rounded-full`}>
+									{index + 1}
+								</p>
+								<div>
+									<p className='text-lg font-semibold'>
+										{feature.title}
+									</p>
+									<p className='text-sm'>
+										{feature.description}
+									</p>
+								</div>
+							</div>
+						))}
+					</div>
+
+					<button className='w-11/12 block mx-auto mt-6 py-2 text-white font-semibold text-xl bg-Primary/90 rounded uppercase'>
+						Get Started
+					</button>
+				</div>
+			</div>
+		</section>
+	);
 }
