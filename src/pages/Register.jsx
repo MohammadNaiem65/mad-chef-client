@@ -1,6 +1,6 @@
 export default function Register() {
     return (
-        <section className="page-content">
+        <section>
             Register
         </section>
     );

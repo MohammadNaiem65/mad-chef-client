@@ -1,6 +1,6 @@
 export default function Dashboard() {
     return (
-        <section className="page-content">
+        <section>
             Dashboard
         </section>
     );

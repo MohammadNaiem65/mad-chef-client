@@ -9,7 +9,7 @@ import {
 
 export default function Home() {
 	return (
-		<div className='page-content'>
+		<div>
 			<Banner />
 			<FeatureRecipes />
 			<TopChefs />

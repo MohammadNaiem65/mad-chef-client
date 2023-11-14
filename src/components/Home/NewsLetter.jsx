@@ -94,7 +94,7 @@ const Newsletter = () => {
 			<motion.div
 				initial={{ right: '-8rem' }}
 				whileInView={{ right: '-5rem' }}
-				transition={{ duration: 1, delay: 0.3 }}
+				transition={{ duration: 1, delay: 0.6 }}
 				className='shape-bg-one h-28 block md:hidden aspect-square bg-Primary bg-opacity-20 absolute -bottom-0 -translate-x-1/2 -translate-y-1/2 rotate-[35deg]'
 			/>
 		</div>

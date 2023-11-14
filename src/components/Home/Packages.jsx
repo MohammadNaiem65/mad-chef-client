@@ -18,7 +18,7 @@ export default function Packages() {
 				<span className='section-title-span  after:w-[118%]'>Plan</span>
 			</h2>
 
-			<div className='md:w-11/12 lg:w-3/5 mx-auto mt-8 text-slate-500 md:flex gap-x-3 justify-evenly'>
+			<div className='md:w-11/12 lg:w-[53%] mx-auto mt-8 text-slate-500 md:flex md:gap-x-3 bg'>
 				{/* Basic */}
 				<div className='w-11/12 lg:w-96 h-[31rem] mx-auto bg-white rounded-lg duration-300 drop-shadow-xl hover:scale-105'>
 					<div>
@@ -50,14 +50,16 @@ export default function Packages() {
 						{features.map((feature, index) => (
 							<div
 								key={index}
-								className='mb-2 flex items-center gap-x-3'>
-								<p
-									className={`w-10 h-10 text-xl font-semibold border-2 flex justify-center items-center rounded-full ${
-										index === 0
-											? 'text-white border-Primary/90 bg-Primary/90'
-											: 'text-slate-700 border-slate-200 '
-									}`}>
-									{index + 1}
+								className='mb-2 flex items-top gap-x-3'>
+								<p>
+									<span
+										className={`w-10 h-10 text-xl font-semibold border-2 flex justify-center items-center rounded-full ${
+											index === 0
+												? 'text-white border-Primary/90 bg-Primary/90'
+												: 'text-slate-700 border-slate-200 '
+										}`}>
+										{index + 1}
+									</span>
 								</p>
 								<div>
 									<p className='text-lg font-semibold'>
@@ -107,9 +109,11 @@ export default function Packages() {
 							<div
 								key={index}
 								className='mb-2 flex items-center gap-x-3'>
-								<p
-									className={`w-10 h-10 text-xl text-white font-semibold border-2 border-Primary/90 bg-Primary/90 flex justify-center items-center rounded-full`}>
-									{index + 1}
+								<p>
+									<span
+										className={`w-10 h-10 text-xl text-white font-semibold border-2 border-Primary/90 bg-Primary/90 flex justify-center items-center rounded-full`}>
+										{index + 1}
+									</span>
 								</p>
 								<div>
 									<p className='text-lg font-semibold'>

@@ -1,6 +1,6 @@
 export default function Recipes() {
     return (
-        <section className="page-content">
+        <section>
             Recipe
         </section>
     );
