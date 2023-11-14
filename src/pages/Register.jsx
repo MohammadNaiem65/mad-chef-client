@@ -8,22 +8,22 @@ export default function Register() {
 	const [passwordType, setPasswordType] = useState(true);
 
 	return (
-		<section className='md:w-1/3 mx-auto my-14 md:px-10 py-8 bg-gradient-to-bl from-Primary/30 to-Primary/70 font-Popins rounded'>
+		<section className='w-11/12 md:w-1/3 mx-auto my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 rounded'>
 			{/* Set title */}
 			<Helmet>
 				<title>Register - Mad Chef</title>
 			</Helmet>
 
-			<h2 className='text-[2.6rem] text-Primary text-center font-semibold font-Popins relative z-10 '>
+			<h2 className='text-[2.6rem] text-Primary text-center font-semibold font-Popins'>
 				Register
 			</h2>
 
-			<form className='w-fit mx-auto px-5'>
+			<form className='w-10/12 md:w-fit mx-auto mt-6 md:mt-5 md:px-5'>
 				{/* Email */}
 				<>
 					<label
 						htmlFor='email'
-						className='text-xl block mb-1 mt-5 tracking-wide'>
+						className='md:text-xl block mb-1 tracking-wide'>
 						Email
 					</label>
 					<input
@@ -31,7 +31,7 @@ export default function Register() {
 						id='email'
 						name='email'
 						placeholder='Enter your email.'
-						className='w-96 px-3 py-1 outline-Primary rounded'
+						className='w-full px-3 py-1 text-sm outline-Primary rounded'
 						required
 					/>
 				</>
@@ -40,7 +40,7 @@ export default function Register() {
 				<>
 					<label
 						htmlFor='password'
-						className='text-xl block mb-1 mt-5 tracking-wide'>
+						className='md:text-xl block mb-1 mt-4 md:mt-5 tracking-wide'>
 						Password
 					</label>
 					<div className='relative'>
@@ -49,7 +49,7 @@ export default function Register() {
 							id='password'
 							name='password'
 							placeholder='Enter your password.'
-							className='w-96 px-3 py-1 outline-Primary rounded'
+							className='w-full px-3 py-1 text-sm outline-Primary rounded'
 							required
 						/>
 						<p
@@ -64,16 +64,16 @@ export default function Register() {
 				<>
 					<label
 						htmlFor='confirm-password'
-						className='text-xl block mb-1 mt-5 tracking-wide'>
+						className='md:text-xl block mb-1 mt-4 md:mt-5 tracking-wide'>
 						Confirm Password
 					</label>
-					<div className='relative'>
+					<div className='md:w-96 relative'>
 						<input
 							type={passwordType ? 'password' : 'text'}
 							id='confirm-password'
 							name='confirmPassword'
 							placeholder='Confirm your password.'
-							className='w-96 px-3 py-1 outline-Primary rounded'
+							className='w-full px-3 py-1 text-sm outline-Primary rounded'
 							required
 						/>
 						<p
@@ -84,8 +84,8 @@ export default function Register() {
 					</div>
 				</>
 
-				<p className='mt-2 text-sm'>
-					Already have an account?{' '}
+				<p className='mt-2 text-sm px-1'>
+					Already have account?{' '}
 					<Link
 						to='/login'
 						className='text-slate-950 hover:text-Primary underline'>
@@ -95,7 +95,7 @@ export default function Register() {
 				</p>
 
 				<button
-					className='btn btn-primary block mx-auto mt-5 cursor-pointer'
+					className='btn btn-primary block mx-auto mt-5 text-lg cursor-pointer'
 					type='submit'>
 					Register
 				</button>
@@ -106,7 +106,7 @@ export default function Register() {
 					<div className='text-4xl flex justify-center gap-x-5'>
 						<FcGoogle className='cursor-pointer' />
 						<FaFacebook className='cursor-pointer text-blue-600' />
-						<FaGithub className='cursor-pointer' />
+						<FaGithub className='cursor-pointer text-slate-900' />
 					</div>
 				</div>
 			</form>
