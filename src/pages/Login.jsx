@@ -18,7 +18,7 @@ export default function Login() {
 				Login
 			</h2>
 
-			<form className='w-10/12 md:w-fit mx-auto mt-6 md:mt-5 md:px-5'>
+			<form className='w-10/12 md:w-11/12 mx-auto mt-6 md:mt-5'>
 				{/* Email */}
 				<>
 					<label
