@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-export default function SmActiveLink({ route, setShowNav }) {
+export default function SmActiveLink({ route, setShowHamburger }) {
 	const linkVariant = {
 		initial: { y: '5rem', transition: { duration: 0.5 } },
 		animate: { y: 0, transition: { duration: 0.3 } },
@@ -11,7 +11,7 @@ export default function SmActiveLink({ route, setShowNav }) {
 			<motion.p
 				variants={linkVariant}
 				className='capitalize flex justify-center items-center duration-300'
-				onClick={() => setShowNav(false)}>
+				onClick={() => setShowHamburger((prev) => !prev)}>
 				<NavLink
 					to={`/${route}`}
 					className={({ isActive }) =>

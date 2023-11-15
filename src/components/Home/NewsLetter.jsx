@@ -9,7 +9,7 @@ const Newsletter = () => {
 
 	return (
 		<div
-			className='h-[28rem] w-full mt-20 font-Popins flex flex-col justify-center items-center text-center text-slate-500 relative'
+			className='h-[28rem] w-full mt-20 font-Popins flex flex-col justify-center items-center text-center text-slate-500 relative overflow-hidden'
 			style={{
 				backgroundImage: `url("${newsletterBgImg}")`,
 				backgroundRepeat: 'no-repeat',
@@ -88,12 +88,14 @@ const Newsletter = () => {
 			<motion.div
 				initial={{ left: '-12rem' }}
 				whileInView={{ left: '-5rem' }}
+				viewport={{ once: true }}
 				transition={{ duration: 1, delay: 0.3 }}
 				className='shape-bg-one h-64 block md:hidden aspect-square bg-Primary bg-opacity-20 absolute top-[45%] -translate-y-1/2 rotate-45'
 			/>
 			<motion.div
 				initial={{ right: '-8rem' }}
 				whileInView={{ right: '-5rem' }}
+				viewport={{ once: true }}
 				transition={{ duration: 1, delay: 0.6 }}
 				className='shape-bg-one h-28 block md:hidden aspect-square bg-Primary bg-opacity-20 absolute -bottom-0 -translate-x-1/2 -translate-y-1/2 rotate-[35deg]'
 			/>
