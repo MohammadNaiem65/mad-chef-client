@@ -1,12 +1,16 @@
-import { Helmet } from "react-helmet-async";
+import { Helmet } from 'react-helmet-async';
+import { Consult, FavoriteRecipe, UserDetails } from '../components/Dashboard';
 
 export default function Dashboard() {
-    return (
+	return (
 		<section>
 			<Helmet>
 				<title>Dashboard - Mad Chef</title>
 			</Helmet>
-			Dashboard
+
+			<UserDetails />
+			<Consult />
+			<FavoriteRecipe />
 		</section>
 	);
 }
