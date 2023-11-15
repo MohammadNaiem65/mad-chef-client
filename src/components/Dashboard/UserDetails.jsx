@@ -2,15 +2,15 @@ import { modelImg } from '../../assets';
 
 export default function UserDetails() {
 	return (
-		<section className='w-3/5 h-72 px-24 bg-gradient-to-bl from-Primary/30 to-Primary/80 mx-auto flex items-center gap-x-8 relative rounded overflow-hidden'>
+		<section className='lg:w-3/5 h-60 md:h-72 md:px-24 bg-gradient-to-bl from-Primary/30 to-Primary/80 mx-auto flex items-center gap-x-5 lg:gap-x-8 relative rounded overflow-hidden'>
 			<img
 				src={modelImg}
 				alt=''
-				className='w-52 h-52 object-cover rounded-full relative z-20'
+				className='w-40 md:w-52 aspect-square ml-4 object-cover rounded-full relative z-20'
 			/>
 
 			<div className='text-lg relative z-20'>
-				<h3 className='text-3xl text-slate-700 font-semibold'>
+				<h3 className='text-2xl lg:text-3xl text-slate-700 font-semibold'>
 					Mohammad Naiem
 				</h3>
 				<p>
@@ -27,10 +27,10 @@ export default function UserDetails() {
 			</div>
 
 			{/* blobs */}
-			<div className='shape-bg-one h-56 aspect-square bg-Primary/50 absolute top-[44%] -left-20 rotate-45' />
-			<div className='shape-bg-one h-56 aspect-square bg-Primary/50 absolute top-1/2 -left-20 rotate-45' />
+			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/50 absolute top-[60%] md:top-[44%] -left-20 rotate-45' />
+			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/50 absolute top-2/3 md:top-1/2 -left-20 rotate-45' />
 
-			<div className='shape-bg-three h-96 aspect-square bg-Primary/60 absolute -right-16'/>
+			<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/60 absolute -right-28 lg:-right-16' />
 		</section>
 	);
 }

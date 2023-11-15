@@ -6,7 +6,7 @@ function App() {
 	return (
 		<>
 			<Navbar />
-			<div className='min-h-[calc(100dvh-29.475rem)] md:min-h-[calc(100vh-21.5rem)] mt-[4.625rem] md:mt-[5.5rem] lg:mt-[10rem]'>
+			<div className='min-h-[calc(100dvh-29.475rem)] md:min-h-[calc(100vh-21.5rem)] mt-[7rem] md:mt-[8.5rem] lg:mt-[10rem]'>
 				<Suspense fallback={<Spinner />}>
 					<Outlet />
 				</Suspense>
