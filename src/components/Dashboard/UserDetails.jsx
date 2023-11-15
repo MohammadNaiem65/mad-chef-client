@@ -10,7 +10,7 @@ export default function UserDetails() {
 			/>
 
 			<div className='text-lg relative z-20'>
-				<h3 className='text-2xl lg:text-3xl text-slate-700 font-semibold'>
+				<h3 className='text-2xl md:text-3xl text-slate-700 font-semibold'>
 					Mohammad Naiem
 				</h3>
 				<p>
@@ -27,8 +27,8 @@ export default function UserDetails() {
 			</div>
 
 			{/* blobs */}
-			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/50 absolute top-[60%] md:top-[44%] -left-20 rotate-45' />
-			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/50 absolute top-2/3 md:top-1/2 -left-20 rotate-45' />
+			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/50 absolute top-[60%] md:top-[52%] lg:top-[44%] md:-left-28 lg:-left-20 rotate-45' />
+			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/50 absolute top-2/3 md:top-[56%] lg:top-1/2 md:-left-28 lg:-left-20 rotate-45' />
 
 			<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/60 absolute -right-28 lg:-right-16' />
 		</section>
