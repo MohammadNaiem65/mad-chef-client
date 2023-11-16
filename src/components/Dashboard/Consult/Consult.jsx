@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
+import { modelImg } from '../../../assets';
 
 export default function Consult({ cardRef }) {
-	const time = '20:30';
-	const date = '30-20-2015';
-	const name = 'Naiem';
+	const time = '2000-01-01T22:20:00';
+	const date = '01-30-2015';
+	const name = 'Mohammad Naiem';
 
 	return (
 		<motion.div
@@ -19,11 +20,11 @@ export default function Consult({ cardRef }) {
 				},
 			}}
 			className='relative h-96 w-80 shrink-0 overflow-hidden rounded-xl bg-Primary'>
-			<div className='w-full h-full relative z-10 text-white backdrop-blur-sm p-8'>
+			<div className='w-full h-full relative z-10 text-white backdrop-blur-sm p-8 text-center'>
 				<span className='mb-3 block w-fit rounded-full bg-white/30 px-3 py-0.5 text-sm font-light text-white'>
 					Consult
 				</span>
-				<motion.span
+				<motion.img
 					initial={{ scale: 0.85 }}
 					variants={{
 						hover: {
@@ -34,13 +35,23 @@ export default function Consult({ cardRef }) {
 						duration: 1,
 						ease: 'backInOut',
 					}}
-					className='mt-8 block origin-top-left font-mono text-6xl font-black leading-[1.2]'>
-					{time}
-					<br />
-					PM
-				</motion.span>
-				<p className='text-xl'>Chef: {name}</p>
-				<p className=''>Date: {date}</p>
+					className='h-[10.5rem] aspect-square mx-auto -mt-3 object-cover origin-top rounded-full'
+					src={modelImg}
+				/>
+				<p className='text-xl truncate'>{name}</p>
+				<p className=''>
+					{new Date(time).toLocaleTimeString('en-US', {
+						hour: 'numeric',
+						minute: 'numeric',
+						hour12: true,
+					})}{' '}
+					-{' '}
+					{new Date(date).toLocaleDateString('en-US', {
+						day: 'numeric',
+						month: 'short',
+						year: 'numeric',
+					})}
+				</p>
 
 				<button className='mt-7 w-full rounded border-2 border-white bg-white py-2 text-center font-mono font-black uppercase text-neutral-800 backdrop-blur transition-colors hover:bg-white/30 hover:text-white'>
 					Delete
@@ -54,7 +65,7 @@ export default function Consult({ cardRef }) {
 				viewBox='0 0 320 384'
 				fill='none'
 				xmlns='http://www.w3.org/2000/svg'
-				className='absolute inset-0 z-0'
+				className='absolute inset-0 z-0 mt-3'
 				variants={{
 					hover: {
 						scale: 1.5,

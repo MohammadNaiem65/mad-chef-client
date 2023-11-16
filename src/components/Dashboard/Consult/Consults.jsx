@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import Consult from './Consult';
 
-let arr = [1, 2, 3, 4, 5];
+let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export default function Consults() {
 	// local states
@@ -65,20 +65,20 @@ export default function Consults() {
 						<button
 							onClick={handleSlidePrev}
 							disabled={scrollProgress.curr === 0}
-							className='disabled:text-blue-700'>
+							className='disabled:translate-y-1 disabled:scale-95 duration-300 disabled:text-blue-700 translate-y-0'>
 							<FaAngleLeft className='cursor-pointer' />
 						</button>
 						<button
 							onClick={handleSlideNext}
 							disabled={scrollProgress.curr === containerWidth}
-							className='disabled:text-blue-700'>
+							className='disabled:translate-y-1 disabled:scale-95 duration-300 disabled:text-blue-700 translate-y-0'>
 							<FaAngleRight className='cursor-pointer' />
 						</button>
 					</div>
 				)}
 			</div>
 
-			<div className='w-11/12 mx-auto mt-8 p-3 overflow-hidden'>
+			<div className='w-11/12 mx-auto mt-8 p-3 overflow-x-hidden'>
 				<motion.section
 					drag='x'
 					ref={containerRef}
