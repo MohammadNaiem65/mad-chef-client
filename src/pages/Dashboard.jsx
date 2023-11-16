@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { Consult, FavoriteRecipe, UserDetails } from '../components/Dashboard';
+import {  Consults, FavoriteRecipe, UserDetails } from '../components/Dashboard';
 
 export default function Dashboard() {
 	return (
@@ -9,7 +9,7 @@ export default function Dashboard() {
 			</Helmet>
 
 			<UserDetails />
-			<Consult />
+			<Consults />
 			<FavoriteRecipe />
 		</section>
 	);
