@@ -62,10 +62,16 @@ export default function Consults() {
 				</h3>
 				{arr.length >= 4 && (
 					<div className='text-3xl text-Primary flex items-center gap-x-2'>
-						<button onClick={handleSlidePrev}>
-							<FaAngleLeft className={`cursor-pointer`} />
+						<button
+							onClick={handleSlidePrev}
+							disabled={scrollProgress.curr === 0}
+							className='disabled:text-blue-700'>
+							<FaAngleLeft className='cursor-pointer' />
 						</button>
-						<button onClick={handleSlideNext}>
+						<button
+							onClick={handleSlideNext}
+							disabled={scrollProgress.curr === containerWidth}
+							className='disabled:text-blue-700'>
 							<FaAngleRight className='cursor-pointer' />
 						</button>
 					</div>
