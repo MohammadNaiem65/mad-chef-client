@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import {  Consults, FavoriteRecipe, UserDetails } from '../components/Dashboard';
+import { Consults, FavoriteRecipe, UserDetails } from '../components/Dashboard';
 
 export default function Dashboard() {
 	return (
