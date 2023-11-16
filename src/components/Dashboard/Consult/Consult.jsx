@@ -19,8 +19,8 @@ export default function Consult({ cardRef }) {
 					scale: 1.05,
 				},
 			}}
-			className='relative h-96 w-80 shrink-0 overflow-hidden rounded-xl bg-Primary'>
-			<div className='w-full h-full relative z-10 text-white backdrop-blur-sm p-8 text-center'>
+			className='relative h-96 w-72 lg:w-80 shrink-0 overflow-hidden rounded-xl bg-Primary'>
+			<div className='w-full h-full relative z-10 text-white backdrop-blur-sm p-5 lg:p-8 text-center'>
 				<span className='mb-3 block w-fit rounded-full bg-white/30 px-3 py-0.5 text-sm font-light text-white'>
 					Consult
 				</span>
@@ -38,7 +38,7 @@ export default function Consult({ cardRef }) {
 					className='h-[10.5rem] aspect-square mx-auto -mt-3 object-cover origin-top rounded-full'
 					src={modelImg}
 				/>
-				<p className='text-xl truncate'>{name}</p>
+				<p className='mt-3 text-xl truncate'>{name}</p>
 				<p className=''>
 					{new Date(time).toLocaleTimeString('en-US', {
 						hour: 'numeric',
@@ -65,7 +65,7 @@ export default function Consult({ cardRef }) {
 				viewBox='0 0 320 384'
 				fill='none'
 				xmlns='http://www.w3.org/2000/svg'
-				className='absolute inset-0 z-0 mt-3'
+				className='absolute inset-0 z-0 lg:mt-3 -ml-4'
 				variants={{
 					hover: {
 						scale: 1.5,
