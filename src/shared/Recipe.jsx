@@ -10,7 +10,7 @@ export default function Recipe({ recipe, index }) {
 
 	return (
 		<motion.section
-			className='bg-Primary/20 mt-3 p-3 lg:p-6 text-gray-500 text-sm font-Popins rounded flex items-center'
+			className='bg-Primary/20 mt-3 p-3 md:p-5 lg:p-6 text-slate-500 text-sm font-Popins rounded flex items-center'
 			// use hide and show variants in the parent container
 			variants={{
 				hide: { y: 100, opacity: 0 },
@@ -27,20 +27,22 @@ export default function Recipe({ recipe, index }) {
 				alt={`${name}'s picture`}
 			/>
 			<div className='ml-3'>
-				<h3 className='w-[9.5rem] lg:w-96 text-black  text-xl font-Vollokorn mb-1 truncate'>
-					{name}
-				</h3>
+				<Link>
+					<h2 className='w-[9.5rem] md:w-96 text-black  text-xl font-Vollokorn mb-1 truncate'>
+						{name}
+					</h2>
+				</Link>
 				{/* <p>
 					Ingredient:{' '}
 					{ingredients.join(', ').length >= 50
 						? ingredients.join(', ').slice(0, 50) + '...'
 						: ingredients.join(', ')}
 				</p> */}
-				<p className='w-[9.5rem] lg:w-96 truncate'>
+				<p className='w-[9.5rem] md:w-96 truncate -mt-1'>
 					Whats up, ki obstha?Hey you, what do you think? where are
 					you going
 				</p>
-				<div className='text-xl text-yellow-500 mt-[2px] flex gap-1'>
+				<div className='text-xl text-yellow-500 mt-2 flex gap-1'>
 					{<Rating rating={5} />}
 				</div>
 			</div>
