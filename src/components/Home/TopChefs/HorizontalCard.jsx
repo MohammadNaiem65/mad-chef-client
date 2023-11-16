@@ -1,6 +1,5 @@
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Rating } from '../../../shared';
+import { ArrowLink, Rating } from '../../../shared';
 import VerticalCard from './VerticalCard';
 import { modelImg } from '../../../assets';
 
@@ -10,14 +9,6 @@ export default function HorizontalCard({ e }) {
 	const yearsOfExperience = 3;
 	const recipes = 5;
 	const _id = 2;
-
-	const arrowVariant = {
-		hover: {
-			x: [-20, 0],
-			opacity: [0, 1],
-			rotate: '45deg',
-		},
-	};
 
 	return (
 		<>
@@ -43,27 +34,7 @@ export default function HorizontalCard({ e }) {
 							<Link
 								to={`https://assignment-10-phr.netlify.app/dashboard/chefs/chef/${_id}`}
 								className='cursor-pointer'>
-								<motion.p
-									whileHover='hover'
-									whileTap='hover'
-									className='w-12 h-6 flex justify-center items-center'>
-									{[0, 1, 2].map((time) => (
-										<motion.span
-											key={time}
-											initial={{
-												x: 0,
-												opacity: 1,
-												rotate: '45deg',
-											}}
-											variants={arrowVariant}
-											transition={{
-												duration: 0.7,
-												delay: 0.25 * time,
-											}}
-											className='w-3 h-3 border-t-[3px] border-r-[3px] border-Primary rounded-tr-[2px] block transform rotate-45'
-										/>
-									))}
-								</motion.p>
+								<ArrowLink />
 							</Link>
 						</div>
 					</div>
