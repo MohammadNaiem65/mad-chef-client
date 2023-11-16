@@ -6,7 +6,7 @@ export default function Consult() {
 	const name = 'Naiem';
 
 	return (
-		<section className='w-fit cursor-pointer'>
+		<div className='w-fit'>
 			<motion.div
 				whileHover='hover'
 				transition={{
@@ -101,6 +101,6 @@ export default function Consult() {
 					/>
 				</motion.svg>
 			</motion.div>
-		</section>
+		</div>
 	);
 }
