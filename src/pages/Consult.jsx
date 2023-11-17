@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 
 export default function Consult() {
 	return (
-		<section className='bg-Primary/20 text-slate-500 font-Popins py-10 relative overflow-hidden'>
+		<section className='lg:w-3/5 py-10 mx-auto text-slate-500 font-Popins bg-Primary/20 relative rounded overflow-hidden'>
 			<Helmet>
 				<title>Consult - Mad Chef</title>
 			</Helmet>
@@ -107,12 +107,12 @@ export default function Consult() {
 			</form>
 
 			{/* blobs */}
-			<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/20 md:bg-Primary/30 absolute -top-10 md:-top-16 -right-32 md:-right-28 lg:-right-16 -z-10' />
+			<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/20 md:bg-Primary/30 lg:bg-Primary/20 absolute -top-10 md:-top-16 -right-32 md:-right-28 lg:-right-16 -z-10' />
 
-			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/20 lg:bg-Primary/30 absolute top-[40%] lg:top-[44%] -left-14 md:-left-28 lg:-left-20 rotate-45 -z-10' />
-			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/20 lg:bg-Primary/30 absolute top-[43%] lg:top-1/2 -left-14 md:-left-28 lg:-left-20 rotate-45 -z-20' />
+			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/20 absolute top-[40%] lg:top-[44%] -left-14 md:-left-28 lg:-left-20 rotate-45 -z-10' />
+			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/20 absolute top-[43%] lg:top-1/2 -left-14 md:-left-28 lg:-left-20 rotate-45 -z-20' />
 
-			<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/20 absolute -right-20 md:-right-24 lg:-right-16 -z-10' />
+			<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/20 absolute -right-20 md:-right-24 lg:-right-20 -z-10' />
 		</section>
 	);
 }
