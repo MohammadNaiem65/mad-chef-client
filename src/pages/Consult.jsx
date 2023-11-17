@@ -9,7 +9,7 @@ export default function Consult() {
 
 			<h1 className='text-center text-3xl font-semibold'>Consult</h1>
 
-			<form className='w-11/12 mx-auto'>
+			<form className='w-11/12 md:w-2/3 mx-auto'>
 				{/* Name */}
 				<>
 					<label
@@ -107,12 +107,12 @@ export default function Consult() {
 			</form>
 
 			{/* blobs */}
-			<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/20 md:bg-Primary/30 absolute -top-10 -right-32 lg:-right-16 -z-10' />
+			<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/20 md:bg-Primary/30 absolute -top-10 md:-top-16 -right-32 md:-right-28 lg:-right-16 -z-10' />
 
-			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/20 md:bg-Primary/30 absolute top-[40%] md:top-[52%] lg:top-[44%] -left-14 md:-left-28 lg:-left-20 rotate-45 -z-10' />
-			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/20 md:bg-Primary/30 absolute top-[43%] md:top-[56%] lg:top-1/2 -left-14 md:-left-28 lg:-left-20 rotate-45 -z-20' />
+			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/20 lg:bg-Primary/30 absolute top-[40%] lg:top-[44%] -left-14 md:-left-28 lg:-left-20 rotate-45 -z-10' />
+			<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/20 lg:bg-Primary/30 absolute top-[43%] lg:top-1/2 -left-14 md:-left-28 lg:-left-20 rotate-45 -z-20' />
 
-			<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/20 absolute -right-20 lg:-right-16 -z-10' />
+			<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/20 absolute -right-20 md:-right-24 lg:-right-16 -z-10' />
 		</section>
 	);
 }
