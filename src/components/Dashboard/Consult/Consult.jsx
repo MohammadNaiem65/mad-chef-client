@@ -65,7 +65,7 @@ export default function Consult({ cardRef }) {
 				viewBox='0 0 320 384'
 				fill='none'
 				xmlns='http://www.w3.org/2000/svg'
-				className='absolute inset-0 z-0 lg:mt-3 -ml-4'
+				className='absolute inset-0 z-0 lg:mt-3 -ml-4 md:ml-0'
 				variants={{
 					hover: {
 						scale: 1.5,
