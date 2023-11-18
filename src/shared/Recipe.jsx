@@ -1,8 +1,8 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { modelImg } from '../assets';
 import Rating from './Rating';
 import ArrowLink from './ArrowLink';
+import { modelImg } from '../assets';
 
 export default function Recipe({ recipe, index }) {
 	// const { picture, name, ingredients, rating } = recipe;
