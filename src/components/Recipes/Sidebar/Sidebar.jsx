@@ -39,7 +39,7 @@ export default function Sidebar() {
 			</p>
 
 			<aside
-				className={`h-[90vh] lg:max-h-[35rem] w-full lg:w-[25rem] px-3 py-5 bg-Primary/20 backdrop-blur-lg lg:rounded absolute lg:sticky top-20 duration-300 z-10 ${
+				className={`h-screen lg:max-h-[35rem] w-full lg:w-[25rem] px-3 py-5 bg-Primary/20 backdrop-blur-lg lg:rounded fixed lg:sticky top-0 lg:top-20 duration-300 z-10 ${
 					showBar ? 'left-0' : '-left-[100%]'
 				}`}>
 				<div className='sidebar h-full px-2 overflow-y-scroll'>
@@ -50,11 +50,13 @@ export default function Sidebar() {
 							onClick={() => setShowBar((prev) => !prev)}
 							className={({ isActive }) =>
 								`p-3 mb-2 font-semibold font-Vollokorn rounded flex justify-between items-center cursor-pointer hover:bg-Primary/70 ${
-									isActive ? 'bg-Primary/90' : 'bg-Primary/40'
+									isActive
+										? 'bg-Primary/90'
+										: 'bg-Primary/50 lg:bg-Primary/40'
 								}`
 							}>
 							<span>{chef.name}</span>
-							<span className='px-3 bg-Primary/60 rounded-xl'>
+							<span className='px-3 bg-Primary lg:bg-Primary/60 rounded-xl'>
 								{chef.recipes}
 							</span>
 						</NavLink>
