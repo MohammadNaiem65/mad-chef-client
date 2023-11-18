@@ -4,7 +4,7 @@ import Recipe from '../../shared/Recipe';
 
 export default function ChefRecipes() {
 	return (
-		<section className='w-full mt-10'>
+		<section className='w-full mt-10 px-5 lg:p-0'>
 			<div className='flex justify-between items-center'>
 				<h3 className='text-xl font-semibold font-Vollokorn'>
 					Recipe details:
