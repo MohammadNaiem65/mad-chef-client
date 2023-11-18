@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import './Sidebar.css';
 
 const chefs = [
 	{ name: 'hero', recipes: 3 },
@@ -23,8 +24,8 @@ const chefs = [
 
 export default function Sidebar() {
 	return (
-		<aside className='max-h-[35rem] w-[25rem] p-5 bg-Primary/20 rounded sticky top-20'>
-			<div className='h-full overflow-y-scroll'>
+		<aside className='max-h-[35rem] w-[25rem] px-3 py-5 bg-Primary/20 rounded sticky top-20'>
+			<div className='sidebar h-full px-2 overflow-y-scroll'>
 				{chefs.map((chef, index) => (
 					<NavLink
 						key={index}

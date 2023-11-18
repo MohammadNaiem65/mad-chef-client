@@ -1,0 +1,16 @@
+/* For all browsers */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #A4C1FD;
+    border-radius: 100vw;
+}
+
+/* For firefox */
+@supports (scrollbar-color: #A4C1FD transparent) {
+    .sidebar {
+        scrollbar-color: #A4C1FD transparent;
+    }
+}
