@@ -2,7 +2,6 @@ import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from '../App';
-import { ChefDetails } from '../components/Recipes';
 import RecipeDetails from '../pages/RecipeDetails';
 const Home = lazy(() => import('../pages/Home'));
 const Recipes = lazy(() => import('../pages/Recipes'));
@@ -31,13 +30,9 @@ const routes = createBrowserRouter([
 				children: [
 					{
 						path: '/recipes/:id',
-						element: <ChefDetails />,
+						element: <Recipes />,
 					},
 				],
-			},
-			{
-				path: '/recipes/recipe/:id',
-				element: <RecipeDetails />,
 			},
 			{
 				path: '/dashboard',

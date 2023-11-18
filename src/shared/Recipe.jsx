@@ -9,7 +9,7 @@ export default function Recipe({ recipe, index }) {
 	const name = 'Hey you, what do you think? where are you going';
 
 	return (
-		<motion.section
+		<motion.div
 			className='bg-Primary/20 mt-3 p-3 md:p-5 lg:p-6 text-slate-500 text-sm font-Popins rounded flex items-center'
 			// use hide and show variants in the parent container
 			variants={{
@@ -58,6 +58,6 @@ export default function Recipe({ recipe, index }) {
 				}}>
 				<ArrowLink />
 			</Link>
-		</motion.section>
+		</motion.div>
 	);
 }

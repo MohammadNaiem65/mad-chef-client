@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { Sidebar } from '../components/Recipes';
-import { Outlet } from 'react-router-dom';
+import { Banner, ChefRecipes, Sidebar } from '../components/Recipes';
 
 export default function Recipes() {
 	return (
@@ -8,9 +7,12 @@ export default function Recipes() {
 			<Helmet>
 				<title>Recipes - Mad Chef</title>
 			</Helmet>
-			<section className='w-10/12 mx-auto flex gap-x-5'>
+			<section className='w-10/12 mx-auto flex justify-end gap-x-5'>
 				<Sidebar />
-				<Outlet />
+				<section className='w-[53rem]'>
+					<Banner />
+					<ChefRecipes />
+				</section>
 			</section>
 		</>
 	);
