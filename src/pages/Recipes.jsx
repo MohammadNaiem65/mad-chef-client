@@ -1,12 +1,19 @@
-import { Helmet } from "react-helmet-async";
+import { Helmet } from 'react-helmet-async';
+import { ChefDetails, ChefRecipes, Sidebar } from '../components/Recipes';
 
 export default function Recipes() {
-    return (
-		<section>
+	return (
+		<>
 			<Helmet>
 				<title>Recipes - Mad Chef</title>
 			</Helmet>
-			Recipe
-		</section>
+			<section className='w-10/12 mx-auto flex gap-x-5'>
+				<Sidebar />
+				<section>
+					<ChefDetails />
+					<ChefRecipes />
+				</section>
+			</section>
+		</>
 	);
 }
