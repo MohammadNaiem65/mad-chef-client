@@ -3,7 +3,7 @@ import { MdFastfood } from 'react-icons/md';
 import { modelImg } from '../../assets';
 
 export default function Banner() {
-	const name = 'naiem';
+	const name = 'Mohammad Naiem';
 	const rating = 5;
 	const yearsOfExperience = 3;
 	const availableRecipes = [2, 3, 5, 3, 5];
@@ -11,14 +11,14 @@ export default function Banner() {
 		'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta ut placeat ea nulla cumque impedit consequatur sit ullam dolorum. Voluptatibus ad aliquam maxime nostrum non aspernatur dolorum similique dolorem consequatur.';
 
 	return (
-		<section className='p-6 bg-Primary/20 text-gray-500 font-Popins flex gap-x-5 rounded'>
+		<section className='p-6 bg-Primary/20 text-gray-500 font-Popins lg:flex gap-x-5 rounded'>
 			<img
-				className='h-52 aspect-square rounded-full object-cover'
+				className='h-44 lg:h-52 aspect-square mx-auto rounded-full object-cover'
 				src={modelImg}
-				alt={`Chef ${name} picture`}
+				alt={`Chef ${name}'s picture`}
 			/>
 			<div className='h-fit my-auto text-justify'>
-				<p className='mb-3 text-xl text-black font-Vollokorn font-semibold'>
+				<p className='mt-2 lg:mb-3 text-2xl lg:text-xl text-black text-center font-Vollokorn font-semibold'>
 					{name}
 				</p>
 				<p>{bio}</p>

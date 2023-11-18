@@ -31,7 +31,7 @@ export default function Sidebar() {
 	return (
 		<>
 			<p
-				className='h-fit bg-Primary/70 pl-3 pr-5 py-2 text-2xl text-slate-700 md:hidden absolute left-0 top-32 rounded-r-full duration-300 z-20'
+				className='h-fit bg-Primary/70 pl-3 pr-5 py-2 text-2xl text-slate-700 lg:hidden fixed left-0 top-32	 rounded-r-full duration-300 z-20'
 				onClick={() => setShowBar((prev) => !prev)}>
 				<FaAnglesRight
 					className={showBar ? 'rotate-180' : 'rotate-0'}
@@ -39,7 +39,7 @@ export default function Sidebar() {
 			</p>
 
 			<aside
-				className={`h-[90vh] lg:max-h-[35rem] w-screen lg:w-[25rem] px-3 py-5 bg-Primary/20 backdrop-blur-lg rounded absolute lg:sticky top-20 duration-300 z-10 ${
+				className={`h-[90vh] lg:max-h-[35rem] w-full lg:w-[25rem] px-3 py-5 bg-Primary/20 backdrop-blur-lg lg:rounded absolute lg:sticky top-20 duration-300 z-10 ${
 					showBar ? 'left-0' : '-left-[100%]'
 				}`}>
 				<div className='sidebar h-full px-2 overflow-y-scroll'>
