@@ -19,7 +19,11 @@ export default function FavoriteRecipe() {
 				transition={{ when: 'beforeChildren', delayChildren: 0.5 }}
 				className='w-11/12 mx-auto mt-8 grid grid-cols-1 lg:grid-cols-2 gap-3'>
 				{[1, 2, 3, 4, 5].map((el, index) => (
-					<Recipe key={el} index={index} />
+					<Recipe
+						key={el}
+						index={index}
+						link={`/recipes/recipe/${el}`}
+					/>
 				))}
 			</motion.div>
 		</section>

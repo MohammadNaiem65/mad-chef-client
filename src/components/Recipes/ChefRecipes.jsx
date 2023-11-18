@@ -25,7 +25,11 @@ export default function ChefRecipes() {
 
 			<motion.section initial='hide' whileInView='show' className='mt-4'>
 				{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((el) => (
-					<Recipe key={el} index={el} />
+					<Recipe
+						key={el}
+						index={el}
+						link={`/recipes/recipe/${el}`}
+					/>
 				))}
 			</motion.section>
 		</section>

@@ -4,7 +4,7 @@ import Rating from './Rating';
 import ArrowLink from './ArrowLink';
 import { modelImg } from '../assets';
 
-export default function Recipe({ recipe, index }) {
+export default function Recipe({ index, link, recipe }) {
 	// const { picture, name, ingredients, rating } = recipe;
 	const name = 'Hey you, what do you think? where are you going';
 
@@ -27,7 +27,7 @@ export default function Recipe({ recipe, index }) {
 				alt={`${name}'s picture`}
 			/>
 			<div className='ml-3'>
-				<Link>
+				<Link to={link}>
 					<h2 className='w-[9.5rem] md:w-96 text-black  text-xl font-Vollokorn mb-1 truncate'>
 						{name}
 					</h2>
@@ -47,10 +47,7 @@ export default function Recipe({ recipe, index }) {
 				</div>
 			</div>
 			<Link
-				to={{
-					pathname: `${location}/recipe-details`,
-					state: { recipe: recipe },
-				}}
+				to={link}
 				className='arrows ml-auto flex justify-center items-center w-12 h-6'
 				onClick={() => {
 					sessionStorage.setItem('recipe', JSON.stringify(recipe));
