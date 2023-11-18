@@ -18,7 +18,7 @@ export default function Banner() {
 				alt={`Chef ${name}'s picture`}
 			/>
 			<div className='h-fit my-auto text-justify'>
-				<p className='mt-2 lg:mb-3 text-2xl lg:text-xl text-black text-center font-Vollokorn font-semibold'>
+				<p className='mt-2 lg:mb-3 text-2xl text-black text-center lg:text-start font-Vollokorn font-semibold'>
 					{name}
 				</p>
 				<p>{bio}</p>

@@ -12,6 +12,10 @@
     border-radius: 100vw;
 }
 
+::-webkit-scrollbar-thumb:hover {
+    background-color: #7596f0;
+}
+
 /* For firefox */
 @supports (scrollbar-color: #A4C1FD transparent) {
     main {
