@@ -1,7 +1,11 @@
+import Banner from "./Banner";
+import ChefRecipes from "./ChefRecipes";
+
 export default function ChefDetails() {
     return (
-        <section className="p-5 bg-Primary/20">
-            ChefDetails
-        </section>
-    );
+		<section>
+			<Banner />
+			<ChefRecipes />
+		</section>
+	);
 }

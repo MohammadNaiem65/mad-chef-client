@@ -14,7 +14,7 @@ export default function Sidebar() {
 			{chefs.map((chef, index) => (
 				<NavLink
 					key={index}
-					to={`/recipes/${chef.name}`}
+					to={`/recipes/${chef.recipes}`}
 					className={({ isActive }) =>
 						`p-3 mb-2 font-semibold font-Vollokorn rounded flex justify-between items-center cursor-pointer hover:bg-Primary/70 ${
 							isActive ? 'bg-Primary/90' : 'bg-Primary/40'
