@@ -3,17 +3,17 @@ import { modelImg } from '../../assets';
 
 export default function UserDetails() {
 	const liked = false;
-	
+
 	return (
-		<section className='mt-2 pb-2 flex items-center gap-x-3 border-b-2 border-slate-300'>
+		<section className='mt-2 pb-2 flex items-center gap-x-2 md:gap-x-3 border-b-2 border-slate-300'>
 			<img
 				src={modelImg}
 				alt=''
-				className='w-14 aspect-square object-cover rounded-full'
+				className='w-10 md:w-12 lg:w-14 aspect-square object-cover rounded-full'
 			/>
 			<div className='font-Vollokorn'>
 				<p className='font-semibold'>Mohammad Naiem</p>
-				<div className='text-slate-500 flex items-center gap-x-2'>
+				<div className='text-slate-500 -mt-1 lg:m-0 flex items-center gap-x-2'>
 					{new Date('1/13/2014').toLocaleDateString('en-GB', {
 						day: 'numeric',
 						month: 'long',
