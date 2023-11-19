@@ -9,6 +9,8 @@ export default function RecipeDetails() {
 
 			{/* user details */}
 			<UserDetails />
+
+			
 		</section>
 	);
 }
