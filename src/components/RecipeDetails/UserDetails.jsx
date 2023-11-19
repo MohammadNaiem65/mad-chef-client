@@ -3,8 +3,9 @@ import { modelImg } from '../../assets';
 
 export default function UserDetails() {
 	const liked = false;
+	
 	return (
-		<section className='mt-2 pb-2 flex items-center gap-x-4 border-b-2 border-slate-300'>
+		<section className='mt-2 pb-2 flex items-center gap-x-3 border-b-2 border-slate-300'>
 			<img
 				src={modelImg}
 				alt=''
@@ -18,12 +19,16 @@ export default function UserDetails() {
 						month: 'long',
 						year: 'numeric',
 					})}
-					<p className='h-1 w-1 bg-black rounded-full' />
+					<span className='h-1 w-1 bg-black rounded-full' />
 					<p className='text-xl flex items-center gap-x-1'>
 						{liked ? (
-							<FaHeart className='text-red-600' />
+							<span className='cursor-pointer bg-red-300'>
+								<FaHeart className='cursor-pointer' />
+							</span>
 						) : (
-							<FaHeart />
+							<span className='cursor-pointer'>
+								<FaHeart />
+							</span>
 						)}{' '}
 						<span className='text-base'>300</span>
 					</p>
