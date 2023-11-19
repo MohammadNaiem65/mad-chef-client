@@ -15,7 +15,7 @@ export default function RecipeDetails() {
 				<img
 					src={allFoodLg}
 					alt=''
-					className='w-full h-[15.875] mt-5'
+					className='w-full max-h-[15.875rem] md:max-h-[52rem] mt-5'
 				/>
 				<figcaption className='text-slate-500 text-center mt-1'>
 					Italian Dishes

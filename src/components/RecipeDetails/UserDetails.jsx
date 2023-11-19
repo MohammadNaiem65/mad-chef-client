@@ -7,7 +7,7 @@ export default function UserDetails() {
 	const bookmarked = true;
 
 	return (
-		<section className='mt-2 pb-2 flex items-center gap-x-2 md:gap-x-3 border-b-2 border-slate-300'>
+		<section className='mt-2 lg:mt-4 pb-2 border-b-2 border-slate-300 flex items-center gap-x-2 md:gap-x-3'>
 			<img
 				src={modelImg}
 				alt=''
