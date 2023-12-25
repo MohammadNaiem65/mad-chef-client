@@ -1,6 +1,6 @@
 // external imports
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch } from 'react-redux';
 
@@ -8,11 +8,11 @@ import { FaEye, FaEyeSlash, FaFacebook, FaGithub } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 
 // internal imports
-import { signInWithGoogle } from '../helpers/authHelper';
+import { signInWithGoogle, signUpWithPassword } from '../helpers/authHelper';
 import { useAuthenticateWithProviderMutation } from '../features/auth/authApi';
 import { setCredentials } from '../features/auth/authSlice';
+import { updateProfile } from 'firebase/auth';
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 export default function Register() {
@@ -28,6 +28,7 @@ export default function Register() {
 
 	// hooks
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const [
 		authenticateWithProvider,
 		{ data, isLoading, isSuccess, isError, error },
@@ -41,7 +42,7 @@ export default function Register() {
 	// set error if any error received from the server
 	useEffect(() => {
 		if (isError) {
-			console.log(error);
+			setErr(error.message);
 		}
 	}, [isError, error]);
 
@@ -49,10 +50,12 @@ export default function Register() {
 	useEffect(() => {
 		if (isSuccess) {
 			dispatch(setCredentials(data.data));
+			navigate('/');
 		}
-	}, [dispatch, isSuccess, data]);
+	}, [dispatch, navigate, isSuccess, data]);
 
-	const handleSubmitForm = (e) => {
+	// handle email registration
+	const handleSubmitForm = async (e) => {
 		e.preventDefault();
 
 		// check if password and confirm password matched
@@ -65,14 +68,32 @@ export default function Register() {
 				'Password must contain a capital and smaller latter, a number, a special character and it should be 8 to 24 characters long.'
 			);
 		}
+
+		try {
+			// sign up user
+			const { user } = await signUpWithPassword(
+				formData.email,
+				formData.password
+			);
+
+			// save username to firebase and get idToken
+			await updateProfile(user, { displayName: formData.name });
+			const token = await user.getIdToken(true);
+
+			// send request to server
+			authenticateWithProvider({ token });
+		} catch (error) {
+			setErr(error.code);
+		}
 	};
 
+	// handle google registration
 	const handleGoogleSignIn = () => {
 		signInWithGoogle()
 			.then((res) =>
 				authenticateWithProvider({ token: res?.user?.accessToken })
 			)
-			.catch((err) => console.log(err));
+			.catch((error) => setErr(error.code));
 	};
 
 	return (
