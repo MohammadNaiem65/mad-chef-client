@@ -18,6 +18,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 export default function Register() {
 	// local states
 	const [formData, setFormData] = useState({
+		name: '',
 		email: '',
 		password: '',
 		confirmPassword: '',
@@ -88,11 +89,35 @@ export default function Register() {
 			<form
 				className='w-10/12 md:w-fit mx-auto mt-6 md:mt-5 md:px-5'
 				onSubmit={handleSubmitForm}>
+				{/* Name */}
+				<>
+					<label
+						htmlFor='name'
+						className='md:text-xl block mb-1 tracking-wide'>
+						Name
+					</label>
+					<input
+						type='name'
+						id='name'
+						name='name'
+						placeholder='Enter your name.'
+						className='w-full px-3 py-1 text-sm md:text-base outline-Primary rounded'
+						value={formData.name}
+						onChange={(e) =>
+							setFormData((prev) => ({
+								...prev,
+								name: e.target.value,
+							}))
+						}
+						required
+					/>
+				</>
+
 				{/* Email */}
 				<>
 					<label
 						htmlFor='email'
-						className='md:text-xl block mb-1 tracking-wide'>
+						className='md:text-xl block mt-4 mb-1 tracking-wide'>
 						Email
 					</label>
 					<input
