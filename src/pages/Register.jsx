@@ -2,15 +2,16 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useDispatch } from 'react-redux';
 
 import { FaEye, FaEyeSlash, FaFacebook, FaGithub } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 
 // internal imports
 import { signInWithGoogle, signUpWithPassword } from '../helpers/authHelper';
-import { useAuthenticateWithProviderMutation } from '../features/auth/authApi';
-import { setCredentials } from '../features/auth/authSlice';
+import {
+	useAuthenticateMutation,
+	useAuthenticateWithProviderMutation,
+} from '../features/auth/authApi';
 import { updateProfile } from 'firebase/auth';
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -24,14 +25,21 @@ export default function Register() {
 		confirmPassword: '',
 	});
 	const [passwordType, setPasswordType] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [err, setErr] = useState('');
 
 	// hooks
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const [authenticate, { isLoading, isSuccess, isError, error }] =
+		useAuthenticateMutation();
 	const [
 		authenticateWithProvider,
-		{ data, isLoading, isSuccess, isError, error },
+		{
+			isLoading: providerAuthLoading,
+			isSuccess: providerAuthSuccess,
+			isError: providerAuthIsError,
+			error: providerError,
+		},
 	] = useAuthenticateWithProviderMutation();
 
 	// if any fields value changes - remove the error
@@ -39,20 +47,38 @@ export default function Register() {
 		setErr('');
 	}, [formData.email, formData.password, formData.confirmPassword]);
 
+	// handle loading state
+	useEffect(() => {
+		if (!isLoading) {
+			setLoading(false);
+		} else if (!providerAuthLoading) {
+			setLoading(false);
+		}
+	}, [isLoading, providerAuthLoading]);
+
+	useEffect(() => {
+		if (isLoading) {
+			setLoading(true);
+		} else if (providerAuthLoading) {
+			setLoading(true);
+		}
+	}, [isLoading, providerAuthLoading]);
+
 	// set error if any error received from the server
 	useEffect(() => {
-		if (isError) {
-			setErr(error.message);
+		if (isError || providerAuthIsError) {
+			setErr(error?.data ? error.data : providerError.data);
 		}
-	}, [isError, error]);
+	}, [isError, error, providerAuthIsError, providerError]);
 
-	// set data after getting success response
+	// navigate the user to the proper page after authentication
 	useEffect(() => {
 		if (isSuccess) {
-			dispatch(setCredentials(data.data));
+			navigate('/login');
+		} else if (providerAuthSuccess) {
 			navigate('/');
 		}
-	}, [dispatch, navigate, isSuccess, data]);
+	}, [navigate, isSuccess, providerAuthSuccess]);
 
 	// handle email registration
 	const handleSubmitForm = async (e) => {
@@ -81,7 +107,7 @@ export default function Register() {
 			const token = await user.getIdToken(true);
 
 			// send request to server
-			authenticateWithProvider({ token });
+			authenticate({ token });
 		} catch (error) {
 			setErr(error.code);
 		}
@@ -97,7 +123,7 @@ export default function Register() {
 	};
 
 	return (
-		<section className='w-11/12 md:w-4/5 lg:w-1/3 mx-auto my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 rounded'>
+		<section className='w-11/12 md:w-4/5 lg:w-1/3 mx-auto my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 relative rounded'>
 			{/* Set title */}
 			<Helmet>
 				<title>Register - Mad Chef</title>
@@ -238,9 +264,9 @@ export default function Register() {
 				)}
 
 				<button
-					className='btn btn-primary block mx-auto mt-5 text-lg cursor-pointer'
+					className='btn btn-primary block mx-auto mt-5 text-lg cursor-pointer disabled:bg-Primary'
 					type='submit'
-					disabled={isLoading}>
+					disabled={loading}>
 					Register
 				</button>
 
@@ -250,9 +276,7 @@ export default function Register() {
 					<div className='text-4xl flex justify-center gap-x-5'>
 						<FcGoogle
 							className='cursor-pointer'
-							onClick={
-								!isLoading ? handleGoogleSignIn : undefined
-							}
+							onClick={!loading ? handleGoogleSignIn : undefined}
 						/>
 						<FaFacebook className='cursor-pointer text-blue-600' />
 						<FaGithub className='cursor-pointer text-slate-900' />
