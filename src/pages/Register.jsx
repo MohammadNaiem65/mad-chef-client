@@ -13,6 +13,7 @@ import {
 	useAuthenticateWithProviderMutation,
 } from '../features/auth/authApi';
 import { updateProfile } from 'firebase/auth';
+import RoundSpinner from '../shared/RoundSpinner/RoundSpinner';
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
@@ -263,12 +264,16 @@ export default function Register() {
 					</p>
 				)}
 
-				<button
-					className='btn btn-primary block mx-auto mt-5 text-lg cursor-pointer disabled:bg-Primary'
-					type='submit'
-					disabled={loading}>
-					Register
-				</button>
+				{loading ? (
+					<RoundSpinner />
+				) : (
+					<button
+						className='btn btn-primary block mx-auto mt-5 text-lg cursor-pointer disabled:bg-Primary'
+						type='submit'
+						disabled={loading}>
+						Register
+					</button>
+				)}
 
 				{/* Footer Links */}
 				<div className='w-full'>
