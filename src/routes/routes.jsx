@@ -2,6 +2,9 @@ import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from '../App';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+
 const Home = lazy(() => import('../pages/Home'));
 const Recipes = lazy(() => import('../pages/Recipes'));
 const RecipeDetails = lazy(() => import('../pages/RecipeDetails'));
@@ -36,15 +39,27 @@ const routes = createBrowserRouter([
 			},
 			{
 				path: '/recipes/recipe/:id',
-				element: <RecipeDetails />,
+				element: (
+					<PrivateRoute>
+						<RecipeDetails />
+					</PrivateRoute>
+				),
 			},
 			{
 				path: '/dashboard',
-				element: <Dashboard />,
+				element: (
+					<PrivateRoute>
+						<Dashboard />
+					</PrivateRoute>
+				),
 			},
 			{
 				path: '/consult',
-				element: <Consult />,
+				element: (
+					<PrivateRoute>
+						<Consult />
+					</PrivateRoute>
+				),
 			},
 			{
 				path: '/blog',
@@ -52,11 +67,19 @@ const routes = createBrowserRouter([
 			},
 			{
 				path: '/login',
-				element: <Login />,
+				element: (
+					<PublicRoute>
+						<Login />
+					</PublicRoute>
+				),
 			},
 			{
 				path: '/register',
-				element: <Register />,
+				element: (
+					<PublicRoute>
+						<Register />
+					</PublicRoute>
+				),
 			},
 		],
 	},
