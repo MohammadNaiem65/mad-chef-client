@@ -40,7 +40,9 @@ export default function Sidebar() {
 
 			<aside
 				className={`h-screen lg:max-h-[35rem] w-full md:w-2/3 lg:w-[25rem] px-3 py-5 bg-Primary/20 backdrop-blur-lg lg:rounded fixed lg:sticky top-0 lg:top-20 duration-300 z-10 ${
-					showBar ? 'left-0 md:left-1/2 md:-translate-x-1/2' : '-left-[100%]'
+					showBar
+						? 'left-0 md:left-1/2 lg:left-0 md:-translate-x-1/2 lg:translate-x-0'
+						: '-left-[100%]'
 				}`}>
 				<div className='sidebar h-full px-2 overflow-y-scroll'>
 					{chefs.map((chef, index) => (
