@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
 	AnimatePresence,
 	motion,
@@ -7,9 +8,11 @@ import {
 	useScroll,
 } from 'framer-motion';
 import { FaBars, FaXmark } from 'react-icons/fa6';
+
 import { lgLogo, smLogo } from '../assets';
 import LgActiveLink from './LgActiveLink';
 import SmActiveLink from './SmActiveLink';
+import { selectUser } from '../features/auth/authSelectors';
 
 const routes = ['home', 'recipes', 'dashboard', 'consult', 'blog', 'register'];
 
@@ -20,8 +23,9 @@ export default function Navbar() {
 
 	// hooks
 	const { scrollY } = useScroll();
+	const user = useSelector(selectUser);
 
-	// show or hide navigation on scroll
+	// show or hide navigation bar on scroll
 	useMotionValueEvent(scrollY, 'change', (value) => {
 		const prevValue = scrollY.getPrevious();
 
@@ -95,9 +99,15 @@ export default function Navbar() {
 				{routes.slice(0, -1).map((route, index) => (
 					<LgActiveLink key={index} route={route} />
 				))}
-				<Link to='/register' className='btn btn-primary'>
-					Register
-				</Link>
+
+				{/* conditionally set Register and logout button */}
+				{user?.userId ? (
+					<button className='btn btn-primary'>Logout</button>
+				) : (
+					<Link to='/register' className='btn btn-primary'>
+						Register
+					</Link>
+				)}
 			</div>
 
 			{/* show only in small device */}
