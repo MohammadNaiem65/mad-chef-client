@@ -1,3 +1,7 @@
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../features/auth/authSelectors';
+
 const features = [
 	{ title: 'Unlimited Blogs', description: 'Access unlimited blogs.' },
 	{
@@ -11,6 +15,9 @@ const features = [
 ];
 
 export default function Packages() {
+	// get user role
+	const user = useSelector(selectUser);
+
 	return (
 		<section className='mt-20'>
 			<h2 className='section-title'>
@@ -73,11 +80,19 @@ export default function Packages() {
 						))}
 					</div>
 
-					<button
-						className='w-11/12 block mx-auto mt-6 py-2 text-slate-700 font-semibold text-xl bg-Primary/20 rounded'
-						disabled='disabled'>
-						Current
-					</button>
+					{user?.plan === 'basic' ? (
+						<button
+							className='w-11/12 block mx-auto mt-6 py-2 text-slate-700 font-semibold text-xl bg-Primary/20 rounded'
+							disabled='disabled'>
+							Current
+						</button>
+					) : (
+						<Link
+							to='/register'
+							className='w-11/12 block mx-auto mt-6 py-2 text-slate-700 text-center font-semibold text-xl bg-Primary/20 rounded'>
+							Enroll for Free
+						</Link>
+					)}
 				</div>
 
 				{/* Pro */}
@@ -127,9 +142,17 @@ export default function Packages() {
 						))}
 					</div>
 
-					<button className='w-11/12 block mx-auto mt-6 py-2 text-white font-semibold text-xl bg-Primary/90 rounded uppercase'>
-						Get Started
-					</button>
+					{user?.plan === 'pro' ? (
+						<button
+							className='w-11/12 block mx-auto mt-6 py-2 text-white font-semibold text-xl bg-Primary/90 rounded uppercase'
+							disabled>
+							Current
+						</button>
+					) : (
+						<button className='w-11/12 block mx-auto mt-6 py-2 text-white font-semibold text-xl bg-Primary/90 rounded uppercase'>
+							Get Started
+						</button>
+					)}
 				</div>
 			</div>
 		</section>
