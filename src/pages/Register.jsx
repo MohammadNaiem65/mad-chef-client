@@ -67,13 +67,19 @@ export default function Register() {
 
 	// set error if any error received from the server
 	useEffect(() => {
+		// stop the loader
+		setLoading(false);
+
 		if (isError || providerAuthIsError) {
 			setErr(error?.data ? error.data : providerError.data);
 		}
-	}, [isError, error, providerAuthIsError, providerError]);
+	}, [isError, error, providerAuthIsError, providerError, err]);
 
 	// navigate the user to the proper page after authentication
 	useEffect(() => {
+		// stop the loader
+		setLoading(false);
+
 		if (isSuccess) {
 			navigate('/login');
 		} else if (providerAuthSuccess) {
@@ -84,6 +90,9 @@ export default function Register() {
 	// handle email registration
 	const handleSubmitForm = async (e) => {
 		e.preventDefault();
+
+		// set loading state
+		setLoading(true);
 
 		// check if password and confirm password matched
 		if (formData.password !== formData.confirmPassword) {
@@ -116,6 +125,9 @@ export default function Register() {
 
 	// handle google registration
 	const handleGoogleSignIn = () => {
+		// start the loader
+		setLoading(true);
+
 		signInWithGoogle()
 			.then((res) =>
 				authenticateWithProvider({ token: res?.user?.accessToken })
