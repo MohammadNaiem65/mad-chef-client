@@ -2,6 +2,7 @@ import {
 	GoogleAuthProvider,
 	createUserWithEmailAndPassword,
 	getAuth,
+	signInWithEmailAndPassword,
 	signInWithPopup,
 } from 'firebase/auth';
 import app from '../../firebase.config';
@@ -9,13 +10,15 @@ import app from '../../firebase.config';
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
 
-// create user with goggle
-const signInWithGoogle = () => {
-	return signInWithPopup(auth, new GoogleAuthProvider());
-};
+// sign up user with password
+const signUpWithPassword = (email, password) =>
+	createUserWithEmailAndPassword(auth, email, password);
+// create/sign in user with google
 
-const signUpWithPassword = (email, password) => {
-	return createUserWithEmailAndPassword(auth, email, password);
-};
+const signInWithGoogle = () => signInWithPopup(auth, new GoogleAuthProvider());
 
-export { signInWithGoogle, signUpWithPassword };
+// sign in user with password
+const signInWithPassword = (email, password) =>
+	signInWithEmailAndPassword(auth, email, password);
+
+export { signUpWithPassword, signInWithPassword, signInWithGoogle };
