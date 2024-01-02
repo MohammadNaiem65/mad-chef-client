@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { FaEye, FaEyeSlash, FaFacebook, FaGithub } from 'react-icons/fa6';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 
 // internal imports
@@ -193,8 +193,6 @@ export default function Login() {
 							className='cursor-pointer'
 							onClick={!loading ? handleGoogleSignIn : undefined}
 						/>
-						<FaFacebook className='cursor-pointer text-blue-600' />
-						<FaGithub className='cursor-pointer text-slate-900' />
 					</div>
 				</div>
 			</form>

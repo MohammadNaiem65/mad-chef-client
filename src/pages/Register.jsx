@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-import { FaEye, FaEyeSlash, FaFacebook, FaGithub } from 'react-icons/fa6';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 
 // internal imports
@@ -14,6 +14,8 @@ import {
 } from '../features/auth/authApi';
 import { updateProfile } from 'firebase/auth';
 import RoundSpinner from '../shared/RoundSpinner/RoundSpinner';
+import showNotification from '../helpers/showNotification';
+import removeNotifications from '../helpers/removeNotifications';
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
@@ -50,6 +52,7 @@ export default function Register() {
 
 	// handle loading state
 	useEffect(() => {
+		removeNotifications();
 		if (!isLoading) {
 			setLoading(false);
 		} else if (!providerAuthLoading) {
@@ -61,6 +64,7 @@ export default function Register() {
 		if (isLoading) {
 			setLoading(true);
 		} else if (providerAuthLoading) {
+			showNotification('loading', 'Almost done...');
 			setLoading(true);
 		}
 	}, [isLoading, providerAuthLoading]);
@@ -72,18 +76,21 @@ export default function Register() {
 
 		if (isError || providerAuthIsError) {
 			setErr(error?.data ? error.data : providerError.data);
+			showNotification('error', err);
 		}
 	}, [isError, error, providerAuthIsError, providerError, err]);
 
 	// navigate the user to the proper page after authentication
 	useEffect(() => {
-		// stop the loader
+		// stop the loader and notify
 		setLoading(false);
 
 		if (isSuccess) {
 			navigate('/login');
+			showNotification('success', 'Successfully logged in');
 		} else if (providerAuthSuccess) {
 			navigate('/');
+			showNotification('success', 'Successfully logged in');
 		}
 	}, [navigate, isSuccess, providerAuthSuccess]);
 
@@ -91,15 +98,20 @@ export default function Register() {
 	const handleSubmitForm = async (e) => {
 		e.preventDefault();
 
-		// set loading state
+		// set loading state and show loading notification
+		showNotification('loading', 'Validating your credentials...');
 		setLoading(true);
 
 		// check if password and confirm password matched
 		if (formData.password !== formData.confirmPassword) {
+			removeNotifications();
+			showNotification('error', 'Password does not match.');
 			return setErr('Password does not match.');
 		}
 		// validate password
 		else if (!PWD_REGEX.test(formData.password)) {
+			removeNotifications();
+			showNotification('error', 'Check the error message');
 			return setErr(
 				'Password must contain a capital and smaller latter, a number, a special character and it should be 8 to 24 characters long.'
 			);
@@ -170,6 +182,7 @@ export default function Register() {
 							}))
 						}
 						required
+						disabled={loading}
 					/>
 				</>
 
@@ -194,6 +207,7 @@ export default function Register() {
 							}))
 						}
 						required
+						disabled={loading}
 					/>
 				</>
 
@@ -219,6 +233,7 @@ export default function Register() {
 								}))
 							}
 							required
+							disabled={loading}
 						/>
 						<p
 							className='absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer'
@@ -250,6 +265,7 @@ export default function Register() {
 								}))
 							}
 							required
+							disabled={loading}
 						/>
 						<p
 							className='absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer'
@@ -295,8 +311,6 @@ export default function Register() {
 							className='cursor-pointer'
 							onClick={!loading ? handleGoogleSignIn : undefined}
 						/>
-						<FaFacebook className='cursor-pointer text-blue-600' />
-						<FaGithub className='cursor-pointer text-slate-900' />
 					</div>
 				</div>
 			</form>
