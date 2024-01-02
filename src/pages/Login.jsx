@@ -7,7 +7,7 @@ import { FcGoogle } from 'react-icons/fc';
 
 // internal imports
 import { useAuthenticateForTokenMutation } from '../features/auth/authApi';
-import { signInWithPassword } from '../helpers/authHelper';
+import { signInWithGoogle, signInWithPassword } from '../helpers/authHelper';
 import RoundSpinner from '../shared/RoundSpinner/RoundSpinner';
 import showNotification from '../helpers/showNotification';
 import removeNotifications from '../helpers/removeNotifications';
@@ -34,6 +34,7 @@ export default function Login() {
 	// handle loading state of authentication process
 	useEffect(() => {
 		if (isLoading) {
+			showNotification('loading', 'Almost there...');
 			setLoading(true);
 		}
 	}, [isLoading]);
@@ -58,15 +59,28 @@ export default function Login() {
 		}
 	}, [isError, error]);
 
+	// handle login with email
 	const handleSubmitForm = (e) => {
 		e.preventDefault();
 
 		// start loading state
 		setLoading(true);
-		showNotification('loading', 'Validating your data...');
+		showNotification('loading', 'Validating your credentials...');
 
 		// sign in with firebase
 		signInWithPassword(formData.email, formData.password)
+			.then((res) =>
+				authenticateForToken({ token: res?.user?.accessToken })
+			)
+			.catch((error) => setErr(error.code));
+	};
+
+	// handle google registration
+	const handleGoogleSignIn = () => {
+		// start the loader
+		setLoading(true);
+
+		signInWithGoogle()
 			.then((res) =>
 				authenticateForToken({ token: res?.user?.accessToken })
 			)
@@ -175,7 +189,10 @@ export default function Login() {
 				<div className='w-full'>
 					<p className='text-xl text-center mt-5 mb-2'>Or</p>
 					<div className='text-4xl flex justify-center gap-x-5'>
-						<FcGoogle className='cursor-pointer' />
+						<FcGoogle
+							className='cursor-pointer'
+							onClick={!loading ? handleGoogleSignIn : undefined}
+						/>
 						<FaFacebook className='cursor-pointer text-blue-600' />
 						<FaGithub className='cursor-pointer text-slate-900' />
 					</div>
