@@ -1,4 +1,5 @@
-import { useState } from 'react';
+// external imports
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
@@ -9,10 +10,14 @@ import {
 } from 'framer-motion';
 import { FaBars, FaXmark } from 'react-icons/fa6';
 
+// internal imports
 import { lgLogo, smLogo } from '../assets';
 import LgActiveLink from './LgActiveLink';
 import SmActiveLink from './SmActiveLink';
 import { selectUser } from '../features/auth/authSelectors';
+import { useUnAuthenticateMutation } from '../features/auth/authApi';
+import showNotification from '../helpers/showNotification';
+import removeNotifications from '../helpers/removeNotifications';
 
 const routes = ['home', 'recipes', 'dashboard', 'consult', 'blog', 'register'];
 
@@ -24,6 +29,8 @@ export default function Navbar() {
 	// hooks
 	const { scrollY } = useScroll();
 	const user = useSelector(selectUser);
+	const [unAuthenticate, { isLoading, isSuccess, isError }] =
+		useUnAuthenticateMutation();
 
 	// show or hide navigation bar on scroll
 	useMotionValueEvent(scrollY, 'change', (value) => {
@@ -72,6 +79,31 @@ export default function Navbar() {
 		},
 	};
 
+	// handle success state
+	useEffect(() => {
+		if (isSuccess) {
+			removeNotifications();
+			showNotification('success', 'Logged out successfully!');
+		}
+	}, [isSuccess]);
+
+	// handle error state
+	useEffect(() => {
+		if (isError) {
+			removeNotifications();
+			showNotification(
+				'error',
+				'Something went wrong! Please try again.'
+			);
+		}
+	}, [isError]);
+
+	// handle logout
+	const handleLogout = () => {
+		showNotification('loading', 'Logging out...');
+		unAuthenticate();
+	};
+
 	return (
 		<motion.section
 			variants={{
@@ -102,7 +134,12 @@ export default function Navbar() {
 
 				{/* conditionally set Register and logout button */}
 				{user?.userId ? (
-					<button className='btn btn-primary'>Logout</button>
+					<button
+						className='btn btn-primary'
+						onClick={handleLogout}
+						disabled={isLoading}>
+						Logout
+					</button>
 				) : (
 					<Link to='/register' className='btn btn-primary'>
 						Register

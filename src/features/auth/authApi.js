@@ -1,5 +1,5 @@
 import apiSlice from '../api/apiSlice';
-import { setCredentials } from './authSlice';
+import { removeCredentials, setCredentials } from './authSlice';
 
 const authApi = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -35,9 +35,30 @@ const authApi = apiSlice.injectEndpoints({
 				}
 			},
 		}),
+		unAuthenticate: builder.mutation({
+			query: () => ({
+				url: '/auth/logout',
+				method: 'DELETE',
+			}),
+			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+				try {
+					await queryFulfilled;
+
+					dispatch(removeCredentials());
+
+					// remove credentials from local storage
+					localStorage.removeItem('auth');
+				} catch (error) {
+					// handle error in the UI
+				}
+			},
+		}),
 	}),
 });
 
 export default authApi;
-export const { useAuthenticateMutation, useAuthenticateForTokenMutation } =
-	authApi;
+export const {
+	useAuthenticateMutation,
+	useAuthenticateForTokenMutation,
+	useUnAuthenticateMutation,
+} = authApi;
