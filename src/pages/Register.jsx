@@ -10,7 +10,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { signInWithGoogle, signUpWithPassword } from '../helpers/authHelper';
 import {
 	useAuthenticateMutation,
-	useAuthenticateWithProviderMutation,
+	useAuthenticateForTokenMutation,
 } from '../features/auth/authApi';
 import { updateProfile } from 'firebase/auth';
 import RoundSpinner from '../shared/RoundSpinner/RoundSpinner';
@@ -34,14 +34,14 @@ export default function Register() {
 	const [authenticate, { isLoading, isSuccess, isError, error }] =
 		useAuthenticateMutation();
 	const [
-		authenticateWithProvider,
+		authenticateForToken,
 		{
 			isLoading: providerAuthLoading,
 			isSuccess: providerAuthSuccess,
 			isError: providerAuthIsError,
 			error: providerError,
 		},
-	] = useAuthenticateWithProviderMutation();
+	] = useAuthenticateForTokenMutation();
 
 	// if any fields value changes - remove the error
 	useEffect(() => {
@@ -130,7 +130,7 @@ export default function Register() {
 
 		signInWithGoogle()
 			.then((res) =>
-				authenticateWithProvider({ token: res?.user?.accessToken })
+				authenticateForToken({ token: res?.user?.accessToken })
 			)
 			.catch((error) => setErr(error.code));
 	};

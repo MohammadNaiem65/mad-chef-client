@@ -80,7 +80,7 @@ export default function Packages() {
 						))}
 					</div>
 
-					{user?.plan === 'basic' ? (
+					{user?.pkg === 'basic' ? (
 						<button
 							className='w-11/12 block mx-auto mt-6 py-2 text-slate-700 font-semibold text-xl bg-Primary/20 rounded'
 							disabled='disabled'>
@@ -142,7 +142,7 @@ export default function Packages() {
 						))}
 					</div>
 
-					{user?.plan === 'pro' ? (
+					{user?.pkg === 'pro' ? (
 						<button
 							className='w-11/12 block mx-auto mt-6 py-2 text-white font-semibold text-xl bg-Primary/90 rounded uppercase'
 							disabled>

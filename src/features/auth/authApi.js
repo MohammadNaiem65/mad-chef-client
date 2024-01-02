@@ -13,7 +13,7 @@ const authApi = apiSlice.injectEndpoints({
 				body: { reqType: 'registration' },
 			}),
 		}),
-		authenticateWithProvider: builder.mutation({
+		authenticateForToken: builder.mutation({
 			query: (data) => ({
 				url: '/auth',
 				method: 'POST',
@@ -39,5 +39,5 @@ const authApi = apiSlice.injectEndpoints({
 });
 
 export default authApi;
-export const { useAuthenticateMutation, useAuthenticateWithProviderMutation } =
+export const { useAuthenticateMutation, useAuthenticateForTokenMutation } =
 	authApi;

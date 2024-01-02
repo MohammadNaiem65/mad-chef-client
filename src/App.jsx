@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import store from './app/store';
 import { Footer, Navbar, Spinner } from './shared';
 import useAuthCheck from './hooks/useAuthCheck';
@@ -21,6 +22,7 @@ function App() {
 				</Suspense>
 			</div>
 			<Footer />
+			<Toaster position='top-right' reverseOrder={false} />
 		</Provider>
 	);
 }
