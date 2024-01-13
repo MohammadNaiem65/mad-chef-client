@@ -31,6 +31,11 @@ export default function Login() {
 	// Get location
 	const from = location.state?.from?.pathname || '/';
 
+	// if any fields value changes - remove the error
+	useEffect(() => {
+		setErr('');
+	}, [formData.email, formData.password, formData.confirmPassword]);
+
 	// handle loading state of authentication process
 	useEffect(() => {
 		if (isLoading) {
@@ -72,7 +77,11 @@ export default function Login() {
 			.then((res) =>
 				authenticateForToken({ token: res?.user?.accessToken })
 			)
-			.catch((error) => setErr(error.code));
+			.catch((error) => {
+				removeNotifications();
+				setLoading(false);
+				setErr(error.code);
+			});
 	};
 
 	// handle google registration
@@ -84,7 +93,11 @@ export default function Login() {
 			.then((res) =>
 				authenticateForToken({ token: res?.user?.accessToken })
 			)
-			.catch((error) => setErr(error.code));
+			.catch((error) => {
+				removeNotifications();
+				setLoading(false);
+				setErr(error.code);
+			});
 	};
 
 	return (
