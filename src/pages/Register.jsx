@@ -131,6 +131,8 @@ export default function Register() {
 			// send request to server
 			authenticate({ token });
 		} catch (error) {
+			removeNotifications();
+			setLoading(false);
 			setErr(error.code);
 		}
 	};
@@ -144,7 +146,11 @@ export default function Register() {
 			.then((res) =>
 				authenticateForToken({ token: res?.user?.accessToken })
 			)
-			.catch((error) => setErr(error.code));
+			.catch((error) => {
+				removeNotifications();
+				setLoading(false);
+				setErr(error.code);
+			});
 	};
 
 	return (
