@@ -87,7 +87,7 @@ export default function Register() {
 
 		if (isSuccess) {
 			navigate('/login');
-			showNotification('success', 'Successfully logged in');
+			showNotification('success', 'Successfully registered!');
 		} else if (providerAuthSuccess) {
 			navigate('/');
 			showNotification('success', 'Successfully logged in');

@@ -14,6 +14,7 @@ export default function Home() {
 			<Helmet>
 				<title>Mad Chef</title>
 			</Helmet>
+			
 			<Banner />
 			<FeatureRecipes />
 			<TopChefs />

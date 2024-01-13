@@ -32,7 +32,7 @@ export default function Banner() {
 							Satisfy Your Family&apos;s Plates
 						</p>
 						<Link
-							to='/dashboard'
+							to='/recipes'
 							className='btn btn-primary inline-block mt-4'>
 							Explore
 						</Link>
