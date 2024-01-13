@@ -166,6 +166,7 @@ export default function Navbar() {
 									key={index}
 									route={route}
 									setShowHamburger={setShowHamburger}
+									handleLogout={handleLogout}
 								/>
 							))}
 						</motion.div>
