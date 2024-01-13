@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import Consult from './Consult';
+import { NoContent } from '../../../shared';
 
 let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-export default function Consults() {
+export default function Consults({ consults }) {
 	// local states
 	const cardRef = useRef();
 	const containerRef = useRef();
@@ -60,7 +61,9 @@ export default function Consults() {
 				<h3 className='w-1/4 px-2 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
 					Consults:
 				</h3>
-				{arr.length >= 4 && (
+
+				{/* Arrow controls */}
+				{consults.length >= 4 && (
 					<div className='text-3xl text-Primary flex items-center gap-x-2'>
 						<button
 							onClick={handleSlidePrev}
@@ -78,21 +81,26 @@ export default function Consults() {
 				)}
 			</div>
 
-			<div className='w-11/12 mx-auto mt-8 p-3 overflow-x-hidden'>
-				<motion.section
-					drag='x'
-					ref={containerRef}
-					animate={{
-						x: `-${scrollProgress.curr}px`,
-					}}
-					dragConstraints={{ right: 0, left: -containerWidth }}
-					whileTap={{ cursor: 'grabbing' }}
-					className='flex gap-x-5 cursor-grab'>
-					{arr.map((el) => (
-						<Consult key={el} cardRef={cardRef} />
-					))}
-				</motion.section>
-			</div>
+			{/* Cards */}
+			{consults.length > 0 ? (
+				<div className='w-11/12 mx-auto mt-8 p-3 overflow-x-hidden'>
+					<motion.section
+						drag='x'
+						ref={containerRef}
+						animate={{
+							x: `-${scrollProgress.curr}px`,
+						}}
+						dragConstraints={{ right: 0, left: -containerWidth }}
+						whileTap={{ cursor: 'grabbing' }}
+						className='flex gap-x-5 cursor-grab'>
+						{arr.map((el) => (
+							<Consult key={el} cardRef={cardRef} />
+						))}
+					</motion.section>
+				</div>
+			) : (
+				<NoContent />
+			)}
 		</section>
 	);
 }

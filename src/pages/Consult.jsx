@@ -1,6 +1,16 @@
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 export default function Consult() {
+	// local states
+	const [formData, setFormData] = useState({
+		name: '',
+		email: '',
+		chef: '',
+		date: new Date().toISOString().split('T')[0],
+		startTime: new Date().toLocaleTimeString().split(' ')[0],
+		endTime: '',
+	});
 	return (
 		<section className='lg:w-3/5 py-10 mx-auto text-slate-500 font-Popins bg-Primary/20 relative rounded overflow-hidden'>
 			<Helmet>
@@ -23,6 +33,13 @@ export default function Consult() {
 						name='name'
 						className='w-full px-5 py-2 outline-Primary rounded'
 						required
+						value={formData.name}
+						onChange={(e) =>
+							setFormData((prev) => ({
+								...prev,
+								name: e.target.value,
+							}))
+						}
 					/>
 				</>
 
@@ -39,6 +56,13 @@ export default function Consult() {
 						name='email'
 						className='w-full px-5 py-2 outline-Primary rounded'
 						required
+						value={formData.email}
+						onChange={(e) =>
+							setFormData((prev) => ({
+								...prev,
+								email: e.target.value,
+							}))
+						}
 					/>
 				</>
 
@@ -53,7 +77,13 @@ export default function Consult() {
 						name='chief'
 						id='chief'
 						required
-						className='w-full px-5 py-2 bg-white outline-Primary rounded'>
+						className='w-full px-5 py-2 bg-white outline-Primary rounded'
+						onChange={(e) =>
+							setFormData((prev) => ({
+								...prev,
+								chef: e.target.value,
+							}))
+						}>
 						<option value='Naiem'>Naiem</option>
 						<option value='Rifat'>Rifat</option>
 						<option value='Emam'>Emam</option>
@@ -76,15 +106,42 @@ export default function Consult() {
 							className='w-full px-5 py-2 bg-white outline-Primary rounded'
 							required
 							min={new Date().toISOString().split('T')[0]}
+							value={formData.date}
+							onChange={(e) =>
+								setFormData((prev) => ({
+									...prev,
+									date: e.target.value,
+								}))
+							}
 						/>
 					</div>
 
-					{/* Time */}
+					{/* Start Time */}
 					<div className='flex-grow'>
 						<label
 							htmlFor='time'
 							className='text-xl block mb-1 mt-5 tracking-wide'>
-							Time:
+							Start:
+						</label>
+						<input
+							type='time'
+							name='time'
+							id='time'
+							className='w-full px-5 py-2 bg-white outline-Primary rounded'
+							required
+							min='09:00'
+							max='18:00'
+							// value={formData.startTime}
+							onChange={(e) => console.log(e.target.value)}
+						/>
+					</div>
+
+					{/* End Time */}
+					<div className='flex-grow'>
+						<label
+							htmlFor='time'
+							className='text-xl block mb-1 mt-5 tracking-wide'>
+							End:
 						</label>
 						<input
 							type='time'
