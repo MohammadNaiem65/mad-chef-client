@@ -10,6 +10,7 @@ const Recipes = lazy(() => import('../pages/Recipes'));
 const RecipeDetails = lazy(() => import('../pages/RecipeDetails'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Consult = lazy(() => import('../pages/Consult'));
+const Profile = lazy(() => import('../pages/Profile'));
 const Blog = lazy(() => import('../pages/Blog'));
 const Login = lazy(() => import('../pages/Login'));
 const Register = lazy(() => import('../pages/Register'));
@@ -60,6 +61,10 @@ const routes = createBrowserRouter([
 						<Consult />
 					</PrivateRoute>
 				),
+			},
+			{
+				path: '/profile',
+				element: <Profile />,
 			},
 			{
 				path: '/blog',

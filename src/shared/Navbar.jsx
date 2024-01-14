@@ -19,7 +19,15 @@ import { useUnAuthenticateMutation } from '../features/auth/authApi';
 import showNotification from '../helpers/showNotification';
 import removeNotifications from '../helpers/removeNotifications';
 
-const routes = ['home', 'recipes', 'dashboard', 'consult', 'blog', 'register'];
+const routes = [
+	'home',
+	'recipes',
+	'dashboard',
+	'consult',
+	'profile',
+	'blog',
+	'register',
+];
 
 export default function Navbar() {
 	// local states
