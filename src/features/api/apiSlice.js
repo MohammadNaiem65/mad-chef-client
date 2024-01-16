@@ -46,10 +46,7 @@ const apiSlice = createApi({
 
 				// fetch the previous request
 				result = await baseQuery(args, api, extraOptions);
-			} else if (
-				refreshResult?.error?.status === 403 &&
-				refreshResult?.error?.data?.data === 'jwt expired'
-			) {
+			} else {
 				localStorage.removeItem('auth');
 				api.dispatch(removeCredentials());
 			}

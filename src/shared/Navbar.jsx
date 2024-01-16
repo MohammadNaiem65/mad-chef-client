@@ -109,7 +109,7 @@ export default function Navbar() {
 	// handle logout
 	const handleLogout = () => {
 		showNotification('loading', 'Logging out...');
-		unAuthenticate();
+		unAuthenticate({ userId: user?.userId });
 	};
 
 	return (

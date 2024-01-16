@@ -33,6 +33,23 @@ export default function UserDetails({ userData }) {
 						</span>
 					</p>
 				</div>
+				<div className='flex justify-between w-full'>
+					<p>
+						Email Verified:
+						<span
+							className={`text-slate-600 ml-1 ${
+								emailVerified || 'mr-3'
+							}`}>
+							{emailVerified ? 'Verified' : 'Not Verified'}
+						</span>
+					</p>
+					<p>
+						Package:
+						<span className='text-slate-600 ml-1 capitalize'>
+							{pkg}
+						</span>
+					</p>
+				</div>
 			</div>
 
 			{/* blobs */}

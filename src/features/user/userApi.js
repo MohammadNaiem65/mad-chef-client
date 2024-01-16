@@ -4,7 +4,7 @@ const userApi = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getUserData: builder.query({
 			query: (data) => ({
-				url: `/user/${data.userId}`,
+				url: `/users/${data.userId}`,
 			}),
 		}),
 	}),

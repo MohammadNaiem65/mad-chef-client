@@ -36,8 +36,8 @@ const authApi = apiSlice.injectEndpoints({
 			},
 		}),
 		unAuthenticate: builder.mutation({
-			query: () => ({
-				url: '/auth/logout',
+			query: (data) => ({
+				url: `/auth/logout/${data.userId}`,
 				method: 'DELETE',
 			}),
 			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
