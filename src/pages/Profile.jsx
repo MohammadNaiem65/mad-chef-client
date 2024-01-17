@@ -1,31 +1,26 @@
 import { useSelector } from 'react-redux';
-import { selectUser } from '../features/auth/authSelectors';
-import { useGetUserDataQuery } from '../features/user/userApi';
 import { Helmet } from 'react-helmet-async';
-import { Spinner } from '../shared';
-import { UserDetails } from '../components/Profile';
+import { selectUser } from '../features/auth/authSelectors';
+import User from '../components/Profile/User/User';
+import Chef from '../components/Profile/Chef/Chef';
+import Admin from '../components/Profile/Admin/Admin';
 
 export default function Profile() {
-	const { userId } = useSelector(selectUser);
-	const { data, isLoading, isSuccess, isError } = useGetUserDataQuery({
-		userId,
-	});
+	const { userId, role } = useSelector(selectUser);
 
-	return isLoading ? (
-		<Spinner />
-	) : isSuccess ? (
+	return (
 		<section>
 			<Helmet>
 				<title>Dashboard - Mad Chef</title>
 			</Helmet>
 
-			<UserDetails userData={data.data} />
+			{role === 'student' ? (
+				<User userId={userId} />
+			) : role === 'chef' ? (
+				<Chef />
+			) : (
+				<Admin />
+			)}
 		</section>
-	) : (
-		isError && (
-			<p className='w-fit mx-auto p-3 font-semibold text-xl bg-red-300 text-red-800 rounded'>
-				Something went wrong! Kindly try again!!!
-			</p>
-		)
 	);
 }
