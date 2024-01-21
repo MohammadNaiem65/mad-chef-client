@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import Consult from './Consult';
-import { NoContent } from '../../../shared';
+import { NoContent } from '../../../../shared';
 
 let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 

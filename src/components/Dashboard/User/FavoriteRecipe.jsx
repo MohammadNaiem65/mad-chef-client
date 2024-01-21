@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import Recipe from '../../shared/Recipe';
-import { NoContent } from '../../shared';
+import Recipe from '../../../shared/Recipe';
+import { NoContent } from '../../../shared';
 
 export default function FavoriteRecipe({ favorites }) {
 	return (

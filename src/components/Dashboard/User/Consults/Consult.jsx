@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { modelImg } from '../../../assets';
+import { modelImg } from '../../../../assets';
 
 export default function Consult({ cardRef }) {
 	const time = '2000-01-01T22:20:00';

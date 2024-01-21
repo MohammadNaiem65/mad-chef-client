@@ -1,4 +1,4 @@
-import { modelImg } from '../../assets';
+import { modelImg } from '../../../assets';
 
 export default function UserDetails({ userData }) {
 	const { name, email, emailVerified, pkg, img, favorites, consults } =
