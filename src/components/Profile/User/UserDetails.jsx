@@ -1,11 +1,15 @@
-import { modelImg } from '../../../assets';
+import { motion } from 'framer-motion';
+import { modelImg, sureImg } from '../../../assets';
+import { useState } from 'react';
 
 export default function UserDetails({ userData }) {
-	const { name, email, emailVerified, pkg, img } = userData;
+	const { name, email, emailVerified, pkg, img, role } = userData;
+
+	const [showModal, setShowModal] = useState(false);
 
 	return (
-		<section>
-			<div className='lg:w-3/5 h-60 md:h-72 md:px-24 bg-gradient-to-bl from-Primary/30 to-Primary/80 mx-auto flex items-center gap-x-5 lg:gap-x-8 relative rounded overflow-hidden'>
+		<>
+			<section className='lg:w-3/5 h-60 md:h-72 lg:h-80 md:px-24 bg-gradient-to-bl from-Primary/30 to-Primary/80 mx-auto flex items-center gap-x-5 lg:gap-x-8 relative rounded overflow-hidden'>
 				<img
 					src={img ? img : modelImg}
 					alt=''
@@ -36,11 +40,26 @@ export default function UserDetails({ userData }) {
 						</p>
 					</div>
 				</div>
+
+				{!emailVerified && (
+					<button className='btn btn-primary-outline text-white absolute right-[10.5rem] bottom-5 z-[22]'>
+						Verify Email
+					</button>
+				)}
+
+				{role === 'student' && (
+					<button
+						className='btn btn-primary absolute right-5 bottom-5 z-[22]'
+						onClick={() => setShowModal((prev) => !prev)}>
+						Be a Chef
+					</button>
+				)}
+
 				{/* blobs */}
 				<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/50 absolute top-[60%] md:top-[52%] lg:top-[44%] md:-left-28 lg:-left-20 rotate-45' />
 				<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/50 absolute top-2/3 md:top-[56%] lg:top-1/2 md:-left-28 lg:-left-20 rotate-45' />
-				<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/60 absolute -right-28 lg:-right-16' />
-			</div>
-		</section>
+				<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/60 absolute -right-28 lg:-right-24' />
+			</section>
+		</>
 	);
 }
