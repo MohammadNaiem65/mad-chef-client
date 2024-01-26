@@ -1,11 +1,20 @@
 import { useState } from 'react';
 import { modelImg } from '../../../assets';
 import SureModal from './SureModal';
+import showNotification from '../../../helpers/showNotification';
 
 export default function UserDetails({ userData }) {
 	const { name, email, emailVerified, pkg, img, role } = userData;
 
 	const [showModal, setShowModal] = useState(false);
+
+	const decideToShowModal = () => {
+		if (emailVerified) {
+			setShowModal((prev) => !prev);
+		} else {
+			showNotification('error', 'Email must be verified to be a Chef.');
+		}
+	};
 
 	return (
 		<>
@@ -50,7 +59,7 @@ export default function UserDetails({ userData }) {
 				{role === 'student' && (
 					<button
 						className='btn btn-primary absolute right-5 bottom-5 z-[22]'
-						onClick={() => setShowModal((prev) => !prev)}>
+						onClick={decideToShowModal}>
 						Be a Chef
 					</button>
 				)}
@@ -62,7 +71,9 @@ export default function UserDetails({ userData }) {
 			</section>
 
 			{/* modal */}
-			{showModal && <SureModal setShowModal={setShowModal} />}
+			{showModal && (
+				<SureModal showModal={showModal} setShowModal={setShowModal} />
+			)}
 		</>
 	);
 }
