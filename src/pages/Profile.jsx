@@ -11,7 +11,7 @@ export default function Profile() {
 	return (
 		<section>
 			<Helmet>
-				<title>Dashboard - Mad Chef</title>
+				<title>Profile - Mad Chef</title>
 			</Helmet>
 
 			{role === 'student' ? (

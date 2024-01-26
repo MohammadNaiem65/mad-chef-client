@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { modelImg, sureImg } from '../../../assets';
 import { useState } from 'react';
+import { modelImg } from '../../../assets';
+import SureModal from './SureModal';
 
 export default function UserDetails({ userData }) {
 	const { name, email, emailVerified, pkg, img, role } = userData;
@@ -42,7 +42,7 @@ export default function UserDetails({ userData }) {
 				</div>
 
 				{!emailVerified && (
-					<button className='btn btn-primary-outline text-white absolute right-[10.5rem] bottom-5 z-[22]'>
+					<button className='btn btn-primary-outline absolute right-[10.5rem] bottom-5 z-[22]'>
 						Verify Email
 					</button>
 				)}
@@ -60,6 +60,9 @@ export default function UserDetails({ userData }) {
 				<div className='shape-bg-one h-40 md:h-56 aspect-square bg-Primary/50 absolute top-2/3 md:top-[56%] lg:top-1/2 md:-left-28 lg:-left-20 rotate-45' />
 				<div className='shape-bg-three h-64 md:h-96 aspect-square bg-Primary/60 absolute -right-28 lg:-right-24' />
 			</section>
+
+			{/* modal */}
+			{showModal && <SureModal setShowModal={setShowModal} />}
 		</>
 	);
 }

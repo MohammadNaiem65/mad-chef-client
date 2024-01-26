@@ -30,7 +30,7 @@
     }
 
     .btn-primary-outline {
-        @apply text-Primary border-2 border-Primary hover:bg-Primary hover:text-white hover:border-transparent
+        @apply text-blue-400 border-2 border-blue-400 hover:bg-Primary hover:text-white hover:border-transparent
     }
 
     .btn-danger-outline {
