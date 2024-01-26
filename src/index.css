@@ -18,15 +18,23 @@
     }
 
     .btn {
-        @apply text-white text-lg text-center font-semibold px-7 py-2 outline-blue-700 rounded-full duration-150 cursor-pointer hover:-translate-y-1 hover:shadow-2xl   
+        @apply text-lg text-center font-semibold px-7 py-2 outline-blue-700 rounded-full duration-150 cursor-pointer hover:-translate-y-1 hover:shadow-2xl   
     }
 
     .btn-primary {
-        @apply bg-Primary hover:shadow-Primary
+        @apply text-white bg-Primary hover:shadow-Primary
     }
 
     .btn-secondary {
-        @apply bg-Secondary hover:shadow-Secondary
+        @apply text-white bg-Secondary hover:shadow-Secondary
+    }
+
+    .btn-primary-outline {
+        @apply text-Primary border-2 border-Primary hover:bg-Primary hover:text-white hover:border-transparent
+    }
+
+    .btn-danger-outline {
+        @apply text-red-500 border-2 border-red-500 hover:bg-red-500 hover:text-white hover:border-transparent
     }
 
     .link-hover {
