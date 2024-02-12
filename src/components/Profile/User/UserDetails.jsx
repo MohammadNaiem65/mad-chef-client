@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { modelImg } from '../../../assets';
-import SureModal from './SureModal';
+import ConfirmationModal from './ConfirmationModal';
 import showNotification from '../../../helpers/showNotification';
 
 export default function UserDetails({ userData }) {
@@ -71,9 +71,7 @@ export default function UserDetails({ userData }) {
 			</section>
 
 			{/* modal */}
-			{showModal && (
-				<SureModal showModal={showModal} setShowModal={setShowModal} />
-			)}
+			{showModal && <ConfirmationModal setShowModal={setShowModal} />}
 		</>
 	);
 }
