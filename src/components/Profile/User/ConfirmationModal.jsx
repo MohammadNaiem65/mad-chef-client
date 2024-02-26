@@ -10,6 +10,7 @@ export default function ConfirmationModal({ setShowModal }) {
 				onClick={(e) => e.stopPropagation()}
 				initial={{ y: '100%', opacity: 0 }}
 				animate={{ y: '0%', opacity: 1 }}
+				exit={{ y: '100%', opacity: 0 }}
 				transition={{ duration: 0.3 }}
 				className='h-80 w-1/3 bg-blue-300 mt-8 relative flex items-center justify-center rounded cursor-default'>
 				<img className='h-52 absolute -top-24' src={sureImg} alt='' />

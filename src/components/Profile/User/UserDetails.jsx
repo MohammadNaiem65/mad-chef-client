@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+
 import { modelImg } from '../../../assets';
 import ConfirmationModal from './ConfirmationModal';
 import showNotification from '../../../helpers/showNotification';
 
 export default function UserDetails({ userData }) {
-	const { name, email, emailVerified, pkg, img, role } = userData;
+	const { _id, name, email, emailVerified, pkg, img, role } = userData;
 
 	const [showModal, setShowModal] = useState(false);
 
@@ -71,7 +73,15 @@ export default function UserDetails({ userData }) {
 			</section>
 
 			{/* modal */}
-			{showModal && <ConfirmationModal setShowModal={setShowModal} />}
+			<AnimatePresence>
+				{showModal && (
+					<ConfirmationModal
+						key={showModal ? 1 : 2}
+						userId={_id}
+						setShowModal={setShowModal}
+					/>
+				)}
+			</AnimatePresence>
 		</>
 	);
 }
