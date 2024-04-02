@@ -3,7 +3,6 @@ import { removeCredentials, setCredentials } from '../auth/authSlice';
 
 const baseQuery = fetchBaseQuery({
 	baseUrl: 'http://localhost:5000',
-	credentials: 'include',
 	prepareHeaders: async (headers, { getState }) => {
 		const token = getState()?.auth?.accessToken;
 
@@ -14,6 +13,7 @@ const baseQuery = fetchBaseQuery({
 
 		return headers;
 	},
+	credentials: 'include',
 });
 
 const apiSlice = createApi({
