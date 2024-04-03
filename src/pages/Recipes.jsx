@@ -8,7 +8,7 @@ import {
 } from '../components/Recipes';
 
 export default function Recipes() {
-	const [hideModal, setHideModal] = useState(false);
+	const [hideModal, setHideModal] = useState(true);
 
 	return (
 		<>
