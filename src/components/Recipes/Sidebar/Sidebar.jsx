@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaAnglesRight } from 'react-icons/fa6';
+import SearchBar from '../SearchBar';
 import './Sidebar.css';
 
 const chefs = [
@@ -24,7 +25,7 @@ const chefs = [
 	{ name: 'doreamon', recipes: 2 },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ setHideModal }) {
 	// local state
 	const [showBar, setShowBar] = useState(false);
 
@@ -44,11 +45,8 @@ export default function Sidebar() {
 						? 'left-0 md:left-1/2 lg:left-0 md:-translate-x-1/2 lg:translate-x-0'
 						: '-left-[100%]'
 				}`}>
-				<input
-					type='text'
-					id=''
-					className='sidebar w-full mb-4 px-2 py-1 text-gray-700 font-semibold outline-Primary rounded'
-				/>
+				<SearchBar setHideModal={setHideModal} />
+
 				<div className='sidebar h-[91%] overflow-y-scroll'>
 					{chefs.map((chef, index) => (
 						<NavLink
@@ -56,14 +54,16 @@ export default function Sidebar() {
 							to={`/recipes/${chef.recipes}`}
 							onClick={() => setShowBar((prev) => !prev)}
 							className={({ isActive }) =>
-								`p-3 mb-2 font-semibold font-Vollokorn rounded flex justify-between items-center cursor-pointer hover:bg-Primary/70 ${
+								`p-3 mb-2 font-semibold font-Vollokorn rounded flex justify-between items-center cursor-pointer hover:bg-Primary/70 duration-300 group ${
 									isActive
 										? 'bg-Primary/90'
-										: 'bg-Primary/50 lg:bg-Primary/40'
+										: 'bg-Primary/50 lg:bg-Primary/20'
 								}`
 							}>
-							<span>{chef.name}</span>
-							<span className='px-3 bg-Primary lg:bg-Primary/60 rounded-xl'>
+							<span className='capitalize duration-300 group-hover:text-white'>
+								{chef.name}
+							</span>
+							<span className='px-3 bg-Primary lg:bg-Primary/20 rounded-xl duration-300 group-hover:bg-white'>
 								{chef.recipes}
 							</span>
 						</NavLink>
