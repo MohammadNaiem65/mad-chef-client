@@ -1,33 +1,66 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaAnglesRight } from 'react-icons/fa6';
+import { useGetChefsQuery } from '../../../features/chef/chefApi';
+import { Spinner } from '../../../shared';
 import SearchBar from '../SearchBar';
 import './Sidebar.css';
-
-const chefs = [
-	{ name: 'hero', recipes: 3 },
-	{ name: 'alam', recipes: 4 },
-	{ name: 'bonita', recipes: 8 },
-	{ name: 'sijuka', recipes: 1 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-	{ name: 'doreamon', recipes: 2 },
-];
 
 export default function Sidebar({ setHideModal }) {
 	// local state
 	const [showBar, setShowBar] = useState(false);
+	const chefContainerRef = useRef(null);
+
+	const {
+		data: gettingChefProcessData,
+		isLoading: gettingChefProcessLoading,
+		isError: gettingChefProcessIsError,
+		error: gettingChefProcessError,
+	} = useGetChefsQuery({ include: 'name,recipes' });
+
+	// decide what to render
+	let content;
+
+	if (gettingChefProcessLoading) {
+		content = <Spinner />;
+	} else if (!gettingChefProcessLoading && gettingChefProcessIsError) {
+		content = (
+			<p className='px-3 py-2 bg-red-200 rounded'>
+				{gettingChefProcessError?.data}
+			</p>
+		);
+	} else if (
+		!gettingChefProcessLoading &&
+		!gettingChefProcessIsError &&
+		gettingChefProcessData?.data?.length === 0
+	) {
+		content = <p>No data found.</p>;
+	} else if (
+		!gettingChefProcessLoading &&
+		!gettingChefProcessIsError &&
+		gettingChefProcessData?.data?.length > 0
+	) {
+		content = gettingChefProcessData?.data?.map((chef) => (
+			<NavLink
+				key={chef?._id}
+				to={`/recipes/${chef?._id}`}
+				onClick={() => setShowBar((prev) => !prev)}
+				className={({ isActive }) =>
+					`p-3 mb-2 font-semibold font-Vollokorn rounded flex justify-between items-center cursor-pointer hover:bg-Primary/70 duration-300 group ${
+						isActive
+							? 'bg-Primary/90'
+							: 'bg-Primary/50 lg:bg-Primary/20'
+					}`
+				}>
+				<span className='capitalize duration-300 group-hover:text-white'>
+					{chef?.name}
+				</span>
+				<span className='px-3 bg-Primary lg:bg-Primary/20 rounded-xl duration-300 group-hover:bg-white'>
+					{chef?.recipes?.length > 0 && chef?.recipes?.length}
+				</span>
+			</NavLink>
+		));
+	}
 
 	return (
 		<>
@@ -47,27 +80,8 @@ export default function Sidebar({ setHideModal }) {
 				}`}>
 				<SearchBar setHideModal={setHideModal} />
 
-				<div className='sidebar h-[91%] overflow-y-scroll'>
-					{chefs.map((chef, index) => (
-						<NavLink
-							key={index}
-							to={`/recipes/${chef.recipes}`}
-							onClick={() => setShowBar((prev) => !prev)}
-							className={({ isActive }) =>
-								`p-3 mb-2 font-semibold font-Vollokorn rounded flex justify-between items-center cursor-pointer hover:bg-Primary/70 duration-300 group ${
-									isActive
-										? 'bg-Primary/90'
-										: 'bg-Primary/50 lg:bg-Primary/20'
-								}`
-							}>
-							<span className='capitalize duration-300 group-hover:text-white'>
-								{chef.name}
-							</span>
-							<span className='px-3 bg-Primary lg:bg-Primary/20 rounded-xl duration-300 group-hover:bg-white'>
-								{chef.recipes}
-							</span>
-						</NavLink>
-					))}
+				<div className='sidebar max-h-[91%]' ref={chefContainerRef}>
+					{content}
 				</div>
 			</aside>
 		</>
