@@ -14,6 +14,7 @@ const Profile = lazy(() => import('../pages/Profile'));
 const Blog = lazy(() => import('../pages/Blog'));
 const Login = lazy(() => import('../pages/Login'));
 const Register = lazy(() => import('../pages/Register'));
+const Banner = lazy(() => import('../components/Recipes/Banner'));
 
 const routes = createBrowserRouter([
 	{
@@ -34,7 +35,7 @@ const routes = createBrowserRouter([
 				children: [
 					{
 						path: '/recipes/:id',
-						element: <Recipes />,
+						element: <Banner />,
 					},
 				],
 			},

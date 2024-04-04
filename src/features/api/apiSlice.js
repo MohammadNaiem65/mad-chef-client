@@ -52,8 +52,6 @@ const apiSlice = createApi({
 			}
 		}
 
-		// console.log(result);
-
 		return result;
 	},
 	// eslint-disable-next-line no-unused-vars

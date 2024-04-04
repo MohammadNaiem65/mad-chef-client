@@ -11,7 +11,7 @@ export default function Banner() {
 		'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta ut placeat ea nulla cumque impedit consequatur sit ullam dolorum. Voluptatibus ad aliquam maxime nostrum non aspernatur dolorum similique dolorem consequatur.';
 
 	return (
-		<section className='p-6 bg-Primary/20 text-gray-500 font-Popins lg:flex gap-x-5 rounded'>
+		<section className='mb-10 p-6 bg-Primary/20 text-gray-500 font-Popins lg:flex gap-x-5 rounded'>
 			<img
 				className='h-44 lg:h-52 aspect-square mx-auto rounded-full object-cover'
 				src={modelImg}
