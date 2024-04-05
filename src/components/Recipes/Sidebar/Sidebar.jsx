@@ -5,10 +5,15 @@ import { useGetChefsQuery } from '../../../features/chef/chefApi';
 import { Spinner } from '../../../shared';
 import SearchBar from '../SearchBar';
 import './Sidebar.css';
+import { useEffect } from 'react';
 
 export default function Sidebar({ setHideModal }) {
 	// local state
 	const [showBar, setShowBar] = useState(false);
+	const [pageNumber, setPageNumber] = useState({
+		currPage: null,
+		totalPages: null,
+	});
 	const chefContainerRef = useRef(null);
 
 	const {
@@ -16,7 +21,7 @@ export default function Sidebar({ setHideModal }) {
 		isLoading: gettingChefProcessLoading,
 		isError: gettingChefProcessIsError,
 		error: gettingChefProcessError,
-	} = useGetChefsQuery({ include: 'name,recipes' });
+	} = useGetChefsQuery({ page: 2, limit: 5, include: 'name,recipes' });
 
 	// decide what to render
 	let content;
@@ -40,7 +45,7 @@ export default function Sidebar({ setHideModal }) {
 		!gettingChefProcessIsError &&
 		gettingChefProcessData?.data?.length > 0
 	) {
-		content = gettingChefProcessData?.data?.map((chef) => (
+		content = gettingChefProcessData.data.map((chef) => (
 			<NavLink
 				key={chef?._id}
 				to={`/recipes/${chef?._id}`}
@@ -62,6 +67,34 @@ export default function Sidebar({ setHideModal }) {
 		));
 	}
 
+	// conditionally update scrollbar styles and page number
+	useEffect(() => {
+		if (
+			chefContainerRef.current?.scrollHeight >
+			chefContainerRef.current.clientHeight
+		) {
+			chefContainerRef.current?.classList.add('sidebar');
+			chefContainerRef.current?.classList.remove('remove-sidebar');
+		} else {
+			chefContainerRef.current?.classList.add('remove-sidebar');
+			chefContainerRef.current?.classList.remove('sidebar');
+		}
+
+		const pNumber = gettingChefProcessData?.meta?.page?.split('/');
+
+		if (pNumber?.length > 0) {
+			setPageNumber({
+				currPage: parseInt(pNumber[0]),
+				totalPages: parseInt(pNumber[1]),
+			});
+		}
+
+		// Cleanup
+		return () => {};
+	}, [gettingChefProcessData]);
+
+	console.log(pageNumber);
+
 	return (
 		<>
 			<p
@@ -82,6 +115,12 @@ export default function Sidebar({ setHideModal }) {
 
 				<div className='sidebar max-h-[91%]' ref={chefContainerRef}>
 					{content}
+
+					{pageNumber.currPage < pageNumber.totalPages && (
+						<button className='w-fit mx-auto mt-3 text-slate-700 font-semibold block rounded'>
+							Show More
+						</button>
+					)}
 				</div>
 			</aside>
 		</>

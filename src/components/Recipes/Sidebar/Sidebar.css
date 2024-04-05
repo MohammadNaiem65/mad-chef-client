@@ -1,16 +1,25 @@
-/* For all browsers */
+.sidebar {
+    padding-right: 6px;
+    overflow-y: scroll;
+}
 .sidebar::-webkit-scrollbar {
-    width: 6px;
+    width: 10px;
+}
+
+.remove-sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background-color: #D5E2FD;
+    border-radius: 1rem;
 }
 
 .sidebar::-webkit-scrollbar-thumb {
     background-color: #A4C1FD;
-    border-radius: 100vw;
+    border-radius: 1rem;
 }
 
-/* For firefox */
-@supports (scrollbar-color: #A4C1FD transparent) {
-    .sidebar {
-        scrollbar-color: #A4C1FD transparent;
-    }
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #7596f0;
 }
