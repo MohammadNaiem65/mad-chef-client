@@ -1,17 +1,17 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaAnglesRight } from 'react-icons/fa6';
+
 import { useGetChefsQuery } from '../../../features/chef/chefApi';
 import { Spinner } from '../../../shared';
 import SearchBar from '../SearchBar';
 import './Sidebar.css';
-import { useEffect } from 'react';
 
 export default function Sidebar({ setHideModal }) {
 	// local state
 	const [showBar, setShowBar] = useState(false);
 	const [pageNumber, setPageNumber] = useState({
-		currPage: null,
+		currPage: 1,
 		totalPages: null,
 	});
 	const chefContainerRef = useRef(null);
@@ -21,7 +21,12 @@ export default function Sidebar({ setHideModal }) {
 		isLoading: gettingChefProcessLoading,
 		isError: gettingChefProcessIsError,
 		error: gettingChefProcessError,
-	} = useGetChefsQuery({ page: 2, limit: 5, include: 'name,recipes' });
+	} = useGetChefsQuery({
+		sort: 'name',
+		page: pageNumber.currPage,
+		limit: 10,
+		include: 'name',
+	});
 
 	// decide what to render
 	let content;
@@ -67,7 +72,7 @@ export default function Sidebar({ setHideModal }) {
 		));
 	}
 
-	// conditionally update scrollbar styles and page number
+	// conditionally update scrollbar styles
 	useEffect(() => {
 		if (
 			chefContainerRef.current?.scrollHeight >
@@ -80,6 +85,11 @@ export default function Sidebar({ setHideModal }) {
 			chefContainerRef.current?.classList.remove('sidebar');
 		}
 
+		// Cleanup
+		return () => {};
+	}, [gettingChefProcessData]);
+
+	useEffect(() => {
 		const pNumber = gettingChefProcessData?.meta?.page?.split('/');
 
 		if (pNumber?.length > 0) {
@@ -88,12 +98,7 @@ export default function Sidebar({ setHideModal }) {
 				totalPages: parseInt(pNumber[1]),
 			});
 		}
-
-		// Cleanup
-		return () => {};
 	}, [gettingChefProcessData]);
-
-	console.log(pageNumber);
 
 	return (
 		<>
@@ -116,10 +121,29 @@ export default function Sidebar({ setHideModal }) {
 				<div className='sidebar max-h-[91%]' ref={chefContainerRef}>
 					{content}
 
+					{/* Display show more button fetch more data */}
 					{pageNumber.currPage < pageNumber.totalPages && (
-						<button className='w-fit mx-auto mt-3 text-slate-700 font-semibold block rounded'>
+						<button
+							className='w-fit mx-auto mt-3 text-slate-700 font-semibold block rounded'
+							onClick={() =>
+								setPageNumber((prev) =>
+									prev.currPage < prev.totalPages
+										? {
+												...prev,
+												currPage: prev.currPage + 1,
+										}
+										: prev
+								)
+							}>
 							Show More
 						</button>
+					)}
+
+					{/* Show error */}
+					{gettingChefProcessIsError && (
+						<p className='w-full mt-3 py-2 bg-red-200 text-center text-red-700 font-semibold block rounded'>
+							{gettingChefProcessError.data}
+						</p>
 					)}
 				</div>
 			</aside>
