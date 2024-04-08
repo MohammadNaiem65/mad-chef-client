@@ -26,6 +26,36 @@ const recipeApi = apiSlice.injectEndpoints({
 
 				return { url };
 			},
+
+			serializeQueryArgs: ({ limit, sort, order, include, exclude }) => {
+				// To merge previous cache, ignore page number
+				return {
+					page: 'all', // Use 'all' to ignore page number
+					limit,
+					sort,
+					order,
+					include,
+					exclude,
+				};
+			},
+
+			// Merge the incoming data with the existing data
+			merge: (existingResponse, incomingResponse) => {
+				incomingResponse.data = [
+					...existingResponse.data,
+					...incomingResponse.data,
+				];
+
+				return incomingResponse;
+			},
+
+			// force to refetch if query argument (page) changes
+			forceRefetch: ({ currentArg, previousArg }) => {
+				return (
+					currentArg?.page !== undefined &&
+					previousArg?.page !== currentArg?.page
+				);
+			},
 		}),
 	}),
 });
