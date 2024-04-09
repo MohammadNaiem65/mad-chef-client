@@ -34,13 +34,13 @@ const routes = createBrowserRouter([
 				element: <Recipes />,
 				children: [
 					{
-						path: '/recipes/:id',
+						path: '/recipes/:chefId',
 						element: <Banner />,
 					},
 				],
 			},
 			{
-				path: '/recipes/recipe/:id',
+				path: '/recipes/recipe/:recipeId',
 				element: (
 					<PrivateRoute>
 						<RecipeDetails />
