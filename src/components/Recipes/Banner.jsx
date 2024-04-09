@@ -6,7 +6,7 @@ import { useGetChefQuery } from '../../features/chef/chefApi';
 export default function Banner() {
 	const { chefId } = useParams();
 
-	const { data } = useGetChefQuery({ chefId });
+	const { data } = useGetChefQuery({ chef_id: chefId });
 	const { name, bio, rating, yearsOfExperience, recipes, img } =
 		data?.data || {};
 
