@@ -57,8 +57,11 @@ const recipeApi = apiSlice.injectEndpoints({
 				);
 			},
 		}),
+		getChef: builder.query({
+			query: ({ chef_id }) => `/chefs/chef/${chef_id}`,
+		}),
 	}),
 });
 
 export default recipeApi;
-export const { useGetChefsQuery } = recipeApi;
+export const { useGetChefsQuery, useGetChefQuery } = recipeApi;
