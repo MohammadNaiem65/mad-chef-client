@@ -1,8 +1,4 @@
-export default function Pagination({
-	margin = 5,
-	activePage = 1,
-	totalPages = 1,
-}) {
+export default function Pagination({ activePage = 1, totalPages = 1 }) {
 	const pages = Array.from(
 		{ length: totalPages > 0 ? totalPages : 1 },
 		(_, index) => (
@@ -19,7 +15,7 @@ export default function Pagination({
 	);
 
 	return (
-		<section className={`w-full my-${margin}`}>
+		<section className='w-full my-5'>
 			<div className='w-fit mx-auto flex items-center'>{pages}</div>
 		</section>
 	);
