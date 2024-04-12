@@ -77,7 +77,7 @@ export default function ChefRecipes({ chefId }) {
 				))}
 			</section>
 
-			{recipes?.length && (
+			{recipes?.length > 0 && (
 				<Pagination
 					activePage={pageDetails.currPage}
 					totalPages={pageDetails.totalPages}
