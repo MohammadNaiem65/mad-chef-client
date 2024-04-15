@@ -17,7 +17,6 @@ const recipeApi = apiSlice.injectEndpoints({
 
 				// Create an object with all parameters
 				const params = {
-					chef_id,
 					page,
 					limit,
 					sort,
@@ -26,7 +25,7 @@ const recipeApi = apiSlice.injectEndpoints({
 					exclude,
 				};
 
-				// Use reduce to construct the query string
+				// Use reduce to construct the query string without chef_id parameter
 				const queryString = Object.entries(params)
 					.reduce((acc, [key, value]) => {
 						// Only include parameters that have a value
@@ -38,7 +37,24 @@ const recipeApi = apiSlice.injectEndpoints({
 					.join('&');
 
 				// Construct the final URL
-				const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+				const urlWithoutChefId = queryString
+					? `${baseUrl}?${queryString}`
+					: baseUrl;
+
+				let url;
+				if (chef_id) {
+					const stringifiedDataFilter = JSON.stringify({
+						chefId: chef_id,
+					});
+
+					const encodedDataFiler = encodeURIComponent(
+						stringifiedDataFilter
+					);
+
+					url = urlWithoutChefId + `?data_filter=${encodedDataFiler}`;
+				} else {
+					url = urlWithoutChefId;
+				}
 
 				return { url };
 			},
