@@ -81,8 +81,8 @@ export default function ChefRecipes({ chefId }) {
 			)}
 
 			<section className='mt-4'>
-				{recipes?.map((recipe, index) => (
-					<Recipe key={recipe._id} index={index} recipe={recipe} />
+				{recipes?.map((recipe) => (
+					<Recipe key={recipe._id} recipe={recipe} />
 				))}
 			</section>
 

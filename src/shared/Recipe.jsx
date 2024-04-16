@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Rating from './Rating';
 import ArrowLink from './ArrowLink';
 
-export default function Recipe({ index, recipe }) {
+export default function Recipe({ recipe }) {
 	const { img, title, ingredients, rating } = recipe;
 
 	return (
@@ -11,7 +11,7 @@ export default function Recipe({ index, recipe }) {
 			className='bg-Primary/20 mt-3 p-3 md:p-5 lg:p-6 text-slate-500 text-sm font-Popins rounded flex items-center'
 			initial={{ y: 100, opacity: 0 }}
 			whileInView={{ y: 0, opacity: 1 }}
-			transition={{ duration: 0.6, delay: index * 0.25 }}
+			transition={{ duration: 0.6 }}
 			viewport={{ once: true }}>
 			<img
 				className='w-36 h-24 rounded object-cover'
