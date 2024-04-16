@@ -1,22 +1,25 @@
 import { FaHeart } from 'react-icons/fa6';
 import { MdOutlineBookmarkAdd, MdBookmarkAdded } from 'react-icons/md';
-import { modelImg } from '../../assets';
+import { useGetChefQuery } from '../../features/chef/chefApi';
 
-export default function UserDetails() {
-	const liked = true;
-	const bookmarked = true;
+export default function ChefDetails({ author, like, createdAt }) {
+	const liked = false;
+	const bookmarked = false;
+
+	const { data } = useGetChefQuery({ chef_id: author, include: 'name,img' });
+	const { name, img } = data?.data || {};
 
 	return (
 		<section className='mt-2 lg:mt-4 pb-2 border-b-2 border-slate-300 flex items-center gap-x-2 md:gap-x-3'>
 			<img
-				src={modelImg}
-				alt=''
+				src={img}
+				alt={`${name}'s image`}
 				className='w-10 md:w-12 lg:w-14 aspect-square object-cover rounded-full'
 			/>
 			<div className='font-Vollokorn'>
-				<p className='font-semibold lg:text-lg'>Mohammad Naiem</p>
+				<p className='font-semibold lg:text-lg'>{name}</p>
 				<div className='text-slate-500 -mt-1 flex items-center gap-x-2'>
-					{new Date('1/13/2014').toLocaleDateString('en-GB', {
+					{new Date(createdAt).toLocaleDateString('en-GB', {
 						day: 'numeric',
 						month: 'short',
 						year: 'numeric',
@@ -34,7 +37,7 @@ export default function UserDetails() {
 								<FaHeart />
 							</span>
 						)}{' '}
-						<span className='text-base'>300</span>
+						<span className='text-base'>{like}</span>
 					</p>
 
 					<span className='h-1 w-1 bg-black rounded-full' />
