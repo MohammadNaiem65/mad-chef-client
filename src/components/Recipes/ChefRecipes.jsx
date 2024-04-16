@@ -21,6 +21,7 @@ export default function ChefRecipes({ chefId }) {
 			region: recipeFilter.region,
 		},
 		sort: recipeFilter.sortBy,
+		order: recipeFilter.order,
 		page: pageDetails.currPage,
 		include: 'title,ingredients,rating,img',
 	});

@@ -5,6 +5,7 @@ const initialState = {
 	uploadDate: null,
 	region: null,
 	sortBy: null,
+	sortOrder: null,
 };
 
 const recipeFilterSlice = createSlice({
@@ -18,6 +19,7 @@ const recipeFilterSlice = createSlice({
 			state.uploadDate = action.payload?.uploadDate;
 			state.region = action.payload?.region;
 			state.sortBy = action.payload?.sortBy;
+			state.sortOrder = action.payload?.sortOrder;
 		},
 	},
 });
