@@ -19,28 +19,27 @@ import { useUnAuthenticateMutation } from '../features/auth/authApi';
 import showNotification from '../helpers/showNotification';
 import removeNotifications from '../helpers/removeNotifications';
 
-const routes = [
-	'home',
-	'recipes',
-	'dashboard',
-	'consult',
-	'profile',
-	'blog',
-	'register',
-];
-
 export default function Navbar() {
-	// local states
+	// Local states
+	const routes = [
+		'home',
+		'recipes',
+		'dashboard',
+		'consult',
+		'profile',
+		'blog',
+		'register',
+	];
 	const [showNavbar, setShowNavbar] = useState(true);
 	const [showHamburger, setShowHamburger] = useState(false);
 
-	// hooks
+	// Hooks
 	const { scrollY } = useScroll();
 	const user = useSelector(selectUser);
 	const [unAuthenticate, { isLoading, isSuccess, isError }] =
 		useUnAuthenticateMutation();
 
-	// show or hide navigation bar on scroll
+	// Show or hide navigation bar on scroll
 	useMotionValueEvent(scrollY, 'change', (value) => {
 		const prevValue = scrollY.getPrevious();
 
@@ -50,6 +49,13 @@ export default function Navbar() {
 			setShowNavbar(true);
 		}
 	});
+
+	// Keep Consult option only for students
+	if (user && user?.role !== 'student') {
+		const consultIndex = routes.indexOf('consult');
+
+		routes.splice(consultIndex, 1);
+	}
 
 	const navOptionsVariants = {
 		initial: {
