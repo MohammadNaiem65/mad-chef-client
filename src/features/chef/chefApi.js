@@ -58,7 +58,26 @@ const recipeApi = apiSlice.injectEndpoints({
 			},
 		}),
 		getChef: builder.query({
-			query: ({ chef_id }) => `/chefs/chef/${chef_id}`,
+			query: ({ chef_id, include, exclude }) => {
+				const baseUrl = `/chefs/chef/${chef_id}`;
+				const params = { include, exclude };
+
+				// Use reduce to construct the query string
+				const queryString = Object.entries(params)
+					.reduce((acc, [key, value]) => {
+						// Only include parameters that have a value
+						if (value) {
+							acc.push(`${key}=${encodeURIComponent(value)}`);
+						}
+						return acc;
+					}, [])
+					.join('&');
+
+				// Construct the URL without filter parameters
+				const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+
+				return { url };
+			},
 		}),
 	}),
 });

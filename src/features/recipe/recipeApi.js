@@ -25,7 +25,7 @@ const recipeApi = apiSlice.injectEndpoints({
 					exclude,
 				};
 
-				// Use reduce to construct the query string without chefId parameter
+				// Use reduce to construct the query string without filter parameter
 				const queryString = Object.entries(params)
 					.reduce((acc, [key, value]) => {
 						// Only include parameters that have a value
@@ -36,7 +36,7 @@ const recipeApi = apiSlice.injectEndpoints({
 					}, [])
 					.join('&');
 
-				// Construct the final URL
+				// Construct the URL without filter parameters
 				const urlWithoutFilterOptions = queryString
 					? `${baseUrl}?${queryString}`
 					: baseUrl;
