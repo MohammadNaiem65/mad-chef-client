@@ -12,15 +12,12 @@ const recipeFilterSlice = createSlice({
 	initialState,
 	reducers: {
 		filterWithKeyword: (state, action) => {
-			state = { ...state, keyword: action.payload };
+			state.keyword = action.payload;
 		},
 		filterWithOptions: (state, action) => {
-			state = {
-				...state,
-				uploadDate: action.payload?.uploadDate,
-				region: action.payload?.region,
-				sortBy: action.payload?.sortBy,
-			};
+			state.uploadDate = action.payload?.uploadDate;
+			state.region = action.payload?.region;
+			state.sortBy = action.payload?.sortBy;
 		},
 	},
 });
