@@ -4,7 +4,7 @@ const recipeApi = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getRecipes: builder.query({
 			query: ({
-				chef_id,
+				data_filter,
 				page,
 				limit,
 				sort,
@@ -25,11 +25,11 @@ const recipeApi = apiSlice.injectEndpoints({
 					exclude,
 				};
 
-				// Use reduce to construct the query string without chef_id parameter
+				// Use reduce to construct the query string without chefId parameter
 				const queryString = Object.entries(params)
 					.reduce((acc, [key, value]) => {
 						// Only include parameters that have a value
-						if (value !== undefined) {
+						if (value) {
 							acc.push(`${key}=${encodeURIComponent(value)}`);
 						}
 						return acc;
@@ -37,23 +37,38 @@ const recipeApi = apiSlice.injectEndpoints({
 					.join('&');
 
 				// Construct the final URL
-				const urlWithoutChefId = queryString
+				const urlWithoutFilterOptions = queryString
 					? `${baseUrl}?${queryString}`
 					: baseUrl;
 
 				let url;
-				if (chef_id) {
-					const stringifiedDataFilter = JSON.stringify({
-						chefId: chef_id,
+
+				// Add filter options which has values
+				const dataFilterKeys = Object.keys(data_filter);
+				if (dataFilterKeys.length > 0) {
+					const filterKeysWithValues = {};
+					dataFilterKeys.forEach((elKey) => {
+						if (data_filter[elKey]) {
+							filterKeysWithValues[elKey] = data_filter[elKey];
+						}
 					});
 
-					const encodedDataFiler = encodeURIComponent(
-						stringifiedDataFilter
-					);
+					if (Object.keys(filterKeysWithValues).length > 0) {
+						const stringifiedDataFilter =
+							JSON.stringify(filterKeysWithValues);
 
-					url = urlWithoutChefId + `?data_filter=${encodedDataFiler}`;
+						const encodedDataFiler = encodeURIComponent(
+							stringifiedDataFilter
+						);
+
+						url =
+							urlWithoutFilterOptions +
+							`&data_filter=${encodedDataFiler}`;
+					} else {
+						url = urlWithoutFilterOptions;
+					}
 				} else {
-					url = urlWithoutChefId;
+					url = urlWithoutFilterOptions;
 				}
 
 				return { url };
