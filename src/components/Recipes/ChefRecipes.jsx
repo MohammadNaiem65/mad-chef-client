@@ -4,15 +4,23 @@ import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import { useGetRecipesQuery } from '../../features/recipe/recipeApi';
 import Recipe from '../../shared/Recipe';
 import { Pagination } from '../../shared';
+import { useSelector } from 'react-redux';
 
 export default function ChefRecipes({ chefId }) {
 	const [pageDetails, setPageDetails] = useState({
 		currPage: 1,
 		totalPages: null,
 	});
+	const recipeFilter = useSelector((state) => state.recipeFilter);
 
 	const { data } = useGetRecipesQuery({
-		chef_id: chefId,
+		data_filter: {
+			chefId,
+			searchQuery: recipeFilter.keyword,
+			uploadDate: recipeFilter.uploadDate,
+			region: recipeFilter.region,
+		},
+		sort: recipeFilter.sortBy,
 		page: pageDetails.currPage,
 		include: 'title,ingredients,rating,img',
 	});
