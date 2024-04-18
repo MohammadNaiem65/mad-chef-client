@@ -1,9 +1,14 @@
+import { useGetRecipeRatingsQuery } from '../../../features/recipe/recipeApi';
 import Review from './Review';
 import './Reviews.css';
 
-const reviews = [1, 2, 3, 4, 5];
-
 export default function Reviews() {
+	const { data } = useGetRecipeRatingsQuery({
+		limit: 6,
+		include: 'username,userImg,rating,message',
+	});
+	const reviews = data?.data || [];
+
 	return (
 		<section className='mt-20 lg:mx-auto'>
 			<h2 className='section-title'>
@@ -15,9 +20,11 @@ export default function Reviews() {
 
 			<div className='outer-container mt-8 overflow-hidden'>
 				<div className='inner-container w-fit flex gap-5 md:gap-3'>
-					{[...reviews, ...reviews].map((review, index) => (
-						<Review key={index} count={review} />
-					))}
+					{[...reviews, ...reviews, ...reviews, ...reviews].map(
+						(review) => (
+							<Review key={review?._id} review={review} />
+						)
+					)}
 				</div>
 			</div>
 		</section>
