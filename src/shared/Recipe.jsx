@@ -34,11 +34,9 @@ export default function Recipe({ recipe }) {
 					{<Rating rating={rating} />}
 				</div>
 			</div>
-			<Link
-				to={`/recipes/recipe/${recipe._id}`}
-				className='arrows ml-auto flex justify-center items-center w-12 h-6'>
-				<ArrowLink />
-			</Link>
+			<p className='arrows ml-auto flex justify-center items-center w-12 h-6'>
+				<ArrowLink to={`/recipes/recipe/${recipe._id}`} />
+			</p>
 		</motion.div>
 	);
 }
