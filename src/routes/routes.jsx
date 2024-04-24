@@ -18,27 +18,13 @@ const Register = lazy(() => import('../pages/Register'));
 const Banner = lazy(() => import('../components/Recipes/Banner'));
 
 // Dashboard - User Pages
-const UserConsults = lazy(() =>
-	import('../components/Profile/User/pages/Consults')
-);
-const UserMessages = lazy(() =>
-	import('../components/Profile/User/pages/Messages')
-);
-const UserMyProfile = lazy(() =>
-import('../components/Profile/User/pages/MyProfile')
-);
-const UserDashboard = lazy(() =>
-	import('../components/Profile/User/pages/Dashboard/Dashboard')
-);
-const UserLikes = lazy(() =>
-	import('../components/Profile/User/pages/Dashboard/Likes')
-);
-const UserBookmarks = lazy(() =>
-	import('../components/Profile/User/pages/Dashboard/Bookmarks')
-);
-const UserReviews = lazy(() =>
-	import('../components/Profile/User/pages/Dashboard/Reviews')
-);
+const UserConsults = lazy(() => import('../components/Profile/User/pages/Consults'));
+const UserMessages = lazy(() => import('../components/Profile/User/pages/Messages'));
+const UserMyProfile = lazy(() => import('../components/Profile/User/pages/MyProfile'));
+const UserDashboard = lazy(() => import('../components/Profile/User/pages/Dashboard/Dashboard'));
+const UserLikes = lazy(() => import('../components/Profile/User/pages/Dashboard/Likes'));
+const UserBookmarks = lazy(() => import('../components/Profile/User/pages/Dashboard/Bookmarks'));
+const UserReviews = lazy(() => import('../components/Profile/User/pages/Dashboard/Reviews'));
 
 const routes = createBrowserRouter([
 	{
@@ -95,34 +81,35 @@ const routes = createBrowserRouter([
 					</PrivateRoute>
 				),
 				children: [
+					// User related routes
 					{
-						path: '/profile/dashboard',
+						path: '/profile/user/dashboard',
 						element: <UserDashboard />,
 						children: [
 							{
-								path: '/profile/dashboard/likes',
+								path: '/profile/user/dashboard/likes',
 								element: <UserLikes />,
 							},
 							{
-								path: '/profile/dashboard/reviews',
+								path: '/profile/user/dashboard/reviews',
 								element: <UserReviews />,
 							},
 							{
-								path: '/profile/dashboard/bookmarks',
+								path: '/profile/user/dashboard/bookmarks',
 								element: <UserBookmarks />,
 							},
 						],
 					},
 					{
-						path: '/profile/consults',
+						path: '/profile/user/consults',
 						element: <UserConsults />,
 					},
 					{
-						path: '/profile/messages',
+						path: '/profile/user/messages',
 						element: <UserMessages />,
 					},
 					{
-						path: '/profile/my-profile',
+						path: '/profile/user/my-profile',
 						element: <UserMyProfile />,
 					},
 				],
