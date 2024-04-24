@@ -5,6 +5,7 @@ import App from '../App';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
+// Main Pages
 const Home = lazy(() => import('../pages/Home'));
 const Recipes = lazy(() => import('../pages/Recipes'));
 const RecipeDetails = lazy(() => import('../pages/RecipeDetails'));
@@ -15,6 +16,29 @@ const Blog = lazy(() => import('../pages/Blog'));
 const Login = lazy(() => import('../pages/Login'));
 const Register = lazy(() => import('../pages/Register'));
 const Banner = lazy(() => import('../components/Recipes/Banner'));
+
+// Dashboard - User Pages
+const UserConsults = lazy(() =>
+	import('../components/Profile/User/pages/Consults')
+);
+const UserMessages = lazy(() =>
+	import('../components/Profile/User/pages/Messages')
+);
+const UserMyProfile = lazy(() =>
+import('../components/Profile/User/pages/MyProfile')
+);
+const UserDashboard = lazy(() =>
+	import('../components/Profile/User/pages/Dashboard/Dashboard')
+);
+const UserLikes = lazy(() =>
+	import('../components/Profile/User/pages/Dashboard/Likes')
+);
+const UserBookmarks = lazy(() =>
+	import('../components/Profile/User/pages/Dashboard/Bookmarks')
+);
+const UserReviews = lazy(() =>
+	import('../components/Profile/User/pages/Dashboard/Reviews')
+);
 
 const routes = createBrowserRouter([
 	{
@@ -70,6 +94,38 @@ const routes = createBrowserRouter([
 						<Profile />
 					</PrivateRoute>
 				),
+				children: [
+					{
+						path: '/profile/dashboard',
+						element: <UserDashboard />,
+						children: [
+							{
+								path: '/profile/dashboard/likes',
+								element: <UserLikes />,
+							},
+							{
+								path: '/profile/dashboard/reviews',
+								element: <UserReviews />,
+							},
+							{
+								path: '/profile/dashboard/bookmarks',
+								element: <UserBookmarks />,
+							},
+						],
+					},
+					{
+						path: '/profile/consults',
+						element: <UserConsults />,
+					},
+					{
+						path: '/profile/messages',
+						element: <UserMessages />,
+					},
+					{
+						path: '/profile/my-profile',
+						element: <UserMyProfile />,
+					},
+				],
 			},
 			{
 				path: '/blog',
