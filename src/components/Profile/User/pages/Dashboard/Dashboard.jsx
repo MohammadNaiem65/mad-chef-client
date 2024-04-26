@@ -22,7 +22,7 @@ export default function Dashboard() {
 			{/* Sidebar */}
 			<Sidebar />
 
-			<section>
+			<section className='w-full'>
 				{/* Navbar for dashboard page content */}
 				<nav className='text-lg flex items-center divide-x-2'>
 					<Link
