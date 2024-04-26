@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../../../features/auth/authSelectors';
 import { useGetUserDataQuery } from '../../../../../features/user/userApi';
-import { NoContent } from '../../../../../shared';
+import { NoContent, Spinner } from '../../../../../shared';
 import Bookmark from './Bookmark';
 
 export default function Bookmarks() {
 	const { userId } = useSelector(selectUser);
-	const { data, isSuccess, isError, error } = useGetUserDataQuery({
+	const { data, isLoading, isSuccess, isError, error } = useGetUserDataQuery({
 		userId,
 		include: 'bookmarks',
 	});
@@ -14,7 +14,9 @@ export default function Bookmarks() {
 	const { bookmarks: bookmarksIds } = data?.data || {};
 
 	let content;
-	if (isSuccess && bookmarksIds?.length === 0) {
+	if (isLoading) {
+		content = <Spinner />;
+	} else if (isSuccess && bookmarksIds?.length === 0) {
 		content = <NoContent />;
 	} else if (isError) {
 		content = (
@@ -22,7 +24,7 @@ export default function Bookmarks() {
 				{error?.data}
 			</p>
 		);
-	} else if (bookmarksIds?.length > 0) {
+	} else if (isSuccess && bookmarksIds?.length > 0) {
 		content = bookmarksIds.map((recipeId, index) => (
 			<Bookmark key={index} recipeId={recipeId} />
 		));
