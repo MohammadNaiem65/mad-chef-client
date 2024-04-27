@@ -1,12 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { removeCredentials, setCredentials } from '../auth/authSlice';
 
+// Flag to track if a refresh token request is in progress
+let isRefreshing = false;
+
+// Define the base query function
 const baseQuery = fetchBaseQuery({
 	baseUrl: 'http://localhost:5000',
 	prepareHeaders: async (headers, { getState }) => {
 		const token = getState()?.auth?.accessToken;
 
-		// set authorization header
+		// If there's an access token, add it to the request headers
 		if (token) {
 			headers.set('Authorization', `Bearer ${token}`);
 		}
@@ -16,39 +20,47 @@ const baseQuery = fetchBaseQuery({
 	credentials: 'include',
 });
 
+// Define the API slice
 const apiSlice = createApi({
 	reducerPath: 'api',
 	baseQuery: async (args, api, extraOptions) => {
 		let result = await baseQuery(args, api, extraOptions);
 
+		// Check if the response indicates an expired token
 		if (
 			result?.error?.status === 403 &&
 			result?.error?.data?.data === 'jwt expired'
 		) {
-			// refetch for new access token
-			const refreshResult = await baseQuery(
-				'/auth/refresh-token',
-				api,
-				extraOptions
-			);
+			// Check if a refresh is already in progress
+			if (!isRefreshing) {
+				isRefreshing = true;
 
-			if (refreshResult?.data) {
-				const user = api.getState().auth.user;
+				// Attempt to refresh the token
+				const refreshResult = await baseQuery(
+					'/auth/refresh-token',
+					api,
+					extraOptions
+				);
 
-				const data = {
-					user,
-					accessToken: refreshResult.data?.data?.accessToken,
-				};
+				if (refreshResult?.data) {
+					// If successful, update the access token in local storage and Redux state
+					const user = api.getState().auth.user;
+					const data = {
+						user,
+						accessToken: refreshResult.data?.data?.accessToken,
+					};
+					localStorage.setItem('auth', JSON.stringify(data));
+					api.dispatch(setCredentials(data));
 
-				// update the access token
-				localStorage.setItem('auth', JSON.stringify(data));
-				api.dispatch(setCredentials(data));
+					// Retry the original request with the new token
+					result = await baseQuery(args, api, extraOptions);
+				} else {
+					// If refresh fails, remove credentials and handle accordingly
+					localStorage.removeItem('auth');
+					api.dispatch(removeCredentials());
+				}
 
-				// fetch the previous request
-				result = await baseQuery(args, api, extraOptions);
-			} else {
-				localStorage.removeItem('auth');
-				api.dispatch(removeCredentials());
+				isRefreshing = false;
 			}
 		}
 
