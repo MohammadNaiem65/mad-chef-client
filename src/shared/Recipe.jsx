@@ -4,7 +4,7 @@ import Rating from './Rating';
 import ArrowLink from './ArrowLink';
 
 export default function Recipe({ recipe }) {
-	const { img, title, ingredients, rating } = recipe;
+	const { _id, img, title, ingredients, rating } = recipe;
 
 	return (
 		<motion.div
@@ -26,17 +26,17 @@ export default function Recipe({ recipe }) {
 				</Link>
 				<p>
 					Ingredients:{' '}
-					{ingredients.join(', ').length >= 50
-						? ingredients.join(', ').slice(0, 50) + '...'
-						: ingredients.join(', ')}
+					{ingredients?.join(', ').length >= 50
+						? ingredients?.join(', ').slice(0, 50) + '...'
+						: ingredients?.join(', ')}
 				</p>
 				<div className='text-xl text-yellow-500 mt-2 flex gap-1'>
 					{<Rating rating={rating} />}
 				</div>
 			</div>
-			<p className='arrows ml-auto flex justify-center items-center w-12 h-6'>
-				<ArrowLink to={`/recipes/recipe/${recipe._id}`} />
-			</p>
+			<div className='arrows ml-auto flex justify-center items-center w-12 h-6'>
+				<ArrowLink to={`/recipes/recipe/${_id}`} />
+			</div>
 		</motion.div>
 	);
 }
