@@ -74,6 +74,12 @@ const recipeApi = apiSlice.injectEndpoints({
 				return { url };
 			},
 		}),
+		getBookmarkedRecipes: builder.query({
+			query: ({ userId }) => `/users/user/${userId}/bookmarks`,
+		}),
+		getLikedRecipes: builder.query({
+			query: ({ userId }) => `/users/user/${userId}/likes`,
+		}),
 		getRecipe: builder.query({
 			query: (recipeId) => `/recipes/recipe/${recipeId}`,
 		}),
@@ -156,5 +162,7 @@ export default recipeApi;
 export const {
 	useGetRecipesQuery,
 	useGetRecipeQuery,
+	useGetBookmarkedRecipesQuery,
+	useGetLikedRecipesQuery,
 	useGetRecipeRatingsQuery,
 } = recipeApi;
