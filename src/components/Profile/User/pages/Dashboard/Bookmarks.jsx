@@ -10,7 +10,7 @@ export default function Bookmarks() {
 		userId,
 	});
 
-	const bookmarks = data?.data || {};
+	const bookmarks = data?.data || [];
 
 	let content;
 	if (isSuccess && bookmarks?.length === 0) {
