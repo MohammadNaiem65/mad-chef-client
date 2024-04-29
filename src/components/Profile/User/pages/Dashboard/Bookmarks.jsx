@@ -1,22 +1,19 @@
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../../../features/auth/authSelectors';
-import { useGetUserDataQuery } from '../../../../../features/user/userApi';
-import { NoContent, Spinner } from '../../../../../shared';
+import { useGetBookmarkedRecipesQuery } from '../../../../../features/recipe/recipeApi';
 import Bookmark from './Bookmark';
+import { NoContent } from '../../../../../shared';
 
 export default function Bookmarks() {
 	const { userId } = useSelector(selectUser);
-	const { data, isLoading, isSuccess, isError, error } = useGetUserDataQuery({
+	const { data, isSuccess, isError, error } = useGetBookmarkedRecipesQuery({
 		userId,
-		include: 'bookmarks',
 	});
 
-	const { bookmarks: bookmarksIds } = data?.data || {};
+	const bookmarks = data?.data || {};
 
 	let content;
-	if (isLoading) {
-		content = <Spinner />;
-	} else if (isSuccess && bookmarksIds?.length === 0) {
+	if (isSuccess && bookmarks?.length === 0) {
 		content = <NoContent />;
 	} else if (isError) {
 		content = (
@@ -24,15 +21,15 @@ export default function Bookmarks() {
 				{error?.data}
 			</p>
 		);
-	} else if (isSuccess && bookmarksIds?.length > 0) {
-		content = bookmarksIds.map((recipeId, index) => (
-			<Bookmark key={index} recipeId={recipeId} />
+	} else if (isSuccess && bookmarks?.length > 0) {
+		content = bookmarks.map((bookmark, index) => (
+			<Bookmark key={index} recipeId={bookmark?.recipeId} />
 		));
 	}
 
 	return (
 		<section className='w-full my-5 px-5'>
-			<h3 className='w-1/4 mb-5 px-2 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
+			<h3 className='w-1/2 mb-5 px-2 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
 				My Bookmarks:
 			</h3>
 			{content}
