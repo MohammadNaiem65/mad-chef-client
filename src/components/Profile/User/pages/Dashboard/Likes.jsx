@@ -1,22 +1,22 @@
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../../../features/auth/authSelectors';
-import { useGetUserDataQuery } from '../../../../../features/user/userApi';
+import { useGetLikedRecipesQuery } from '../../../../../features/recipe/recipeApi';
 import { NoContent, Spinner } from '../../../../../shared';
 import Like from './Like';
 
 export default function Likes() {
 	const { userId } = useSelector(selectUser);
-	const { data, isLoading, isSuccess, isError, error } = useGetUserDataQuery({
-		userId,
-		include: 'favorites',
-	});
+	const { data, isLoading, isSuccess, isError, error } =
+		useGetLikedRecipesQuery({
+			userId,
+		});
 
-	const { favorites: favoritesIds } = data?.data || {};
+	const favorites = data?.data || [];
 
 	let content;
 	if (isLoading) {
 		content = <Spinner />;
-	} else if (isSuccess && favoritesIds?.length === 0) {
+	} else if (isSuccess && favorites?.length === 0) {
 		content = <NoContent />;
 	} else if (isError) {
 		content = (
@@ -24,9 +24,9 @@ export default function Likes() {
 				{error?.data}
 			</p>
 		);
-	} else if (isSuccess && favoritesIds?.length > 0) {
-		content = favoritesIds.map((recipeId, index) => (
-			<Like key={index} recipeId={recipeId} />
+	} else if (isSuccess && favorites?.length > 0) {
+		content = favorites.map((recipe, index) => (
+			<Like key={index} recipeId={recipe?.recipeId} />
 		));
 	}
 
