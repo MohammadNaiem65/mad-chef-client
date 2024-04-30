@@ -24,6 +24,7 @@ const UserMyProfile = lazy(() => import('../components/Profile/User/pages/MyProf
 const UserDashboard = lazy(() => import('../components/Profile/User/pages/Dashboard/Dashboard'));
 const UserLikes = lazy(() => import('../components/Profile/User/pages/Dashboard/Likes'));
 const UserBookmarks = lazy(() => import('../components/Profile/User/pages/Dashboard/Bookmarks'));
+const UserRatings = lazy(() => import('../components/Profile/User/pages/Dashboard/Ratings'));
 const UserReviews = lazy(() => import('../components/Profile/User/pages/Dashboard/Reviews'));
 
 const routes = createBrowserRouter([
@@ -91,12 +92,16 @@ const routes = createBrowserRouter([
 								element: <UserLikes />,
 							},
 							{
-								path: '/profile/user/dashboard/reviews',
-								element: <UserReviews />,
-							},
-							{
 								path: '/profile/user/dashboard/bookmarks',
 								element: <UserBookmarks />,
+							},
+							{
+								path: '/profile/user/dashboard/recipe-ratings',
+								element: <UserRatings />,
+							},
+							{
+								path: '/profile/user/dashboard/chef-reviews',
+								element: <UserReviews />,
 							},
 						],
 					},

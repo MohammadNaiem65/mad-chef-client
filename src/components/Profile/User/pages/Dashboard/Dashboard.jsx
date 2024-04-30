@@ -1,8 +1,13 @@
+import { useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaRegBookmark, FaBookmark, FaRegStar, FaStar } from 'react-icons/fa6';
-import { MdFavoriteBorder, MdFavorite } from 'react-icons/md';
+import {
+	MdFavoriteBorder,
+	MdFavorite,
+	MdOutlineRateReview,
+	MdRateReview,
+} from 'react-icons/md';
 import Sidebar from '../../Sidebar';
-import { useEffect } from 'react';
 
 export default function Dashboard() {
 	// Get the sub pathname of dashboard
@@ -10,6 +15,7 @@ export default function Dashboard() {
 	const paths = pathname.split('/');
 	const subPath = paths?.length > 0 && paths[4];
 
+	// By default - navigate to the user to Bookmarks sub-page
 	const navigate = useNavigate();
 	useEffect(() => {
 		if (subPath === undefined) {
@@ -50,16 +56,28 @@ export default function Dashboard() {
 						Likes
 					</Link>
 					<Link
-						to='/profile/user/dashboard/reviews'
+						to='/profile/user/dashboard/recipe-ratings'
 						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
-							subPath === 'reviews' && 'text-Primary'
+							subPath === 'recipe-ratings' && 'text-Primary'
 						}`}>
-						{subPath === 'reviews' ? (
+						{subPath === 'recipe-ratings' ? (
 							<FaStar className='text-2xl' />
 						) : (
 							<FaRegStar className='text-2xl' />
 						)}
-						Reviews
+						Recipe Ratings
+					</Link>
+					<Link
+						to='/profile/user/dashboard/chef-reviews'
+						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
+							subPath === 'chef-reviews' && 'text-Primary'
+						}`}>
+						{subPath === 'chef-reviews' ? (
+							<MdRateReview className='text-2xl' />
+						) : (
+							<MdOutlineRateReview className='text-2xl' />
+						)}
+						Chef Reviews
 					</Link>
 				</nav>
 
