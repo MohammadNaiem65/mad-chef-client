@@ -142,9 +142,15 @@ const recipeApi = apiSlice.injectEndpoints({
 							stringifiedDataFilter
 						);
 
-						url =
-							urlWithoutFilterOptions +
-							`&data_filter=${encodedDataFiler}`;
+						if (baseUrl !== urlWithoutFilterOptions) {
+							url =
+								urlWithoutFilterOptions +
+								`&data_filter=${encodedDataFiler}`;
+						} else {
+							url =
+								urlWithoutFilterOptions +
+								`?data_filter=${encodedDataFiler}`;
+						}
 					} else {
 						url = urlWithoutFilterOptions;
 					}
