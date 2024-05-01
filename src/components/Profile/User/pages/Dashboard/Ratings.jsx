@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useGetRecipeRatingsQuery } from '../../../../../features/recipe/recipeApi';
 import { NoContent, Spinner } from '../../../../../shared';
-import RatingComponent from './Rating';
+import RatingCardForRecipeRating from './RatingCardForRecipeRating';
 
 export default function Ratings() {
 	const { _id: userId } = useSelector((state) => state.user);
@@ -25,7 +25,11 @@ export default function Ratings() {
 		content = (
 			<>
 				{ratings.map((rating) => (
-					<RatingComponent key={rating?._id} rating={rating} />
+					<RatingCardForRecipeRating
+						key={rating?._id}
+						userId={userId}
+						rating={rating}
+					/>
 				))}
 			</>
 		);
