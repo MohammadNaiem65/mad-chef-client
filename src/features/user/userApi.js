@@ -30,8 +30,30 @@ const userApi = apiSlice.injectEndpoints({
 				return { url: finalUrl };
 			},
 		}),
+		getChefReviewsByUser: builder.query({
+			query: ({ userId }) => `/users/user/${userId}/review/chef`,
+		}),
+		editRecipeRatingByUser: builder.mutation({
+			query: ({ userId, docId, data }) => ({
+				url: `/users/user/${userId}/rating/recipe?docId=${docId}`,
+				method: 'PATCH',
+				body: data,
+			}),
+		}),
+		editChefReviewsByUser: builder.mutation({
+			query: ({ userId, docId, data }) => ({
+				url: `/users/user/${userId}/review/chef?docId=${docId}`,
+				method: 'PATCH',
+				body: data,
+			}),
+		}),
 	}),
 });
 
 export default userApi;
-export const { useGetUserDataQuery } = userApi;
+export const {
+	useGetUserDataQuery,
+	useGetChefReviewsByUserQuery,
+	useEditRecipeRatingByUserMutation,
+	useEditChefReviewsByUserMutation,
+} = userApi;
