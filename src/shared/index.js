@@ -7,3 +7,4 @@ export { default as NoContent } from './NoContent';
 export { default as Pagination } from './Pagination';
 export { default as Recipe } from './Recipe';
 export { default as Avatar } from './Avatar';
+export { default as ConfirmationModal } from './ConfirmationModal';
