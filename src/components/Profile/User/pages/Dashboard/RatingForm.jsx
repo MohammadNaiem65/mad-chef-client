@@ -12,7 +12,7 @@ export default function RatingForm({
 	ratingCount,
 	message,
 	setEditMode,
-	submitDoc,
+	submitDocFn,
 }) {
 	const [formData, setFormData] = useState({
 		ratingCount: ratingCount,
@@ -32,7 +32,7 @@ export default function RatingForm({
 			message: formData.message,
 		};
 
-		submitDoc({ userId, docId, data });
+		submitDocFn({ userId, docId, data });
 		setEditMode(false);
 	};
 
