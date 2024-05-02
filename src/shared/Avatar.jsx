@@ -1,6 +1,6 @@
 export default function Avatar() {
 	return (
-		<div className='size-full inline-flex items-center justify-center rounded-full bg-Primary/10 text-Primary/50 flex-shrink-0'>
+		<div className='size-full inline-flex items-center justify-center bg-Primary/10 text-Primary/50 flex-shrink-0'>
 			<svg
 				fill='none'
 				stroke='currentColor'
