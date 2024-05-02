@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiEdit3 } from 'react-icons/fi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import {
@@ -6,6 +6,7 @@ import {
 	useEditRecipeRatingByUserMutation,
 } from '../../../../../features/user/userApi';
 import { useGetRecipeQuery } from '../../../../../features/recipe/recipeApi';
+import showNotification from '../../../../../helpers/showNotification';
 import { Avatar, ConfirmationModal, Rating } from '../../../../../shared';
 import RatingForm from './RatingForm';
 
@@ -17,12 +18,34 @@ export default function RatingCardForRecipeRating({ userId, rating }) {
 	const { data } = useGetRecipeQuery(recipeId);
 	const { title, img } = data?.data || {};
 
-	const [editRecipeRating] = useEditRecipeRatingByUserMutation();
-	const [deleteRecipeRating] = useDeleteRecipeRatingByUserMutation();
+	const [editRecipeRating, { isSuccess: editRecipeRatingIsSuccess }] =
+		useEditRecipeRatingByUserMutation();
+	const [deleteRecipeRating, { isSuccess: deleteRecipeRatingIsSuccess }] =
+		useDeleteRecipeRatingByUserMutation();
 
 	const handleDeletion = () => {
 		deleteRecipeRating({ userId, docId: _id });
 	};
+
+	// Notify the user upon successful editing
+	useEffect(() => {
+		if (editRecipeRatingIsSuccess) {
+			showNotification(
+				'success',
+				'Successfully updated the recipe rating'
+			);
+		}
+	}, [editRecipeRatingIsSuccess]);
+
+	// Notify the user upon successful deletion
+	useEffect(() => {
+		if (deleteRecipeRatingIsSuccess) {
+			showNotification(
+				'success',
+				'Successfully deleted the recipe rating'
+			);
+		}
+	}, [deleteRecipeRatingIsSuccess]);
 
 	return (
 		<div className='p-4 lg:w-1/2 md:w-full group'>

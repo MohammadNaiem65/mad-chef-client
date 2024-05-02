@@ -1,12 +1,13 @@
+import { useState, useEffect } from 'react';
 import { FiEdit3 } from 'react-icons/fi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { Avatar, ConfirmationModal, Rating } from '../../../../../shared';
 import { useGetChefQuery } from '../../../../../features/chef/chefApi';
-import { useState } from 'react';
 import {
 	useDeleteChefReviewByUserMutation,
 	useEditChefReviewsByUserMutation,
 } from '../../../../../features/user/userApi';
+import showNotification from '../../../../../helpers/showNotification';
+import { Avatar, ConfirmationModal, Rating } from '../../../../../shared';
 import RatingForm from './RatingForm';
 
 export default function RatingCardForReview({ userId, rating }) {
@@ -17,12 +18,28 @@ export default function RatingCardForReview({ userId, rating }) {
 	const { data } = useGetChefQuery({ chef_id: chefId, include: 'name,img' });
 	const { name, img } = data?.data || {};
 
-	const [editChefReview] = useEditChefReviewsByUserMutation();
-	const [deleteChefReview] = useDeleteChefReviewByUserMutation();
+	const [editChefReview, { isSuccess: editChefReviewIsSuccess }] =
+		useEditChefReviewsByUserMutation();
+	const [deleteChefReview, { isSuccess: deleteChefReviewIsSuccess }] =
+		useDeleteChefReviewByUserMutation();
 
 	const handleDeletion = () => {
 		deleteChefReview({ userId, docId: _id });
 	};
+
+	// Notify the user upon successful editing
+	useEffect(() => {
+		if (editChefReviewIsSuccess) {
+			showNotification('success', 'Successfully updated the chef review');
+		}
+	}, [editChefReviewIsSuccess]);
+
+	// Notify the user upon successful deletion
+	useEffect(() => {
+		if (deleteChefReviewIsSuccess) {
+			showNotification('success', 'Successfully deleted the chef review');
+		}
+	}, [deleteChefReviewIsSuccess]);
 
 	return (
 		<div className='p-4 lg:w-1/2 md:w-full group'>
