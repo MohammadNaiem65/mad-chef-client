@@ -59,6 +59,7 @@ export default function RatingForm({
 						return (
 							<FaStar
 								key={i}
+								className='cursor-pointer'
 								onClick={() =>
 									setFormData((prev) => ({
 										...prev,
@@ -71,6 +72,7 @@ export default function RatingForm({
 						return (
 							<FaStarHalfAlt
 								key={i}
+								className='cursor-pointer'
 								onClick={() =>
 									setFormData((prev) => ({
 										...prev,
@@ -83,6 +85,7 @@ export default function RatingForm({
 						return (
 							<FaRegStar
 								key={i}
+								className='cursor-pointer'
 								onClick={() =>
 									setFormData((prev) => ({
 										...prev,
