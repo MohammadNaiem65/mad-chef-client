@@ -1,19 +1,28 @@
 import { useState } from 'react';
 import { FiEdit3 } from 'react-icons/fi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { useEditRecipeRatingByUserMutation } from '../../../../../features/user/userApi';
+import {
+	useDeleteRecipeRatingByUserMutation,
+	useEditRecipeRatingByUserMutation,
+} from '../../../../../features/user/userApi';
 import { useGetRecipeQuery } from '../../../../../features/recipe/recipeApi';
-import { Avatar, Rating } from '../../../../../shared';
+import { Avatar, ConfirmationModal, Rating } from '../../../../../shared';
 import RatingForm from './RatingForm';
 
 export default function RatingCardForRecipeRating({ userId, rating }) {
 	const [editMode, setEditMode] = useState(false);
+	const [showModal, setShowModal] = useState(false);
 
 	const { _id, recipeId, rating: ratingCount, message } = rating || {};
 	const { data } = useGetRecipeQuery(recipeId);
 	const { title, img } = data?.data || {};
 
 	const [editRecipeRating] = useEditRecipeRatingByUserMutation();
+	const [deleteRecipeRating] = useDeleteRecipeRatingByUserMutation();
+
+	const handleDeletion = () => {
+		deleteRecipeRating({ userId, docId: _id });
+	};
 
 	return (
 		<div className='p-4 lg:w-1/2 md:w-full group'>
@@ -38,7 +47,7 @@ export default function RatingCardForRecipeRating({ userId, rating }) {
 						message={message}
 						ratingCount={ratingCount}
 						setEditMode={setEditMode}
-						submitDoc={editRecipeRating}
+						submitDocFn={editRecipeRating}
 					/>
 				) : (
 					<div className='flex-grow'>
@@ -58,13 +67,24 @@ export default function RatingCardForRecipeRating({ userId, rating }) {
 								onClick={() => setEditMode(true)}>
 								<FiEdit3 className='text-lg' /> Edit
 							</button>
-							<button className='py-1 hover:text-red-500 flex items-center gap-x-1 rounded'>
+							<button
+								className='py-1 hover:text-red-500 flex items-center gap-x-1 rounded'
+								onClick={() => setShowModal(true)}>
 								<RiDeleteBin6Line className='text-lg' /> Delete
 							</button>
 						</div>
 					</div>
 				)}
 			</div>
+
+			{showModal && (
+				<ConfirmationModal
+					setIsVisible={setShowModal}
+					onConfirm={handleDeletion}
+					title={'Are you sure you want to delete?'}
+					details={'This action can not be undone'}
+				/>
+			)}
 		</div>
 	);
 }
