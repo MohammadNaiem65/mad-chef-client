@@ -40,11 +40,23 @@ const userApi = apiSlice.injectEndpoints({
 				body: data,
 			}),
 		}),
+		deleteRecipeRatingByUser: builder.mutation({
+			query: ({ userId, docId }) => ({
+				url: `/users/user/${userId}/rating/recipe?docId=${docId}`,
+				method: 'DELETE',
+			}),
+		}),
 		editChefReviewsByUser: builder.mutation({
 			query: ({ userId, docId, data }) => ({
 				url: `/users/user/${userId}/review/chef?docId=${docId}`,
 				method: 'PATCH',
 				body: data,
+			}),
+		}),
+		deleteChefReviewByUser: builder.mutation({
+			query: ({ userId, docId }) => ({
+				url: `/users/user/${userId}/review/chef?docId=${docId}`,
+				method: 'DELETE',
 			}),
 		}),
 	}),
@@ -55,5 +67,7 @@ export const {
 	useGetUserDataQuery,
 	useGetChefReviewsByUserQuery,
 	useEditRecipeRatingByUserMutation,
+	useDeleteRecipeRatingByUserMutation,
 	useEditChefReviewsByUserMutation,
+	useDeleteChefReviewByUserMutation,
 } = userApi;
