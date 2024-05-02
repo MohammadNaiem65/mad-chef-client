@@ -38,7 +38,7 @@ export default function Ratings() {
 	return (
 		<section className='text-gray-600 body-font'>
 			<div className='container px-5 py-24 mx-auto flex flex-wrap'>
-				<div className='flex flex-wrap -m-4'>{content}</div>
+				<div className='w-full flex flex-wrap -m-4'>{content}</div>
 			</div>
 		</section>
 	);
