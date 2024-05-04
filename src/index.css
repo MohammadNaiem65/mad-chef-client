@@ -18,7 +18,7 @@
     }
 
     .btn {
-        @apply text-lg text-center font-semibold px-7 py-2 outline-blue-700 rounded-full duration-150 cursor-pointer hover:-translate-y-1 hover:shadow-2xl   
+        @apply text-lg text-center font-semibold px-7 py-2 outline-blue-700 rounded-full duration-150 cursor-pointer hover:-translate-y-1 hover:shadow-2xl disabled:translate-x-0 disabled:translate-y-0
     }
 
     .btn-primary {
