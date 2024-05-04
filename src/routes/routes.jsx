@@ -20,7 +20,7 @@ const Banner = lazy(() => import('../components/Recipes/Banner'));
 // Dashboard - User Pages
 const UserConsults = lazy(() => import('../components/Profile/User/pages/Consults'));
 const UserMessages = lazy(() => import('../components/Profile/User/pages/Messages'));
-const UserMyProfile = lazy(() => import('../components/Profile/User/pages/MyProfile'));
+const UserMyProfile = lazy(() => import('../components/Profile/User/pages/MyProfile/MyProfile'));
 const UserDashboard = lazy(() => import('../components/Profile/User/pages/Dashboard/Dashboard'));
 const UserLikes = lazy(() => import('../components/Profile/User/pages/Dashboard/Likes'));
 const UserBookmarks = lazy(() => import('../components/Profile/User/pages/Dashboard/Bookmarks'));
