@@ -2,23 +2,39 @@ import {
 	GoogleAuthProvider,
 	createUserWithEmailAndPassword,
 	getAuth,
+	sendEmailVerification,
 	signInWithEmailAndPassword,
 	signInWithPopup,
 } from 'firebase/auth';
 import app from '../../firebase.config';
+import showNotification from './showNotification';
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
 
-// sign up user with password
+// Sign up user with password
 const signUpWithPassword = (email, password) =>
 	createUserWithEmailAndPassword(auth, email, password);
-// create/sign in user with google
 
+// Create/Sign in user with google
 const signInWithGoogle = () => signInWithPopup(auth, new GoogleAuthProvider());
 
-// sign in user with password
+// Sign in user with password
 const signInWithPassword = (email, password) =>
 	signInWithEmailAndPassword(auth, email, password);
 
-export { signUpWithPassword, signInWithPassword, signInWithGoogle };
+// Send email to verify user email
+const verifyEmailAddress = () => {
+	showNotification('promise', 'Sending verification email', {
+		promise: sendEmailVerification(auth.currentUser),
+		successMessage: 'Message successfully sent',
+		errorMessage: 'An error occurred while sending the verification email',
+	});
+};
+
+export {
+	signUpWithPassword,
+	signInWithPassword,
+	signInWithGoogle,
+	verifyEmailAddress,
+};
