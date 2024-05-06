@@ -25,8 +25,14 @@ const signInWithPassword = (email, password) =>
 
 // Send email to verify user email
 const verifyEmailAddress = () => {
-	showNotification('promise', 'Sending verification email', {
-		promise: sendEmailVerification(auth.currentUser),
+	const user = auth.currentUser;
+
+	const url = `https://mad-chef-server.vercel.app/users/user/verify-email?uid=${user.uid}`;
+
+	return showNotification('promise', 'Sending verification email', {
+		promise: sendEmailVerification(user, {
+			url,
+		}),
 		successMessage: 'Message successfully sent',
 		errorMessage: 'An error occurred while sending the verification email',
 	});
