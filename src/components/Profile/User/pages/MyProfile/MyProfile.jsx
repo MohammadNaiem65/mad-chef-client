@@ -6,7 +6,7 @@ export default function MyProfile() {
 	return (
 		<section className='border-t border-gray-300 flex'>
 			<Helmet>
-				<title>My Profile || Profile - Mad Chef</title>
+				<title>My Profile | Profile - Mad Chef</title>
 			</Helmet>
 
 			{/* Sidebar */}
