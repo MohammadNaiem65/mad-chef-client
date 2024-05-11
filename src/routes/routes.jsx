@@ -12,6 +12,7 @@ const RecipeDetails = lazy(() => import('../pages/RecipeDetails'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Consult = lazy(() => import('../pages/Consult'));
 const Profile = lazy(() => import('../pages/Profile'));
+const Payment = lazy(() => import('../pages/Payment'));
 const Blog = lazy(() => import('../pages/Blog'));
 const Login = lazy(() => import('../pages/Login'));
 const Register = lazy(() => import('../pages/Register'));
@@ -26,6 +27,9 @@ const UserLikes = lazy(() => import('../components/Profile/User/pages/Dashboard/
 const UserBookmarks = lazy(() => import('../components/Profile/User/pages/Dashboard/Bookmarks'));
 const UserRatings = lazy(() => import('../components/Profile/User/pages/Dashboard/Ratings'));
 const UserReviews = lazy(() => import('../components/Profile/User/pages/Dashboard/Reviews'));
+
+// Payment pages
+const UpgradeToPro = lazy(() => import('../components/Payment/BuyProPkg'));
 
 const routes = createBrowserRouter([
 	{
@@ -116,6 +120,20 @@ const routes = createBrowserRouter([
 					{
 						path: '/profile/user/my-profile',
 						element: <UserMyProfile />,
+					},
+				],
+			},
+			{
+				path: '/payment',
+				element: (
+					<PrivateRoute>
+						<Payment />
+					</PrivateRoute>
+				),
+				children: [
+					{
+						path: '/payment/user/upgrade-to-pro',
+						element: <UpgradeToPro />,
 					},
 				],
 			},
