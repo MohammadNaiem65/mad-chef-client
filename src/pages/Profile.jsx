@@ -29,7 +29,7 @@ export default function Profile() {
 			</Helmet>
 
 			{role === 'student' ? (
-				<User userId={userId} />
+				<User />
 			) : role === 'chef' ? (
 				<Chef chefId={userId} />
 			) : (
