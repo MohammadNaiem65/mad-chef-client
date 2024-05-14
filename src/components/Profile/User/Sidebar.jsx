@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation, Link } from 'react-router-dom';
 import { AiOutlineDashboard, AiFillDashboard } from 'react-icons/ai';
 import {
@@ -5,13 +7,13 @@ import {
 	BiMessageRoundedDetail,
 	BiSolidMessageRoundedDetail,
 } from 'react-icons/bi';
+import { BsCreditCard2Front, BsCreditCard2FrontFill } from 'react-icons/bs';
 import { FaRegUserCircle, FaUserCircle } from 'react-icons/fa';
 import { LuLogOut } from 'react-icons/lu';
+
 import { useUnAuthenticateMutation } from '../../../features/auth/authApi';
-import { useEffect } from 'react';
 import removeNotifications from '../../../helpers/removeNotifications';
 import showNotification from '../../../helpers/showNotification';
-import { useSelector } from 'react-redux';
 import { selectUser } from '../../../features/auth/authSelectors';
 
 export default function Sidebar() {
@@ -86,6 +88,20 @@ export default function Sidebar() {
 							: 'px-3 '
 					}`}>
 					<BiSupport className='text-2xl' /> Consults
+				</Link>
+				<Link
+					to='/profile/user/payment-history'
+					className={`py-2 flex items-center gap-x-2 rounded-tl rounded-bl hover:bg-Primary/20 ${
+						mainPath === 'payment-history'
+							? 'bg-blue-300 font- px-5'
+							: 'px-3 '
+					}`}>
+					{mainPath === 'payment-history' ? (
+						<BsCreditCard2FrontFill className='text-2xl' />
+					) : (
+						<BsCreditCard2Front className='text-2xl' />
+					)}
+					Payment History
 				</Link>
 			</div>
 			<Link

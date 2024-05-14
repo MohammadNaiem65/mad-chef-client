@@ -18,7 +18,7 @@ const Login = lazy(() => import('../pages/Login'));
 const Register = lazy(() => import('../pages/Register'));
 const Banner = lazy(() => import('../components/Recipes/Banner'));
 
-// Dashboard - User Pages
+// Dashboard - User Profile Pages
 const UserConsults = lazy(() => import('../components/Profile/User/pages/Consults'));
 const UserMessages = lazy(() => import('../components/Profile/User/pages/Messages'));
 const UserMyProfile = lazy(() => import('../components/Profile/User/pages/MyProfile/MyProfile'));
@@ -27,6 +27,9 @@ const UserLikes = lazy(() => import('../components/Profile/User/pages/Dashboard/
 const UserBookmarks = lazy(() => import('../components/Profile/User/pages/Dashboard/Bookmarks'));
 const UserRatings = lazy(() => import('../components/Profile/User/pages/Dashboard/Ratings'));
 const UserReviews = lazy(() => import('../components/Profile/User/pages/Dashboard/Reviews'));
+
+// Payment History - User Profile pages
+const UserPaymentHistory = lazy(() => import('../components/Profile/User/pages/PaymentHistory/PaymentHistory'));
 
 // Payment pages
 const UpgradeToPro = lazy(() => import('../components/Payment/BuyProPkg'));
@@ -110,12 +113,16 @@ const routes = createBrowserRouter([
 						],
 					},
 					{
+						path: '/profile/user/messages',
+						element: <UserMessages />,
+					},
+					{
 						path: '/profile/user/consults',
 						element: <UserConsults />,
 					},
 					{
-						path: '/profile/user/messages',
-						element: <UserMessages />,
+						path: '/profile/user/payment-history',
+						element: <UserPaymentHistory />,
 					},
 					{
 						path: '/profile/user/my-profile',
