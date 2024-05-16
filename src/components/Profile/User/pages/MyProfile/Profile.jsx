@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { MdOutlineWorkspacePremium } from 'react-icons/md';
@@ -81,22 +82,27 @@ export default function Profile() {
 						<RiVerifiedBadgeFill className='text-2xl' />
 					</button>
 				)}
-				<div className='relative'>
-					<button
-						disabled={emailVerified === false}
-						id='pro-btn'
-						className='btn peer border-2 border-yellow-500 text-yellow-500 flex items-center gap-x-2 hover:bg-yellow-500 hover:text-white disabled:bg-yellow-700 disabled:border-yellow-700 disabled:hover:text-yellow-500'>
-						Become Pro
-						<MdOutlineWorkspacePremium className='text-2xl' />
-					</button>
-					<label
-						htmlFor='pro-btn'
-						className={`p-1 text-lg text-white opacity-0 bg-yellow-500 absolute -top-10 -left-2 -right-2 rounded duration-300 peer-hover:opacity-100 ${
-							emailVerified && 'hidden'
-						}`}>
-						First verify Email address
-					</label>
-				</div>
+
+				{pkg !== 'pro' && (
+					<Link
+						to='/payment/user/upgrade-to-pro'
+						className='w-fit relative rounded-full overflow-hidden'>
+						<button
+							disabled={emailVerified === false}
+							id='pro-btn'
+							className='btn peer border-2 border-yellow-500 text-yellow-500 flex items-center gap-x-2 hover:bg-yellow-500 hover:text-white disabled:bg-yellow-700 disabled:border-yellow-700 disabled:hover:text-yellow-500'>
+							Become Pro
+							<MdOutlineWorkspacePremium className='text-2xl' />
+						</button>
+						<label
+							htmlFor='pro-btn'
+							className={`p-1 text-lg text-white opacity-0 bg-yellow-500 absolute -top-10 -left-2 -right-2 rounded duration-300 peer-hover:opacity-100 ${
+								emailVerified && 'hidden'
+							}`}>
+							First verify Email address
+						</label>
+					</Link>
+				)}
 
 				{/* Action button to be chef */}
 				{emailVerified && (
