@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Outlet, Link } from 'react-router-dom';
 import { FaRegBookmark, FaBookmark, FaRegStar, FaStar } from 'react-icons/fa6';
 import {
 	MdFavoriteBorder,
@@ -11,14 +11,15 @@ import Sidebar from '../../Sidebar';
 
 export default function Dashboard() {
 	// Get the sub pathname of dashboard
-	const { pathname } = useLocation();
+	const location = useLocation();
+	const { pathname } = location;
 	const paths = pathname.split('/');
 	const subPath = paths?.length > 0 && paths[4];
 
 	// By default - navigate to the user to Bookmarks sub-page
 	const navigate = useNavigate();
 	useEffect(() => {
-		if (subPath === undefined) {
+		if (!subPath) {
 			navigate('/profile/user/dashboard/bookmarks');
 		}
 	}, [navigate, subPath]);
