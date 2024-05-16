@@ -42,6 +42,42 @@ const paymentApi = apiSlice.injectEndpoints({
 				method: 'POST',
 				body: data,
 			}),
+
+			async onQueryStarted(args, { queryFulfilled, dispatch }) {
+				try {
+					const result = await queryFulfilled;
+
+					const doc = result.data?.data;
+
+					// Assuming 'doc' contains the fields needed for filtering
+					const userId = doc.userId;
+					const status = doc.status;
+
+					// Update cache for 'all' filter
+					dispatch(
+						apiSlice.util.updateQueryData(
+							'getPaymentReceipts',
+							{ filter: 'all', userId },
+							(draft) => {
+								draft.data.push(doc);
+							}
+						)
+					);
+
+					// Update cache based on the document's status
+					dispatch(
+						apiSlice.util.updateQueryData(
+							'getPaymentReceipts',
+							{ filter: status, userId },
+							(draft) => {
+								draft.data.push(doc);
+							}
+						)
+					);
+				} catch (error) {
+					// Do nothing for now
+				}
+			},
 		}),
 		deletePaymentReceipt: builder.mutation({
 			query: ({ receiptId }) => ({
