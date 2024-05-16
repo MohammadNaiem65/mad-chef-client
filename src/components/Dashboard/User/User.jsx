@@ -8,14 +8,15 @@ export default function User({ userId }) {
 	const { data, isLoading, isSuccess, isError } = useGetUserDataQuery({
 		userId,
 	});
+	const userData = data?.data || {};
 
 	return isLoading ? (
 		<Spinner />
 	) : isSuccess ? (
 		<>
-			<UserDetails userData={data.data} />
-			<Consults consults={data.data.consults} />
-			<FavoriteRecipe favorites={data.data.favorites} />
+			<UserDetails userData={userData} />
+			<Consults consults={userData.consults} />
+			<FavoriteRecipe favorites={userData.favorites} />
 		</>
 	) : (
 		isError && (
