@@ -8,6 +8,7 @@ import {
 } from '../../features/payment/paymentApi';
 import './BuyProPkg.css';
 import { Spinner } from '../../shared';
+import { useUpdateUserPkgMutation } from '../../features/user/userApi';
 
 const features = [
 	{ title: 'Unlimited Blogs', description: 'Access unlimited blogs.' },
@@ -38,7 +39,6 @@ export default function BuyProPkg() {
 	const elements = useElements();
 
 	const [clientSecret, setClientSecret] = useState('');
-	const [paymentSucceed, setPaymentSucceed] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
 
@@ -54,6 +54,14 @@ export default function BuyProPkg() {
 			error: savePaymentReceiptError,
 		},
 	] = useSavePaymentReceiptMutation();
+	const [
+		updateUserPkg,
+		{
+			isSuccess: updatingUserPkgIsSuccess,
+			isError: updatingUserPkgIsError,
+			error: updatingUserPkgError,
+		},
+	] = useUpdateUserPkgMutation();
 
 	// Fetch a new payment intent after the first render
 	useEffect(() => {
@@ -67,25 +75,35 @@ export default function BuyProPkg() {
 		}
 	}, [createPaymentIntentIsSuccess, data?.data?.clientSecret]);
 
-	// Navigate the user to payment history page upon successful payment and save payment receipt
+	// Update user's pkg field in the db
 	useEffect(() => {
 		if (savePaymentReceiptIsSuccess) {
-			setLoading(false);
-			if (paymentSucceed) {
-				navigate('/profile/user/payment-history');
-			}
+			updateUserPkg();
 		}
-	}, [navigate, savePaymentReceiptIsSuccess, paymentSucceed]);
+	}, [updateUserPkg, savePaymentReceiptIsSuccess]);
+
+	// Navigate the user to payment history page upon successfully updating the user's pkg field
+	useEffect(() => {
+		if (updatingUserPkgIsSuccess) {
+			setLoading(false);
+			navigate('/profile/user/payment-history');
+		}
+	}, [navigate, updatingUserPkgIsSuccess]);
 
 	// Set the loading state error occurs
 	useEffect(() => {
-		if (savePaymentReceiptIsError) {
+		if (updatingUserPkgIsError || savePaymentReceiptIsError) {
 			setLoading(false);
-			setError(savePaymentReceiptError?.data?.data?.message);
+			setError(
+				updatingUserPkgError?.data?.msg ||
+					savePaymentReceiptError?.data?.data?.message
+			);
 		}
 	}, [
 		savePaymentReceiptIsError,
+		updatingUserPkgIsError,
 		savePaymentReceiptError?.data?.data?.message,
+		updatingUserPkgError?.data?.msg,
 	]);
 
 	// Confirm the submission of saving payment receipt
@@ -132,7 +150,6 @@ export default function BuyProPkg() {
 			};
 
 			if (paymentIntent?.status === 'succeeded') {
-				setPaymentSucceed(true);
 				const { id: transactionId } = paymentIntent;
 
 				// Add transaction id and status
@@ -142,8 +159,6 @@ export default function BuyProPkg() {
 				// Save the money receipt document to the database
 				savePaymentReceipt({ data });
 			} else {
-				setPaymentSucceed(false);
-
 				// Add transaction id and status
 				data.status = 'failed';
 
