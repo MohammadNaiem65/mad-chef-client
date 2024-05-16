@@ -51,6 +51,7 @@ export default function BuyProPkg() {
 		{
 			isSuccess: savePaymentReceiptIsSuccess,
 			isError: savePaymentReceiptIsError,
+			error: savePaymentReceiptError,
 		},
 	] = useSavePaymentReceiptMutation();
 
@@ -80,8 +81,12 @@ export default function BuyProPkg() {
 	useEffect(() => {
 		if (savePaymentReceiptIsError) {
 			setLoading(false);
+			setError(savePaymentReceiptError?.data?.data?.message);
 		}
-	}, [savePaymentReceiptIsError]);
+	}, [
+		savePaymentReceiptIsError,
+		savePaymentReceiptError?.data?.data?.message,
+	]);
 
 	// Confirm the submission of saving payment receipt
 	const handleSubmit = async (event) => {
@@ -121,7 +126,7 @@ export default function BuyProPkg() {
 			const data = {
 				userId: _id,
 				username: name,
-				title: 'student/pro-pkg',
+				pkg: 'student/pro-pkg',
 				email,
 				amount,
 			};
