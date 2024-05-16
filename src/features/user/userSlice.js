@@ -7,7 +7,7 @@ const userSlice = createSlice({
 	initialState,
 	reducers: {
 		addUserData: (state, action) => {
-			Object.assign(state, action.payload);
+			Object.assign(state, {...state, ...action.payload});
 		},
 		removeUserData: (state) => {
 			Object.assign(state, {});

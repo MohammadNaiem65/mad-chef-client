@@ -1,5 +1,7 @@
 import showNotification from '../../helpers/showNotification';
 import apiSlice from '../api/apiSlice';
+import { setCredentials } from '../auth/authSlice';
+import { addUserData } from './userSlice';
 
 const userApi = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -29,6 +31,31 @@ const userApi = apiSlice.injectEndpoints({
 				}
 
 				return { url: finalUrl };
+			},
+		}),
+		updateUserPkg: builder.mutation({
+			query: () => ({
+				url: '/users/user/update-package',
+				method: 'PATCH',
+			}),
+
+			async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
+				try {
+					await queryFulfilled;
+
+					dispatch(addUserData({ pkg: 'pro' }));
+
+					const { user, accessToken } = getState().auth;
+
+					const updatedUser = { ...user };
+					updatedUser.pkg = 'pro';
+
+					dispatch(
+						setCredentials({ user: updatedUser, accessToken })
+					);
+				} catch (error) {
+					// Do nothing here
+				}
 			},
 		}),
 		editRecipeRatingByUser: builder.mutation({
@@ -192,6 +219,7 @@ const userApi = apiSlice.injectEndpoints({
 export default userApi;
 export const {
 	useGetUserDataQuery,
+	useUpdateUserPkgMutation,
 	useGetChefReviewsByUserQuery,
 	useEditRecipeRatingByUserMutation,
 	useDeleteRecipeRatingByUserMutation,
