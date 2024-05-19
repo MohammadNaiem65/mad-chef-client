@@ -1,4 +1,6 @@
 import apiSlice from '../api/apiSlice';
+import userApi from '../user/userApi';
+import { addUserData, removeUserData } from '../user/userSlice';
 import { removeCredentials, setCredentials } from './authSlice';
 
 const authApi = apiSlice.injectEndpoints({
@@ -25,11 +27,37 @@ const authApi = apiSlice.injectEndpoints({
 				try {
 					const { data } = await queryFulfilled;
 
-					// store the data in the local storage
+					// Store the data in the local storage
 					localStorage.setItem('auth', JSON.stringify(data.data));
 
-					// store the data in the redux store
-					dispatch(setCredentials(data.data));
+					// Store auth data in the redux store
+					dispatch(
+						setCredentials({
+							user: data?.data?.user,
+							accessToken: data?.data?.accessToken,
+						})
+					);
+
+					// Get user data from database using userId
+					const { data: userDataResult } = await dispatch(
+						userApi.endpoints.getUserData.initiate({
+							userId: data?.data?.user?.userId,
+						})
+					).unwrap();
+
+					const userData = {
+						_id: userDataResult?._id,
+						name: userDataResult?.name,
+						email: userDataResult?.email,
+						emailVerified: userDataResult?.emailVerified,
+						role: userDataResult?.role,
+						img: userDataResult?.img,
+						createdAt: userDataResult?.createdAt,
+						pkg: userDataResult?.pkg,
+					};
+
+					// Store user data in the redux store
+					dispatch(addUserData(userData));
 				} catch (error) {
 					// handle error in the UI
 				}
@@ -45,6 +73,7 @@ const authApi = apiSlice.injectEndpoints({
 					await queryFulfilled;
 
 					dispatch(removeCredentials());
+					dispatch(removeUserData());
 
 					// remove credentials from local storage
 					localStorage.removeItem('auth');
