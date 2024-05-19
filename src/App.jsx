@@ -15,10 +15,10 @@ function App() {
 
 	// Store user data in the redux store after initial authentication check
 	useEffect(() => {
-		if (authChecked && user?._id) {
+		if (authChecked && user?.userId) {
 			storeUserData();
 		}
-	}, [authChecked, user?._id]);
+	}, [authChecked, user?.userId]);
 
 	return !authChecked ? (
 		<Spinner />
