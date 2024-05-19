@@ -1,5 +1,5 @@
 import { useEffect, Suspense } from 'react';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import store from './app/store';
@@ -11,13 +11,14 @@ import './App.css';
 function App() {
 	// Check for authentication credentials in localStorage
 	const authChecked = useAuthCheck();
+	const { user } = useSelector((state) => state.auth) || {};
 
 	// Store user data in the redux store after initial authentication check
 	useEffect(() => {
-		if (authChecked) {
+		if (authChecked && user?._id) {
 			storeUserData();
 		}
-	}, [authChecked]);
+	}, [authChecked, user?._id]);
 
 	return !authChecked ? (
 		<Spinner />
