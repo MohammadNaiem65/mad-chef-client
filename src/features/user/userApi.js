@@ -43,7 +43,28 @@ const userApi = apiSlice.injectEndpoints({
 				try {
 					await queryFulfilled;
 
-					dispatch(addUserData({ pkg: 'pro' }));
+					const {
+						_id,
+						name,
+						email,
+						emailVerified,
+						role,
+						img,
+						createdAt,
+					} = getState().user;
+					
+					dispatch(
+						addUserData({
+							_id,
+							name,
+							email,
+							emailVerified,
+							role,
+							img,
+							createdAt,
+							pkg: 'pro',
+						})
+					);
 
 					const { user, accessToken } = getState().auth;
 
