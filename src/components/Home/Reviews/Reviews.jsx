@@ -21,8 +21,8 @@ export default function Reviews() {
 			<div className='outer-container mt-8 overflow-hidden'>
 				<div className='inner-container w-fit flex gap-5 md:gap-3'>
 					{[...reviews, ...reviews, ...reviews, ...reviews].map(
-						(review) => (
-							<Review key={review?._id} review={review} />
+						(review, index) => (
+							<Review key={index} review={review} />
 						)
 					)}
 				</div>
