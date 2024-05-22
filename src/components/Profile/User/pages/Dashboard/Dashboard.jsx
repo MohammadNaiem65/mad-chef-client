@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigate, Outlet, Link } from 'react-router-dom';
+import { useLocation, Outlet, Link } from 'react-router-dom';
 import { FaRegBookmark, FaBookmark, FaRegStar, FaStar } from 'react-icons/fa6';
 import {
 	MdFavoriteBorder,
@@ -15,14 +14,6 @@ export default function Dashboard() {
 	const { pathname } = location;
 	const paths = pathname.split('/');
 	const subPath = paths?.length > 0 && paths[4];
-
-	// By default - navigate to the user to Bookmarks sub-page
-	const navigate = useNavigate();
-	useEffect(() => {
-		if (!subPath) {
-			navigate('/profile/user/dashboard/bookmarks');
-		}
-	}, [navigate, subPath]);
 
 	return (
 		<section className='border-t border-gray-300 flex'>
