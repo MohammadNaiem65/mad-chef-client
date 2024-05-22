@@ -18,21 +18,28 @@ const Login = lazy(() => import('../pages/Login'));
 const Register = lazy(() => import('../pages/Register'));
 const Banner = lazy(() => import('../components/Recipes/Banner'));
 
-// Dashboard - User Profile Pages
-const UserConsults = lazy(() => import('../components/Profile/User/pages/Consults'));
+// User Profile Pages
 const UserMessages = lazy(() => import('../components/Profile/User/pages/Messages'));
 const UserMyProfile = lazy(() => import('../components/Profile/User/pages/MyProfile/MyProfile'));
+
+// Dashboard Pages - Profile 
 const UserDashboard = lazy(() => import('../components/Profile/User/pages/Dashboard/Dashboard'));
 const UserLikes = lazy(() => import('../components/Profile/User/pages/Dashboard/Likes'));
 const UserBookmarks = lazy(() => import('../components/Profile/User/pages/Dashboard/Bookmarks'));
 const UserRatings = lazy(() => import('../components/Profile/User/pages/Dashboard/Ratings'));
 const UserReviews = lazy(() => import('../components/Profile/User/pages/Dashboard/Reviews'));
 
-// Payment History - User Profile pages
-const UserPaymentHistory = lazy(() => import('../components/Profile/User/pages/PaymentHistory/PaymentHistory'));
+// Consult Pages - Profile
+const UserConsults = lazy(() => import('../components/Profile/User/pages/Consults/Consults'));
+const UserConsultsCards = lazy(() => import('../components/Profile/User/pages/Consults/ConsultCards'));
+const ConsultForm = lazy(() => import('../components/Profile/User/pages/Consults/ConsultForm'));
 
 // Payment pages
 const UpgradeToPro = lazy(() => import('../components/Payment/BuyProPkg'));
+
+// Payment History - User Profile pages
+const UserPaymentHistory = lazy(() => import('../components/Profile/User/pages/PaymentHistory/PaymentHistory'));
+
 
 const routes = createBrowserRouter([
 	{
@@ -119,6 +126,16 @@ const routes = createBrowserRouter([
 					{
 						path: '/profile/user/consults',
 						element: <UserConsults />,
+						children: [
+							{
+								path: '/profile/user/consults/my-consults',
+								element: <UserConsultsCards />,
+							},
+							{
+								path: '/profile/user/consults/form',
+								element: <ConsultForm />,
+							},
+						],
 					},
 					{
 						path: '/profile/user/payment-history',
