@@ -31,7 +31,7 @@ const UserReviews = lazy(() => import('../components/Profile/User/pages/Dashboar
 
 // Consult Pages - Profile
 const UserConsults = lazy(() => import('../components/Profile/User/pages/Consults/Consults'));
-const UserConsultsCards = lazy(() => import('../components/Profile/User/pages/Consults/ConsultCards'));
+const UserConsultsCards = lazy(() => import('../components/Profile/User/pages/Consults/MyConsults'));
 const ConsultForm = lazy(() => import('../components/Profile/User/pages/Consults/ConsultForm'));
 
 // Payment pages

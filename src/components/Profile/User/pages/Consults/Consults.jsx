@@ -10,7 +10,7 @@ export default function Consults() {
 	const paths = pathname.split('/');
 	const subPath = paths?.length > 0 && paths[4];
 
-	// By default - navigate to the user to Bookmarks sub-page
+	// By default - navigate the user to Bookmarks sub-page
 	useEffect(() => {
 		if (subPath) {
 			navigate(`/profile/user/consults/${subPath}`);
@@ -28,8 +28,7 @@ export default function Consults() {
 					<Link
 						to='/profile/user/consults/my-consults'
 						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
-							subPath === 'my-consults' &&
-							'text-Primary bg-Primary/15'
+							subPath === 'my-consults' && 'text-Primary'
 						}`}>
 						<BiSupport className={`	text-2xl`} />
 						My Consults
@@ -37,13 +36,8 @@ export default function Consults() {
 					<Link
 						to='/profile/user/consults/form'
 						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
-							subPath === 'form' && 'text-Primary bg-Primary/15'
+							subPath === 'form' && 'text-Primary'
 						}`}>
-						{/* {subPath === 'likes' ? (
-							<MdFavorite className='text-2xl' />
-						) : (
-							<MdFavoriteBorder className='text-2xl' />
-						)} */}
 						<FaWpforms className='text-xl' />
 						Form
 					</Link>
