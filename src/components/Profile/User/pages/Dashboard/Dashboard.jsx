@@ -1,4 +1,5 @@
-import { useLocation, Outlet, Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation, useNavigate, Outlet, Link } from 'react-router-dom';
 import { FaRegBookmark, FaBookmark, FaRegStar, FaStar } from 'react-icons/fa6';
 import {
 	MdFavoriteBorder,
@@ -10,10 +11,21 @@ import Sidebar from '../../Sidebar';
 
 export default function Dashboard() {
 	// Get the sub pathname of dashboard
+	const navigate = useNavigate();
 	const location = useLocation();
 	const { pathname } = location;
 	const paths = pathname.split('/');
+	const mainPath = pathname.split('/')?.length && pathname.split('/')[3];
 	const subPath = paths?.length > 0 && paths[4];
+
+	useEffect(() => {
+		// By default navigate the user to Bookmarks Sub Page or else send to the required page
+		if (mainPath === 'dashboard' && subPath) {
+			navigate(`/profile/user/${mainPath}/${subPath}`);
+		} else if (mainPath === 'dashboard' && !subPath) {
+			navigate('/profile/user/dashboard/bookmarks');
+		}
+	}, [navigate, mainPath, subPath]);
 
 	return (
 		<section className='border-t border-gray-300 flex'>
