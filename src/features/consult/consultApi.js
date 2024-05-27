@@ -8,6 +8,27 @@ const consultApi = apiSlice.injectEndpoints({
 				method: 'POST',
 				body: data,
 			}),
+
+			async onQueryStarted(args, { queryFulfilled, dispatch }) {
+				try {
+					const result = await queryFulfilled;
+					const doc = result.data?.data;
+
+					// Pessimistically update the cache
+					dispatch(
+						apiSlice.util.updateQueryData(
+							'getConsults',
+							{ status: 'pending,completed,failed,rejected' },
+							(oldData) => ({
+								...oldData,
+								data: [...oldData.data, doc],
+							})
+						)
+					);
+				} catch (err) {
+					// Do nothing for now
+				}
+			},
 		}),
 		getConsults: builder.query({
 			query: ({ status }) => {
