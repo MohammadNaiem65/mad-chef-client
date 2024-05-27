@@ -1,17 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
-import { NoContent } from '../../../../../shared';
+import { Error, NoContent } from '../../../../../shared';
 import Consult from './Consult';
 
-let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-export default function ConsultCards() {
-	// local states
+export default function ConsultCards({ title, consults = [], error }) {
+	// Local states
 	const cardRef = useRef();
 	const containerRef = useRef();
 	const [containerWidth, setContainerWidth] = useState(0);
-
 	const [scrollProgress, setScrollProgress] = useState({
 		prev: null,
 		curr: 0,
@@ -58,12 +55,12 @@ export default function ConsultCards() {
 
 	return (
 		<>
-			<div className='pl-5 pt-3 flex justify-between items-center'>
+			<div className='flex justify-between items-center'>
 				<h3 className='w-1/4 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
-					Consults:
+					{title} :
 				</h3>
 				{/* Arrow controls */}
-				{arr.length >= 4 && (
+				{consults.length >= 4 && (
 					<div className='text-3xl text-Primary flex items-center gap-x-2'>
 						<button
 							onClick={handleSlidePrev}
@@ -81,7 +78,7 @@ export default function ConsultCards() {
 				)}
 			</div>
 			{/* Cards */}
-			{arr.length > 0 ? (
+			{consults?.length > 0 ? (
 				<div className='p-5 overflow-x-hidden'>
 					<motion.section
 						drag='x'
@@ -95,13 +92,17 @@ export default function ConsultCards() {
 						}}
 						whileTap={{ cursor: 'grabbing' }}
 						className='flex gap-x-5 cursor-grab'>
-						{arr.map((el) => (
-							<Consult key={el} cardRef={cardRef} />
+						{consults.map((el) => (
+							<Consult key={el} cardRef={cardRef} consult={el} />
 						))}
 					</motion.section>
 				</div>
 			) : (
-				<NoContent />
+				consults?.length === 0 && <NoContent />
+			)}
+			{error && (
+				// Render error message when error exists
+				<Error message={error} />
 			)}
 		</>
 	);
