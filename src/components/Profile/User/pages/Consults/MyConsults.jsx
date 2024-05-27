@@ -11,14 +11,14 @@ export default function MyConsults() {
 		isLoading: activeConsultsIsLoading,
 		error: activeConsultsErr,
 	} = useGetConsultsQuery({
-		status: 'accepted',
+		status: 'accepted,pending',
 	});
 	const {
 		data: consultHistoryData,
 		isLoading: consultHistoryIsLoading,
 		error: consultHistoryErr,
 	} = useGetConsultsQuery({
-		status: 'pending,completed,failed,rejected',
+		status: 'completed,failed,rejected',
 	});
 	const { data: activeConsults } = activeConsultsData || {};
 	const { data: consultHistories } = consultHistoryData || {};

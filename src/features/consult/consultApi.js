@@ -18,7 +18,7 @@ const consultApi = apiSlice.injectEndpoints({
 					dispatch(
 						apiSlice.util.updateQueryData(
 							'getConsults',
-							{ status: 'pending,completed,failed,rejected' },
+							{ status: 'accepted,pending' },
 							(oldData) => ({
 								...oldData,
 								data: [...oldData.data, doc],
