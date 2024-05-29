@@ -92,14 +92,19 @@ export default function ConsultCards({ title, consults = [], error }) {
 						}}
 						whileTap={{ cursor: 'grabbing' }}
 						className='flex gap-x-5 cursor-grab'>
-						{consults.map((el) => (
-							<Consult key={el} cardRef={cardRef} consult={el} />
+						{consults.map((el, index) => (
+							<Consult
+								key={index}
+								cardRef={cardRef}
+								consult={el}
+							/>
 						))}
 					</motion.section>
 				</div>
 			) : (
 				consults?.length === 0 && <NoContent />
 			)}
+
 			{error && (
 				// Render error message when error exists
 				<Error message={error} />

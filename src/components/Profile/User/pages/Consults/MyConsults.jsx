@@ -18,7 +18,7 @@ export default function MyConsults() {
 		isLoading: consultHistoryIsLoading,
 		error: consultHistoryErr,
 	} = useGetConsultsQuery({
-		status: 'completed,failed,rejected',
+		status: 'completed,failed,rejected,cancelled',
 	});
 	const { data: activeConsults } = activeConsultsData || {};
 	const { data: consultHistories } = consultHistoryData || {};
