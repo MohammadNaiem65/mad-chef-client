@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../features/auth/authSelectors';
 
 const features = [
 	{ title: 'Unlimited Blogs', description: 'Access unlimited blogs.' },
@@ -16,7 +15,7 @@ const features = [
 
 export default function Packages() {
 	// get user role
-	const user = useSelector(selectUser);
+	const user = useSelector((state) => state.user);
 
 	return (
 		<section className='mt-20'>
