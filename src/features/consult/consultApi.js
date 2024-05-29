@@ -93,6 +93,34 @@ const consultApi = apiSlice.injectEndpoints({
 				}
 			},
 		}),
+		deleteConsult: builder.mutation({
+			query: ({ _id }) => ({
+				url: `/consults/consult/${_id}`,
+				method: 'DELETE',
+			}),
+			async onQueryStarted({ _id }, { queryFulfilled, dispatch }) {
+				// Optimistically remove the document
+				const patchResult = dispatch(
+					apiSlice.util.updateQueryData(
+						'getConsults',
+						{ status: 'completed,failed,rejected,cancelled' },
+						(oldData) => ({
+							...oldData,
+							data: oldData.data.filter(
+								(consult) => consult?._id !== _id
+							),
+						})
+					)
+				);
+
+				try {
+					await queryFulfilled;
+				} catch (err) {
+					// Revert the cache update
+					patchResult.undo();
+				}
+			},
+		}),
 	}),
 });
 
@@ -101,4 +129,5 @@ export const {
 	useBookConsultMutation,
 	useGetConsultsQuery,
 	useCancelConsultMutation,
+	useDeleteConsultMutation,
 } = consultApi;
