@@ -10,7 +10,7 @@ export default function Consults() {
 	const paths = pathname.split('/');
 	const subPath = paths?.length > 0 && paths[4];
 
-	// By default - navigate the user to Bookmarks sub-page
+	// By default - navigate the user to my-consults sub-page by default
 	useEffect(() => {
 		if (subPath) {
 			navigate(`/profile/user/consults/${subPath}`);

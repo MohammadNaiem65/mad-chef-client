@@ -21,15 +21,7 @@ import removeNotifications from '../helpers/removeNotifications';
 
 export default function Navbar() {
 	// Local states
-	const routes = [
-		'home',
-		'recipes',
-		'dashboard',
-		'consult',
-		'profile',
-		'blog',
-		'register',
-	];
+	const routes = ['home', 'recipes', 'profile', 'blog', 'register'];
 	const [showNavbar, setShowNavbar] = useState(true);
 	const [showHamburger, setShowHamburger] = useState(false);
 
@@ -49,13 +41,6 @@ export default function Navbar() {
 			setShowNavbar(true);
 		}
 	});
-
-	// Keep Consult option only for students
-	if (user && user?.role !== 'student') {
-		const consultIndex = routes.indexOf('consult');
-
-		routes.splice(consultIndex, 1);
-	}
 
 	const navOptionsVariants = {
 		initial: {
@@ -140,13 +125,13 @@ export default function Navbar() {
 				</picture>
 			</Link>
 
-			{/* show only in large device */}
+			{/* Show only in large device */}
 			<div className='text-lg hidden lg:flex items-center gap-x-6'>
 				{routes.slice(0, -1).map((route, index) => (
 					<LgActiveLink key={index} route={route} />
 				))}
 
-				{/* conditionally set Register and logout button */}
+				{/* Conditionally set Register and logout button */}
 				{user?.userId ? (
 					<button
 						className='btn btn-primary'
@@ -161,7 +146,7 @@ export default function Navbar() {
 				)}
 			</div>
 
-			{/* show only in small device */}
+			{/* Show only in small device */}
 			<AnimatePresence>
 				{showHamburger && (
 					<motion.div

@@ -9,8 +9,6 @@ import PublicRoute from './PublicRoute';
 const Home = lazy(() => import('../pages/Home'));
 const Recipes = lazy(() => import('../pages/Recipes'));
 const RecipeDetails = lazy(() => import('../pages/RecipeDetails'));
-const Dashboard = lazy(() => import('../pages/Dashboard'));
-const Consult = lazy(() => import('../pages/Consult'));
 const Profile = lazy(() => import('../pages/Profile'));
 const Payment = lazy(() => import('../pages/Payment'));
 const Blog = lazy(() => import('../pages/Blog'));
@@ -69,22 +67,6 @@ const routes = createBrowserRouter([
 				element: (
 					<PrivateRoute>
 						<RecipeDetails />
-					</PrivateRoute>
-				),
-			},
-			{
-				path: '/dashboard',
-				element: (
-					<PrivateRoute>
-						<Dashboard />
-					</PrivateRoute>
-				),
-			},
-			{
-				path: '/consult',
-				element: (
-					<PrivateRoute>
-						<Consult />
 					</PrivateRoute>
 				),
 			},
