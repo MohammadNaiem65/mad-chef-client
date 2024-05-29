@@ -5,6 +5,14 @@
 
 /* Group Utilities */
 @layer components {
+    .input {
+        @apply px-5 py-2 bg-white outline-Primary rounded
+    }
+
+    .disabled {
+        @apply disabled:bg-slate-300
+    }
+
     .container {
         @apply md:w-11/12 mx-auto 
     }
