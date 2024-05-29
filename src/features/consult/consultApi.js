@@ -41,8 +41,64 @@ const consultApi = apiSlice.injectEndpoints({
 				return { url };
 			},
 		}),
+		cancelConsult: builder.mutation({
+			query: ({ _id }) => ({
+				url: `/consults/consult/${_id}`,
+				method: 'PATCH',
+			}),
+
+			async onQueryStarted({ _id }, { queryFulfilled, dispatch }) {
+				let canceledDoc = null;
+
+				// Optimistically update Active Consult cache
+				const activeConsultPatchResult = dispatch(
+					apiSlice.util.updateQueryData(
+						'getConsults',
+						{ status: 'accepted,pending' },
+						(draft) => {
+							const restData = draft.data.filter((doc) => {
+								// Save the document data
+								if (doc._id === _id) {
+									canceledDoc = {
+										...doc,
+										status: 'cancelled',
+									};
+								}
+								return doc._id !== _id;
+							});
+
+							draft.data = restData;
+						}
+					)
+				);
+
+				// Optimistically update Consult History cache
+				const ConsultHistoryPatchResult = dispatch(
+					apiSlice.util.updateQueryData(
+						'getConsults',
+						{
+							status: 'completed,failed,rejected,cancelled',
+						},
+						(draft) => {
+							draft.data.push(canceledDoc);
+						}
+					)
+				);
+				try {
+					await queryFulfilled;
+				} catch (err) {
+					// Revert the cache update
+					activeConsultPatchResult.undo();
+					ConsultHistoryPatchResult.undo();
+				}
+			},
+		}),
 	}),
 });
 
 export default consultApi;
-export const { useBookConsultMutation, useGetConsultsQuery } = consultApi;
+export const {
+	useBookConsultMutation,
+	useGetConsultsQuery,
+	useCancelConsultMutation,
+} = consultApi;
