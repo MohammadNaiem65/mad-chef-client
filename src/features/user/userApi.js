@@ -41,7 +41,8 @@ const userApi = apiSlice.injectEndpoints({
 
 			async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
 				try {
-					await queryFulfilled;
+					const { data } = await queryFulfilled;
+					const { accessToken } = data?.data || {};
 
 					const {
 						_id,
@@ -51,8 +52,10 @@ const userApi = apiSlice.injectEndpoints({
 						role,
 						img,
 						createdAt,
+						updatedAt,
 					} = getState().user;
-					
+
+					// Update the user data in the store
 					dispatch(
 						addUserData({
 							_id,
@@ -62,17 +65,27 @@ const userApi = apiSlice.injectEndpoints({
 							role,
 							img,
 							createdAt,
+							updatedAt,
 							pkg: 'pro',
 						})
 					);
 
-					const { user, accessToken } = getState().auth;
+					const { user } = getState().auth;
 
 					const updatedUser = { ...user };
 					updatedUser.pkg = 'pro';
 
 					dispatch(
-						setCredentials({ user: updatedUser, accessToken })
+						setCredentials({
+							user: updatedUser,
+							accessToken,
+						})
+					);
+
+					// Store auth data in the local storage
+					localStorage.setItem(
+						'auth',
+						JSON.stringify({ user: updatedUser, accessToken })
 					);
 				} catch (error) {
 					// Do nothing here
