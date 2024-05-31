@@ -52,8 +52,9 @@ const authApi = apiSlice.injectEndpoints({
 						emailVerified: userDataResult?.emailVerified,
 						role: userDataResult?.role,
 						img: userDataResult?.img,
-						createdAt: userDataResult?.createdAt,
 						pkg: userDataResult?.pkg,
+						createdAt: userDataResult?.createdAt,
+						updatedAt: userDataResult?.updatedAt,
 					};
 
 					// Store user data in the redux store

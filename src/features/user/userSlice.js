@@ -9,6 +9,7 @@ const initialState = {
 	pkg: null,
 	img: null,
 	createdAt: null,
+	updatedAt: null,
 };
 
 const userSlice = createSlice({
@@ -24,6 +25,7 @@ const userSlice = createSlice({
 			state.pkg = action.payload.pkg;
 			state.img = action.payload.img;
 			state.createdAt = action.payload.createdAt;
+			state.updatedAt = action.payload.updatedAt;
 		},
 		removeUserData: (state) => {
 			Object.assign(state, {
