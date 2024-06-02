@@ -1,23 +1,98 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { MdOutlineWorkspacePremium } from 'react-icons/md';
 import { PiChefHatFill } from 'react-icons/pi';
-import { perseDate } from '../../../../../helpers';
+import { perseDate, showNotification } from '../../../../../helpers';
 import { verifyEmailAddress } from '../../../../../helpers/authHelper';
+import {
+	useApplyForPromotionMutation,
+	useCheckApplicationForPromotionQuery,
+} from '../../../../../features/role/roleApi';
+import { ConfirmationModal, Error, Spinner } from '../../../../../shared';
 
 export default function Profile() {
-	const { name, email, emailVerified, role, pkg, updatedAt } = useSelector(
-		(state) => state.user
-	);
-
+	const { name, email, emailVerified, role, pkg, createdAt, updatedAt } =
+		useSelector((state) => state.user);
 	// Perse the date
-	const formattedDate = perseDate(updatedAt, 'short');
+	const formattedDate = perseDate(updatedAt || createdAt, 'short');
+
+	const [showModal, setShowModal] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState('');
+
+	const {
+		data: hasApplied,
+		isLoading: hasAppliedIsLoading,
+		isSuccess: hasAppliedIsSucc,
+		isError: hasAppliedIsErr,
+		error: hasAppliedErr,
+	} = useCheckApplicationForPromotionQuery(
+		{ role: 'chef' },
+		{ skip: !emailVerified }
+	);
+	const [
+		applyForPromotion,
+		{
+			isLoading: applyForPromotionIsLoading,
+			isSuccess: applyForPromotionIsSucc,
+			isError: applyForPromotionIsErr,
+			error: applyForPromotionErr,
+		},
+	] = useApplyForPromotionMutation();
 
 	// Handle verify email address
 	const handleVerifyEmail = () => {
 		verifyEmailAddress();
 	};
+
+	// Handle apply to be chef
+	const handleApplyToBeChef = () => {
+		if (applyForPromotionIsLoading) {
+			return;
+		}
+
+		showNotification('promise', 'Applying for promotion...', {
+			promise: applyForPromotion({ role: 'chef' }),
+			successMessage: 'Promotion application successful',
+			errorMessage: 'An error occurred while applying for promotion',
+		});
+	};
+
+	// Handle loading states
+	useEffect(() => {
+		if (hasAppliedIsLoading || applyForPromotionIsLoading) {
+			setIsLoading(true);
+		}
+	}, [hasAppliedIsLoading, applyForPromotionIsLoading]);
+
+	// Handle success states
+	useEffect(() => {
+		if (hasAppliedIsSucc) {
+			setIsLoading(false);
+			setError('');
+		} else if (applyForPromotionIsSucc) {
+			setIsLoading(false);
+			setError('');
+		}
+	}, [hasAppliedIsSucc, applyForPromotionIsSucc]);
+
+	// Handle error states
+	useEffect(() => {
+		if (hasAppliedIsErr) {
+			setIsLoading(false);
+			setError(hasAppliedErr?.data?.msg);
+		} else if (applyForPromotionIsErr) {
+			setIsLoading(false);
+			setError(applyForPromotionErr?.data?.msg);
+		}
+	}, [
+		hasAppliedIsErr,
+		hasAppliedErr,
+		applyForPromotionIsErr,
+		applyForPromotionErr?.data?.msg,
+	]);
 
 	return (
 		<section className='w-full p-5'>
@@ -106,11 +181,42 @@ export default function Profile() {
 
 				{/* Action button to be chef */}
 				{emailVerified && (
-					<button className='btn btn-primary flex items-center gap-x-2'>
-						Wanna be Chef <PiChefHatFill className='text-2xl' />
-					</button>
+					<div className='relative'>
+						<button
+							onClick={() => setShowModal(true)}
+							className='btn btn-primary flex items-center gap-x-2 disabled:bg-blue-700 peer'
+							disabled={
+								isLoading ||
+								hasApplied?.data?.status ||
+								applyForPromotionIsSucc
+							}>
+							Wanna be Chef <PiChefHatFill className='text-2xl' />
+						</button>
+						<label
+							htmlFor='pro-btn'
+							className={`p-1 text-lg text-white text-center opacity-0 bg-yellow-500 absolute -top-[4.3rem] -left-2 -right-2 rounded duration-300 peer-hover:opacity-100 ${
+								hasApplied?.data?.status ||
+								applyForPromotionIsSucc ||
+								'hidden'
+							}`}>
+							You have already applied to be Chef
+						</label>
+					</div>
 				)}
 			</div>
+
+			{error && <Error message={error} />}
+
+			{isLoading && <Spinner />}
+
+			{showModal && (
+				<ConfirmationModal
+					title='Want to apply to be Chef?'
+					details='All your data as a Student will be DELETED'
+					setIsVisible={setShowModal}
+					onConfirm={handleApplyToBeChef}
+				/>
+			)}
 		</section>
 	);
 }
