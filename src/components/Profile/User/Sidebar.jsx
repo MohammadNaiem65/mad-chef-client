@@ -52,7 +52,7 @@ export default function Sidebar() {
 	};
 
 	return (
-		<aside className='w-12 md:w-1/4 py-3 border-r border-gray-300 font-Popins text-lg'>
+		<aside className='w-[12%] md:w-1/4 py-3 border-r border-gray-300 font-Popins text-lg'>
 			<div className='min-h-[17.25rem]'>
 				<Link
 					to='/profile/user/dashboard/'
