@@ -28,18 +28,19 @@ export default function Dashboard() {
 	}, [navigate, mainPath, subPath]);
 
 	return (
-		<section className='border-t border-gray-300 flex'>
+		<section className='w-full border-t border-gray-300 flex'>
 			{/* Sidebar */}
 			<Sidebar />
 
-			<section className='w-full'>
+			<section className='w-[88%] md:w-3/4'>
 				{/* Navbar for dashboard page content */}
-				<nav className='text-lg flex items-center divide-x-2'>
+				<nav className='md:text-lg flex items-center divide-x-2 overflow-x-scroll xl:overflow-auto'>
 					<Link
 						to='/profile/user/dashboard/bookmarks'
-						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
+						className={`xl:w-52 px-5 py-2 flex items-center justify-center gap-x-3 hover:bg-Primary/10 ${
 							subPath === 'bookmarks' && 'text-Primary'
-						}`}>
+						}`}
+						title='Bookmarks'>
 						{subPath === 'bookmarks' ? (
 							<FaBookmark />
 						) : (
@@ -49,39 +50,42 @@ export default function Dashboard() {
 					</Link>
 					<Link
 						to='/profile/user/dashboard/likes'
-						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
+						className={`xl:w-52 px-5 py-2 flex justify-center items-center gap-x-3 hover:bg-Primary/10 ${
 							subPath === 'likes' && 'text-Primary'
-						}`}>
+						}`}
+						title='Likes'>
 						{subPath === 'likes' ? (
-							<MdFavorite className='text-2xl' />
+							<MdFavorite className='text-xl md:text-2xl' />
 						) : (
-							<MdFavoriteBorder className='text-2xl' />
+							<MdFavoriteBorder className='text-xl md:text-2xl' />
 						)}
-						Likes
+						<span className='w-11'>Likes</span>
 					</Link>
 					<Link
 						to='/profile/user/dashboard/recipe-ratings'
-						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
+						className={`md:w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
 							subPath === 'recipe-ratings' && 'text-Primary'
-						}`}>
+						}`}
+						title='Recipe Ratings'>
 						{subPath === 'recipe-ratings' ? (
-							<FaStar className='text-2xl' />
+							<FaStar className='text-xl md:text-2xl' />
 						) : (
-							<FaRegStar className='text-2xl' />
+							<FaRegStar className='text-xl md:text-2xl' />
 						)}
-						Recipe Ratings
+						<span className='w-28 md:w-32 xl:w-auto'>Recipe Ratings</span>
 					</Link>
 					<Link
 						to='/profile/user/dashboard/chef-reviews'
-						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
+						className={`md:w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
 							subPath === 'chef-reviews' && 'text-Primary'
-						}`}>
+						}`}
+						title='Chef Reviews'>
 						{subPath === 'chef-reviews' ? (
-							<MdRateReview className='text-2xl' />
+							<MdRateReview className='text-xl md:text-2xl' />
 						) : (
-							<MdOutlineRateReview className='text-2xl' />
+							<MdOutlineRateReview className='text-xl md:text-2xl' />
 						)}
-						Chef Reviews
+						<span className='w-24 md:w-32 xl:w-auto'>Chef Reviews</span>
 					</Link>
 				</nav>
 
