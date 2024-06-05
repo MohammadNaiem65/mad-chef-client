@@ -11,6 +11,7 @@ import { signInWithGoogle, signInWithPassword } from '../helpers/authHelper';
 import RoundSpinner from '../shared/RoundSpinner/RoundSpinner';
 import showNotification from '../helpers/showNotification';
 import removeNotifications from '../helpers/removeNotifications';
+import formatFirebaseError from '../helpers/formatFirebaseError';
 
 export default function Login() {
 	// local states
@@ -80,7 +81,7 @@ export default function Login() {
 			.catch((error) => {
 				removeNotifications();
 				setLoading(false);
-				setErr(error.code);
+				setErr(formatFirebaseError(error));
 			});
 	};
 
@@ -96,7 +97,7 @@ export default function Login() {
 			.catch((error) => {
 				removeNotifications();
 				setLoading(false);
-				setErr(error.code);
+				setErr(formatFirebaseError(error));
 			});
 	};
 

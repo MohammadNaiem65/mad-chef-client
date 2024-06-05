@@ -16,6 +16,7 @@ import { updateProfile } from 'firebase/auth';
 import RoundSpinner from '../shared/RoundSpinner/RoundSpinner';
 import showNotification from '../helpers/showNotification';
 import removeNotifications from '../helpers/removeNotifications';
+import formatFirebaseError from '../helpers/formatFirebaseError';
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
@@ -133,7 +134,7 @@ export default function Register() {
 		} catch (error) {
 			removeNotifications();
 			setLoading(false);
-			setErr(error.code);
+			setErr(formatFirebaseError(error));
 		}
 	};
 
@@ -149,7 +150,7 @@ export default function Register() {
 			.catch((error) => {
 				removeNotifications();
 				setLoading(false);
-				setErr(error.code);
+				setErr(formatFirebaseError(error));
 			});
 	};
 
