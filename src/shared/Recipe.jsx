@@ -14,17 +14,17 @@ export default function Recipe({ recipe }) {
 			transition={{ duration: 0.6 }}
 			viewport={{ once: true }}>
 			<img
-				className='w-36 h-24 rounded object-cover'
+				className='size-[5rem] md:w-36 md:h-24 rounded object-cover'
 				src={img}
 				alt={`${title}'s picture`}
 			/>
-			<div className='ml-3'>
+			<div className='w-3/5 lg:w-4/5 ml-2 md:ml-3'>
 				<Link to={`/recipes/recipe/${recipe._id}`}>
 					<h2 className='w-[9.5rem] md:w-96 text-black  text-xl font-Vollokorn mb-1 truncate'>
 						{title}
 					</h2>
 				</Link>
-				<p>
+				<p className='w-full truncate'>
 					Ingredients:{' '}
 					{ingredients?.join(', ').length >= 50
 						? ingredients?.join(', ').slice(0, 50) + '...'
@@ -34,7 +34,7 @@ export default function Recipe({ recipe }) {
 					{<Rating rating={rating} />}
 				</div>
 			</div>
-			<div className='arrows ml-auto flex justify-center items-center w-12 h-6'>
+			<div className='arrows w-12 h-6 ml-auto flex justify-center items-center'>
 				<ArrowLink to={`/recipes/recipe/${_id}`} />
 			</div>
 		</motion.div>
