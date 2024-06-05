@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { Helmet } from 'react-helmet-async';
 import { selectUser } from '../../../../../features/auth/authSelectors';
 import { useGetLikedRecipesQuery } from '../../../../../features/recipe/recipeApi';
 import { NoContent, Spinner } from '../../../../../shared';
@@ -31,8 +32,12 @@ export default function Likes() {
 	}
 
 	return (
-		<section className='w-full my-5 px-5'>
-			<h3 className='w-1/2 mb-5 px-2 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
+		<section className='w-full my-5 px-2 md:px-5'>
+			<Helmet>
+				<title>Liked Recipes | Profile - Mad Chef</title>
+			</Helmet>
+			
+			<h3 className='w-3/4 md:w-1/2 mb-5 px-2 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
 				Liked Recipes:
 			</h3>
 			{content}
