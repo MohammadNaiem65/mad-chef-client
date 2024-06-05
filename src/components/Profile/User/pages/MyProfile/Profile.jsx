@@ -4,7 +4,11 @@ import { useSelector } from 'react-redux';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { MdOutlineWorkspacePremium } from 'react-icons/md';
 import { PiChefHatFill } from 'react-icons/pi';
-import { perseDate, showNotification } from '../../../../../helpers';
+import {
+	formatFirebaseError,
+	perseDate,
+	showNotification,
+} from '../../../../../helpers';
 import { verifyEmailAddress } from '../../../../../helpers/authHelper';
 import {
 	useApplyForPromotionMutation,
@@ -43,8 +47,16 @@ export default function Profile() {
 	] = useApplyForPromotionMutation();
 
 	// Handle verify email address
-	const handleVerifyEmail = () => {
-		verifyEmailAddress();
+	const handleVerifyEmail = async () => {
+		try {
+			await verifyEmailAddress();
+			showNotification(
+				'success',
+				'Verification email sent successfully!'
+			);
+		} catch (error) {
+			showNotification('error', formatFirebaseError(error));
+		}
 	};
 
 	// Handle apply to be chef
@@ -96,59 +108,77 @@ export default function Profile() {
 
 	return (
 		<section className='w-full p-5'>
-			<div className='w-full text-lg text-gray-700 font-semibold grid grid-cols-3 gap-y-4'>
-				<label htmlFor='name'>Name: </label>
-				<p id='name' className='text-gray-500 col-span-2'>
+			<div className='w-full text-lg text-gray-700 font-semibold grid grid-cols-3 md:gap-y-4'>
+				<label htmlFor='name' className='col-span-1'>
+					Name:{' '}
+				</label>
+				<p
+					id='name'
+					className='-mt-1 md:m-0 text-gray-500 text-base col-span-3 md:col-span-2'>
 					{name}
 				</p>
-				<label htmlFor='email'>Email:</label>
-				<p id='email' className='text-gray-500 col-span-2'>
+				<label htmlFor='email' className='mt-3 md:m-0 col-span-1'>
+					Email:
+				</label>
+				<p
+					id='email'
+					className='-mt-1 md:m-0 text-gray-500 text-base col-span-3 md:col-span-2'>
 					{email}
 				</p>
-				<label htmlFor='email-status'>Email Verified:</label>
-				<>
-					{emailVerified ? (
-						<p
-							id='email-status'
-							className='text-gray-500 flex items-start gap-x-2 col-span-2'>
-							Verified{' '}
-							<RiVerifiedBadgeFill className='mt-1 text-green-500 text-xl' />
-						</p>
-					) : (
-						<p
-							id='email-status'
-							className='text-gray-500 col-span-2'>
-							Not Verified
-						</p>
-					)}
-				</>
-				<label htmlFor='role'>Role:</label>
-				<p id='role' className='text-gray-500 col-span-2 capitalize'>
+				<label
+					htmlFor='email-status'
+					className='mt-3 md:m-0 col-span-2 md:col-span-1'>
+					Email Verified:
+				</label>
+				<p
+					id='email-status'
+					className='w-36 mt-[.84rem] md:m-0 text-gray-500 text-base flex items-start gap-x-2 md:col-span-2 xl:col-span-2'>
+					{emailVerified ? 'Verified' : 'Not Verified'}{' '}
+					<RiVerifiedBadgeFill
+						className={`mt-1 text-xl ${
+							emailVerified ? 'text-green-500' : 'text-gray-500'
+						}`}
+					/>
+				</p>
+				<label
+					htmlFor='role'
+					className='mt-3 md:m-0 col-span-2 md:col-span-1'>
+					Role:
+				</label>
+				<p
+					id='role'
+					className='mt-3 md:m-0 text-gray-500 text-base col-span-1 md:col-span-2 capitalize'>
 					{role}
 				</p>
-				<label id='package'>Package:</label>
-				<>
-					{pkg === 'pro' ? (
-						<p
-							id='package'
-							className='text-gray-500 flex items-start gap-x-2 col-span-2'>
-							Pro
-							<MdOutlineWorkspacePremium className='mt-1 text-yellow-500 text-xl' />
-						</p>
-					) : (
-						<p id='package' className='text-gray-500 col-span-2'>
-							Starter
-						</p>
-					)}
-				</>
-				<label htmlFor='update-date'>Last Updated:</label>
-				<p id='update-date' className='text-gray-500 col-span-2'>
+				<label
+					id='package'
+					className='mt-3 md:m-0 col-span-2 md:col-span-1'>
+					Package:
+				</label>
+				<p
+					id='email-status'
+					className='w-36 mt-[.84rem] md:m-0 text-gray-500 text-base flex items-start gap-x-2 md:col-span-2'>
+					{pkg === 'pro' ? 'Pro' : 'Starter'}{' '}
+					<MdOutlineWorkspacePremium
+						className={`mt-1 text-xl ${
+							emailVerified ? 'text-yellow-500' : 'text-gray-500'
+						}`}
+					/>
+				</p>
+				<label
+					htmlFor='update-date'
+					className='mt-3 md:m-0 col-span-2 md:col-span-1'>
+					Last Updated:
+				</label>
+				<p
+					id='update-date'
+					className='mt-3 md:m-0 text-gray-500 text-base col-span-1 md:col-span-2'>
 					{formattedDate}
 				</p>
 			</div>
 
 			{/* Action buttons to verify email and become pro user */}
-			<div className='w-2/3 mt-10 flex items-center justify-end gap-x-4'>
+			<div className='w-full lg:w-2/3 mt-10 flex flex-col md:flex-row items-center justify-end gap-x-4 gap-y-3'>
 				{emailVerified || (
 					<button
 						className='btn border-2 border-green-500 text-green-500 flex items-center gap-x-2 hover:bg-green-500 hover:text-white'
@@ -165,7 +195,9 @@ export default function Profile() {
 						<button
 							disabled={emailVerified === false}
 							id='pro-btn'
-							className='btn peer border-2 border-yellow-500 text-yellow-500 flex items-center gap-x-2 hover:bg-yellow-500 hover:text-white disabled:bg-yellow-700 disabled:border-yellow-700 disabled:hover:text-yellow-500'>
+							className={`btn peer border-2 border-yellow-500 text-yellow-500 flex items-center gap-x-2 hover:bg-yellow-500 hover:text-white disabled:bg-yellow-700 disabled:border-yellow-700 disabled:hover:text-yellow-500 ${
+								emailVerified && 'px-10'
+							}`}>
 							Become Pro
 							<MdOutlineWorkspacePremium className='text-2xl' />
 						</button>
