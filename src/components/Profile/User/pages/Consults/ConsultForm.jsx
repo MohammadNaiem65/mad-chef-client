@@ -94,7 +94,7 @@ export default function ConsultForm() {
 	}, [navigate, bookConsultIsSucc]);
 
 	return (
-		<section className='lg:w-4/5 mt-10 py-10 mx-auto text-slate-500 font-Popins bg-Primary/20 relative rounded overflow-hidden'>
+		<section className='lg:w-4/5 mt-5 xl:mt-10 mx-2 lg:mx-auto py-10 text-slate-500 font-Popins bg-Primary/20 relative rounded overflow-hidden'>
 			<h1 className='text-center text-3xl font-semibold'>Consult</h1>
 
 			<form
@@ -189,9 +189,9 @@ export default function ConsultForm() {
 				</div>
 
 				{/* Date and Time */}
-				<div className='w-full flex gap-x-3'>
+				<div className='w-full grid grid-cols-4 gap-x-3'>
 					{/* Date */}
-					<div className='w-1/2'>
+					<div className='col-span-3 xl:col-span-2'>
 						<label
 							htmlFor='date'
 							className='text-xl block mb-1 mt-5 tracking-wide'>
@@ -216,7 +216,7 @@ export default function ConsultForm() {
 					</div>
 
 					{/* Start Time */}
-					<div className='flex-grow'>
+					<div className='col-span-2 xl:col-span-1'>
 						<label
 							htmlFor='time'
 							className='text-xl block mb-1 mt-5 tracking-wide'>
@@ -241,7 +241,7 @@ export default function ConsultForm() {
 					</div>
 
 					{/* End Time */}
-					<div className='flex-grow'>
+					<div className='col-span-2 xl:col-span-1'>
 						<label
 							htmlFor='time'
 							className='text-xl block mb-1 mt-5 tracking-wide'>
