@@ -42,7 +42,7 @@ export default function RatingCardForReview({ userId, rating }) {
 	}, [deleteChefReviewIsSuccess]);
 
 	return (
-		<div className='p-4 lg:w-1/2 md:w-full group'>
+		<div className='w-full lg:w-[27rem] mx-auto group'>
 			<div className='flex border-2 rounded-lg border-gray-200 border-opacity-50 p-8 sm:flex-row flex-col hover:shadow-xl duration-300'>
 				{/* Conditional rendering of userImg or Avatar */}
 				{img ? (
