@@ -25,7 +25,7 @@ export default function ConsultCards({ title, consults = [], error }) {
 			...prev,
 			cardWidth: cardRef.current?.offsetWidth + 20,
 		}));
-	}, []);
+	}, [consults?.length]);
 
 	const handleSlidePrev = () => {
 		setScrollProgress((prev) => {
@@ -56,7 +56,7 @@ export default function ConsultCards({ title, consults = [], error }) {
 	return (
 		<>
 			<div className='flex justify-between items-center'>
-				<h3 className='w-1/4 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
+				<h3 className='w-4/5 md:w-1/4 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
 					{title} :
 				</h3>
 				{/* Arrow controls */}

@@ -64,7 +64,9 @@ export default function MyConsults() {
 			</section>
 
 			{!activeConsults?.length && !consultHistories?.length && (
-				<NoContent />
+				<section className='mt-32'>
+					<NoContent />
+				</section>
 			)}
 		</section>
 	);
