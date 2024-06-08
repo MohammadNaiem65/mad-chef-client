@@ -112,6 +112,40 @@ const paymentApi = apiSlice.injectEndpoints({
 				}
 			},
 		}),
+		deletePaymentReceipts: builder.mutation({
+			query: ({ receiptIds }) => ({
+				url: `/payments/payment-receipt`,
+				method: 'DELETE',
+				body: { receiptIds },
+			}),
+
+			async onQueryStarted(args, { queryFulfilled, dispatch }) {
+				const { userId, receiptIds, filter } = args;
+
+				// Optimistically delete the receipt
+				const patchResult = dispatch(
+					apiSlice.util.updateQueryData(
+						'getPaymentReceipts',
+						{ filter, userId },
+						(draft) => {
+							const receipts = draft?.data;
+
+							const restReceipts = receipts.filter(
+								(receipt) => !receiptIds.includes(receipt._id)
+							);
+
+							draft.data = restReceipts;
+						}
+					)
+				);
+
+				try {
+					await queryFulfilled;
+				} catch (error) {
+					patchResult.undo();
+				}
+			},
+		}),
 	}),
 });
 
@@ -121,4 +155,5 @@ export const {
 	useGetPaymentReceiptsQuery,
 	useSavePaymentReceiptMutation,
 	useDeletePaymentReceiptMutation,
+	useDeletePaymentReceiptsMutation
 } = paymentApi;
