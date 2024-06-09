@@ -155,5 +155,5 @@ export const {
 	useGetPaymentReceiptsQuery,
 	useSavePaymentReceiptMutation,
 	useDeletePaymentReceiptMutation,
-	useDeletePaymentReceiptsMutation
+	useDeletePaymentReceiptsMutation,
 } = paymentApi;

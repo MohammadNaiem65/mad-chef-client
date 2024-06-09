@@ -6,25 +6,45 @@ import {
 	MdFactCheck,
 	MdErrorOutline,
 	MdError,
+	MdDeleteForever,
 } from 'react-icons/md';
 import { PiCardholderLight, PiCardholderFill } from 'react-icons/pi';
 
-import { useGetPaymentReceiptsQuery } from '../../../../../features/payment/paymentApi';
-import { Spinner } from '../../../../../shared';
+import {
+	useDeletePaymentReceiptsMutation,
+	useGetPaymentReceiptsQuery,
+} from '../../../../../features/payment/paymentApi';
+import { NoContent, Spinner } from '../../../../../shared';
 import Sidebar from '../../Sidebar';
 import Payment from './Payment';
 
 export default function PaymentHistory() {
-	const [filter, setFilter] = useState('all');
+	const [filter, setFilter] = useState({ curr: 'all', prev: null });
 	const [selectedDocs, setSelectedDocs] = useState([]);
 
 	const { _id } = useSelector((state) => state.user);
+	const [deletePaymentReceipts] = useDeletePaymentReceiptsMutation();
 	const { data, isLoading, isSuccess, isError, error } =
 		useGetPaymentReceiptsQuery({
 			userId: _id,
-			filter,
+			filter: filter.curr,
 		});
 	const receipts = data?.data || {};
+
+	const handlePaymentReceiptDeletion = () => {
+		deletePaymentReceipts({
+			userId: _id,
+			filter: filter.curr,
+			receiptIds: selectedDocs,
+		});
+		setSelectedDocs([]);
+	};
+
+	const handleSetFilter = (status) => {
+		if (status !== filter.curr) {
+			setFilter((prev) => ({ curr: status, prev: prev.curr }));
+		}
+	};
 
 	// Decide what to render
 	let content;
@@ -33,65 +53,22 @@ export default function PaymentHistory() {
 		content = <Spinner />;
 	} else if (isError) {
 		content = (
-			<div className='w-full'>
-				{/* Navbar for dashboard page content */}
-				<nav className='text-lg flex items-center divide-x-2'>
-					<button
-						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
-							filter === 'all' && 'text-Primary'
-						}`}
-						onClick={() => setFilter('all')}>
-						{filter === 'all' ? (
-							<PiCardholderFill className='text-2xl' />
-						) : (
-							<PiCardholderLight className='text-2xl' />
-						)}
-						All
-					</button>
-					<button
-						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
-							filter === 'succeed' && 'text-Primary'
-						}`}
-						onClick={() => setFilter('succeed')}>
-						{filter === 'succeed' ? (
-							<MdFactCheck className='text-xl' />
-						) : (
-							<MdOutlineFactCheck className='text-xl' />
-						)}
-						Succeed
-					</button>
-					<button
-						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
-							filter === 'failure' && 'text-Primary'
-						}`}
-						onClick={() => setFilter('failure')}>
-						{filter === 'failure' ? (
-							<MdError className='text-2xl' />
-						) : (
-							<MdErrorOutline className='text-2xl' />
-						)}
-						Failed
-					</button>
-				</nav>
-
-				{/* Payments */}
-				<div className='w-full mt-32 flex justify-center'>
-					<p className='w-fit h-fit p-2 bg-red-300 text-red-700 rounded-sm'>
-						{error?.message}
-					</p>
-				</div>
+			<div className='w-full mt-32 flex justify-center'>
+				<p className='w-fit h-fit p-2 bg-red-300 text-red-700 rounded-sm'>
+					{error?.message}
+				</p>
 			</div>
 		);
 	} else if (isSuccess && receipts?.length === 0) {
 		content = (
-			<div className='w-full mt-32 flex justify-center'>
-				<p>No data found</p>
+			<div className='mt-32'>
+				<NoContent />
 			</div>
 		);
 	} else if (isSuccess && receipts.length > 0) {
 		content = (
-			<section className='ml-5 divide-y-2'>
-				<div className='p-2 text-sm text-gray-500 grid grid-cols-12 group/parent'>
+			<section className='w-[90%] ml-5 divide-y-2 overflow-x-scroll md:overflow-x-auto'>
+				<div className='w-[58.875rem] lg:w-full p-2 text-sm text-gray-500 grid grid-cols-12 group/parent'>
 					<span className='text-base text-gray-700 col-span-2'>
 						Amount
 					</span>
@@ -125,23 +102,23 @@ export default function PaymentHistory() {
 	}
 
 	return (
-		<section className='border-t border-gray-300 flex'>
+		<section className='w-full border-t border-gray-300 flex'>
 			<Helmet>
-				<title>Payment History || Profile - Mad Chef</title>
+				<title>Payment History | Profile - Mad Chef</title>
 			</Helmet>
 
 			{/* Sidebar */}
 			<Sidebar />
 
 			{/* {content} */}
-			<section className='w-full'>
-				{/* Navbar for dashboard page content */}
-				<nav className='mb-10 text-lg flex items-center divide-x-2'>
+			<section className='w-[88%] md:w-[75%]'>
+				{/* Navbar for payment history page content */}
+				<nav className='w-[90%] mb-10 text-lg flex items-center divide-x-2 overflow-x-scroll md:overflow-x-auto'>
 					<button
-						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
+						className={`px-[3.25rem] py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
 							filter === 'all' && 'text-Primary'
 						}`}
-						onClick={() => setFilter('all')}>
+						onClick={() => handleSetFilter('all')}>
 						{filter === 'all' ? (
 							<PiCardholderFill className='text-2xl' />
 						) : (
@@ -150,10 +127,10 @@ export default function PaymentHistory() {
 						All
 					</button>
 					<button
-						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
+						className={`px-6 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
 							filter === 'succeeded' && 'text-Primary'
 						}`}
-						onClick={() => setFilter('succeeded')}>
+						onClick={() => handleSetFilter('succeeded')}>
 						{filter === 'succeeded' ? (
 							<MdFactCheck className='text-xl' />
 						) : (
@@ -162,10 +139,10 @@ export default function PaymentHistory() {
 						Succeeded
 					</button>
 					<button
-						className={`w-52 px-5 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
+						className={`px-8 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
 							filter === 'failed' && 'text-Primary'
 						}`}
-						onClick={() => setFilter('failed')}>
+						onClick={() => handleSetFilter('failed')}>
 						{filter === 'failed' ? (
 							<MdError className='text-2xl' />
 						) : (
@@ -175,9 +152,22 @@ export default function PaymentHistory() {
 					</button>
 				</nav>
 
-				<h3 className='w-1/2 ml-4 mb-4 px-2 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
-					My Transactions:
-				</h3>
+				<div className='px-2 py-2 flex justify-between items-center'>
+					<h3 className='w-2/3 md:w-1/2 md:ml-4 md:mb-4 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
+						My Transactions:
+					</h3>
+
+					{selectedDocs.length > 0 && (
+						<button
+							className='text-2xl'
+							onClick={handlePaymentReceiptDeletion}>
+							<span className='px-3 py-1 border-2 border-gray-500 text-lg text-gray-600 hidden md:block rounded-lg'>
+								Delete
+							</span>
+							<MdDeleteForever className='md:hidden' />
+						</button>
+					)}
+				</div>
 
 				{content}
 			</section>
