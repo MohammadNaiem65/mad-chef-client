@@ -109,6 +109,7 @@ export default function BuyProPkg() {
 	// Confirm the submission of saving payment receipt
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+		setError('');
 		setLoading(true);
 
 		// Don't allow execution of the rest code if stripe and element's reference is invalid
@@ -125,6 +126,7 @@ export default function BuyProPkg() {
 		}
 
 		if (error) {
+			setLoading(false);
 			setError(error?.message);
 		} else {
 			// Confirm payment using stripe
@@ -149,6 +151,8 @@ export default function BuyProPkg() {
 				amount,
 			};
 
+			console.log(data);
+
 			if (paymentIntent?.status === 'succeeded') {
 				const { id: transactionId } = paymentIntent;
 
@@ -171,9 +175,9 @@ export default function BuyProPkg() {
 
 	return (
 		<>
-			<section className='w-4/6 mx-auto p-10 flex items-center bg-gradient-to-bl from-[#FADADF] to-[#CCC8FD] rounded'>
+			<section className='w-full md:w-[94%] lg:w-4/6 mx-auto p-4 md:p-6 lg:p-10 flex items-center bg-gradient-to-bl from-[#FADADF] to-[#CCC8FD] rounded'>
 				{/* Left side card */}
-				<div className='w-1/2'>
+				<div className='w-1/2 hidden md:block'>
 					<h2 className='text-2xl text-center font-Popins font-semibold text-slate-700'>
 						User
 						<span className='ml-5 mt-6 lg:mt-10 px-3 py-1 font-semibold text-white text-sm bg-Primary/70 rounded'>
@@ -207,7 +211,7 @@ export default function BuyProPkg() {
 				{/* Right side card */}
 				<form
 					onSubmit={handleSubmit}
-					className='w-1/2 p-5 bg-white font-Popins rounded shadow-lg'>
+					className='w-full md:w-1/2 p-5 bg-transparent md:bg-white font-Popins rounded md:shadow-lg'>
 					<div>
 						<h2 className='mb-5 font-Vollokorn font-semibold text-slate-700 text-2xl text-center'>
 							Payment Details
