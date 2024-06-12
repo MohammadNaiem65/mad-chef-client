@@ -17,13 +17,22 @@ import {
 import { NoContent, Spinner } from '../../../../../shared';
 import Sidebar from '../../Sidebar';
 import Payment from './Payment';
+import { useEffect } from 'react';
+import showNotification from '../../../../../helpers/showNotification';
 
 export default function PaymentHistory() {
 	const [filter, setFilter] = useState({ curr: 'all', prev: null });
 	const [selectedDocs, setSelectedDocs] = useState([]);
 
 	const { _id } = useSelector((state) => state.user);
-	const [deletePaymentReceipts] = useDeletePaymentReceiptsMutation();
+	const [
+		deletePaymentReceipts,
+		{
+			isSuccess: deletePaymentIsSucc,
+			isError: deletePaymentIsErr,
+			error: deletePaymentErr,
+		},
+	] = useDeletePaymentReceiptsMutation();
 	const { data, isLoading, isSuccess, isError, error } =
 		useGetPaymentReceiptsQuery({
 			userId: _id,
@@ -45,6 +54,17 @@ export default function PaymentHistory() {
 			setFilter((prev) => ({ curr: status, prev: prev.curr }));
 		}
 	};
+
+	useEffect(() => {
+		if (deletePaymentIsSucc) {
+			showNotification('success', `Payment Receipts Deleted`);
+		} else if (deletePaymentIsErr) {
+			showNotification(
+				'error',
+				deletePaymentErr?.message || 'An error occurred'
+			);
+		}
+	}, [deletePaymentIsSucc, deletePaymentIsErr, deletePaymentErr?.message]);
 
 	// Decide what to render
 	let content;
