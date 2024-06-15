@@ -15,7 +15,7 @@ export default function Recipes() {
 			<Helmet>
 				<title>Recipes - Mad Chef</title>
 			</Helmet>
-			<section className='lg:w-10/12 mx-auto flex justify-end gap-x-5'>
+			<section className='lg:w-10/12 mx-auto flex justify-center lg:justify-end gap-x-5'>
 				<Sidebar setHideModal={setHideModal} />
 				<section className='lg:w-[53rem]'>
 					<Suspense fallback={<Spinner />}>

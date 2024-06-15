@@ -17,40 +17,34 @@ export default function Sidebar({ setHideModal }) {
 	const chefContainerRef = useRef(null);
 
 	const {
-		data: gettingChefProcessData,
-		isLoading: gettingChefProcessLoading,
-		isError: gettingChefProcessIsError,
-		error: gettingChefProcessError,
+		data: chefData,
+		isLoading: getChefIsLoading,
+		isError: getChefIsIsError,
+		error: getChefIsError,
 	} = useGetChefsQuery({
 		sort: 'name',
 		page: pageNumber.currPage,
 		limit: 10,
-		include: 'name',
+		include: 'name,recipes',
 	});
+
+	const { data: chefs } = chefData || {};
 
 	// decide what to render
 	let content;
 
-	if (gettingChefProcessLoading) {
+	if (getChefIsLoading) {
 		content = <Spinner />;
-	} else if (!gettingChefProcessLoading && gettingChefProcessIsError) {
+	} else if (!getChefIsLoading && getChefIsIsError) {
 		content = (
 			<p className='px-3 py-2 bg-red-200 rounded'>
-				{gettingChefProcessError?.data}
+				{getChefIsError?.data}
 			</p>
 		);
-	} else if (
-		!gettingChefProcessLoading &&
-		!gettingChefProcessIsError &&
-		gettingChefProcessData?.data?.length === 0
-	) {
+	} else if (!getChefIsLoading && !getChefIsIsError && chefs?.length === 0) {
 		content = <p>No data found.</p>;
-	} else if (
-		!gettingChefProcessLoading &&
-		!gettingChefProcessIsError &&
-		gettingChefProcessData?.data?.length > 0
-	) {
-		content = gettingChefProcessData.data.map((chef) => (
+	} else if (!getChefIsLoading && !getChefIsIsError && chefs?.length > 0) {
+		content = chefs.map((chef) => (
 			<NavLink
 				key={chef?._id}
 				to={`/recipes/${chef?._id}`}
@@ -87,10 +81,10 @@ export default function Sidebar({ setHideModal }) {
 
 		// Cleanup
 		return () => {};
-	}, [gettingChefProcessData]);
+	}, [chefData]);
 
 	useEffect(() => {
-		const pNumber = gettingChefProcessData?.meta?.page?.split('/');
+		const pNumber = chefData?.meta?.page?.split('/');
 
 		if (pNumber?.length > 0) {
 			setPageNumber({
@@ -98,7 +92,7 @@ export default function Sidebar({ setHideModal }) {
 				totalPages: parseInt(pNumber[1]),
 			});
 		}
-	}, [gettingChefProcessData]);
+	}, [chefData]);
 
 	return (
 		<>
@@ -111,7 +105,7 @@ export default function Sidebar({ setHideModal }) {
 			</p>
 
 			<aside
-				className={`h-screen lg:max-h-[35rem] w-full md:w-2/3 lg:w-[25rem] px-5 py-5 bg-Primary/20 backdrop-blur-lg lg:rounded fixed lg:sticky top-0 lg:top-20 duration-300 z-10 ${
+				className={`h-[34rem] md:h-[35rem] lg:h-screen lg:max-h-[35rem] w-full md:w-2/3 lg:w-[25rem] px-5 py-5 bg-Primary/20 backdrop-blur-lg lg:rounded fixed lg:sticky top-1/2 lg:top-20 -translate-y-1/2 lg:translate-y-0 duration-300 z-10 ${
 					showBar
 						? 'left-0 md:left-1/2 lg:left-0 md:-translate-x-1/2 lg:translate-x-0'
 						: '-left-[100%]'
@@ -140,9 +134,9 @@ export default function Sidebar({ setHideModal }) {
 					)}
 
 					{/* Show error */}
-					{gettingChefProcessIsError && (
+					{getChefIsIsError && (
 						<p className='w-full mt-3 py-2 bg-red-200 text-center text-red-700 font-semibold block rounded'>
-							{gettingChefProcessError.data}
+							{getChefIsError.data}
 						</p>
 					)}
 				</div>
