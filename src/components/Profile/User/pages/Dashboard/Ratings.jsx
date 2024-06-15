@@ -15,9 +15,11 @@ export default function Ratings() {
 	if (isLoading) {
 		content = <Spinner />;
 	} else if (isSuccess && ratings?.length === 0) {
-		content = <section className='my-28 md:mx-auto px-5'>
-			<NoContent />
-		</section>;
+		content = (
+			<section className='my-28 md:mx-auto px-5'>
+				<NoContent />
+			</section>
+		);
 	} else if (isError) {
 		content = (
 			<p className='w-fit mt-10 p-3 bg-red-300 text-lg text-red-700 font-semibold rounded'>
@@ -43,8 +45,11 @@ export default function Ratings() {
 			<Helmet>
 				<title>Recipe Ratings | Profile - Mad Chef</title>
 			</Helmet>
-			
-			<div className='w-full h-[20rem] my-4 px-2 md:pr-3 flex flex-wrap gap-y-3 overflow-y-scroll'>
+
+			<div
+				className={`w-full h-[20rem] my-4 px-2 md:pr-3 flex flex-wrap gap-3 ${
+					ratings?.length > 2 && 'overflow-y-scroll'
+				}`}>
 				{content}
 			</div>
 		</section>
