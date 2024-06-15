@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useGetChefReviewsByUserQuery } from '../../../../../features/user/userApi';
 import { NoContent, Spinner } from '../../../../../shared';
-import RatingCardForReview from './RatingCardForReview';
+import RatingCardForChefReview from './RatingCardForChefReview';
 import { Helmet } from 'react-helmet-async';
 
 export default function Reviews() {
@@ -25,7 +25,11 @@ export default function Reviews() {
 	} else if (isLoading) {
 		content = <Spinner />;
 	} else if (isSuccess && reviews?.length === 0) {
-		content = <NoContent />;
+		content = (
+			<section className='my-28 md:mx-auto px-5'>
+				<NoContent />
+			</section>
+		);
 	} else if (isError) {
 		content = (
 			<p className='w-fit mt-10 p-3 bg-red-300 text-lg text-red-700 font-semibold rounded'>
@@ -36,7 +40,7 @@ export default function Reviews() {
 		content = (
 			<>
 				{reviews.map((rating) => (
-					<RatingCardForReview
+					<RatingCardForChefReview
 						key={rating?._id}
 						userId={userId}
 						rating={rating}
@@ -47,12 +51,15 @@ export default function Reviews() {
 	}
 
 	return (
-		<section className='text-gray-600 body-font'>
+		<section className='px-2 text-gray-600'>
 			<Helmet>
 				<title>Chef Reviews | Profile - Mad Chef</title>
 			</Helmet>
 
-			<div className='w-full h-[20rem] my-4 px-2 md:pr-3 flex flex-wrap gap-y-3 overflow-y-scroll'>
+			<div
+				className={`w-full h-[20rem] my-4 px-2 md:pr-3 flex flex-wrap gap-3 ${
+					reviews?.length > 2 && 'overflow-y-scroll'
+				}`}>
 				{content}
 			</div>
 		</section>

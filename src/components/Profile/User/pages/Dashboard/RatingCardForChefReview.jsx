@@ -10,7 +10,7 @@ import showNotification from '../../../../../helpers/showNotification';
 import { Avatar, ConfirmationModal, Rating } from '../../../../../shared';
 import RatingForm from './RatingForm';
 
-export default function RatingCardForReview({ userId, rating }) {
+export default function RatingCardForChefReview({ userId, rating }) {
 	const [editMode, setEditMode] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 
@@ -42,8 +42,8 @@ export default function RatingCardForReview({ userId, rating }) {
 	}, [deleteChefReviewIsSuccess]);
 
 	return (
-		<div className='w-full lg:w-[27rem] mx-auto group'>
-			<div className='flex border-2 rounded-lg border-gray-200 border-opacity-50 p-8 sm:flex-row flex-col hover:shadow-xl duration-300'>
+		<div className='w-full lg:w-[27rem] mx-auto lg:mx-0 group'>
+			<div className='flex border-2 rounded-lg border-gray-200 border-opacity-50 px-5 py-4 md:p-8 sm:flex-row flex-col hover:shadow-xl duration-300'>
 				{/* Conditional rendering of userImg or Avatar */}
 				{img ? (
 					<img
