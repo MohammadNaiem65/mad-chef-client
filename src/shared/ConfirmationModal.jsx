@@ -35,14 +35,14 @@ function ConfirmationModal({
     return (
         <section
             onClick={() => setIsVisible(false)}
-            className='h-screen w-full bg-gray-500/20 flex justify-center items-center fixed top-0 left-0 z-[99] cursor-pointer'>
+            className='h-[100dvh] w-full bg-gray-500/20 flex justify-center items-center fixed top-0 left-0 z-[99] cursor-pointer'>
             <motion.div
                 onClick={(e) => e.stopPropagation()}
                 initial={{ y: '100%', opacity: 0 }}
                 animate={{ y: '0%', opacity: 1 }}
                 exit={{ y: '100%', opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className='h-80 w-1/3 bg-blue-300 mt-8 relative flex items-center justify-center rounded cursor-default'>
+                className='h-80 w-[95%] md:w-2/3 lg:w-1/3 bg-blue-300 mt-16 md:mt-14 lg:mt-8 relative flex items-center justify-center rounded cursor-default'>
                 <img className='h-52 absolute -top-24' src={sureImg} alt='' />
                 <div className='text-center my-auto'>
                     <h1 className='text-3xl text-slate-700 font-semibold mt-[5.5rem]'>
