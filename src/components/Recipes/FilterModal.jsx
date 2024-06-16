@@ -42,9 +42,9 @@ export default function FilterModal({ setHideModal }) {
 			className='h-screen w-screen bg-black/40 backdrop-blur-sm flex justify-center items-center fixed top-0 left-0 z-50'
 			onClick={() => setHideModal(true)}>
 			<div
-				className='w-[50rem] h-[28rem] px-6 py-8 bg-Primary text-slate-700 rounded'
+				className='w-full md:w-11/12 lg:w-[50rem] md:h-[28rem] px-6 py-8 bg-Primary text-slate-700 rounded'
 				onClick={(e) => e.stopPropagation()}>
-				<div className='flex items-center justify-between'>
+				<div className='mb-5 md:mb-7 flex items-center justify-between'>
 					<h3 className='text-xl font-semibold font-Vollokorn'>
 						Search Filters
 					</h3>
@@ -53,9 +53,9 @@ export default function FilterModal({ setHideModal }) {
 						className='text-2xl cursor-pointer'
 					/>
 				</div>
-				<div className='mt-7 flex items-start justify-between'>
+				<div className='grid grid-cols-12'>
 					{/* Filter by date options */}
-					<div className='w-36'>
+					<div className='w-36 col-span-6 md:col-span-4'>
 						<h4 className='font-semibold mb-3 pb-3 border-b-2'>
 							UPLOAD DATE
 						</h4>
@@ -79,7 +79,7 @@ export default function FilterModal({ setHideModal }) {
 					</div>
 
 					{/* Region options */}
-					<div className='w-36'>
+					<div className='w-36 col-span-6 md:col-span-4'>
 						<h4 className='font-semibold mb-3 pb-3 border-b-2'>
 							REGION
 						</h4>
@@ -102,8 +102,8 @@ export default function FilterModal({ setHideModal }) {
 					</div>
 
 					{/* Sort options */}
-					<div className='w-36'>
-						<div>
+					<div className='w-full md:w-36 mt-5 md:mt-0 col-span-12 md:col-span-4 grid grid-cols-2'>
+						<div className='w-36 col-span-1 md:col-span-2'>
 							<h4 className='font-semibold mb-3 pb-3 border-b-2'>
 								SORT BY
 							</h4>
@@ -124,7 +124,8 @@ export default function FilterModal({ setHideModal }) {
 								</p>
 							))}
 						</div>
-						<div className='mt-10'>
+
+						<div className='w-36 md:mt-10 col-span-1 md:col-span-2'>
 							<h4 className='font-semibold mb-3 pb-3 border-b-2'>
 								SORT ORDER
 							</h4>
