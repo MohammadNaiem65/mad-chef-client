@@ -11,25 +11,25 @@ export default function Banner() {
 		data?.data || {};
 
 	return (
-		<section className='mb-10 p-6 bg-Primary/20 text-gray-500 font-Popins lg:flex gap-x-5 flex justify-between rounded'>
+		<section className='mb-10 p-6 bg-Primary/20 text-gray-500 font-Popins lg:flex gap-x-5 md:flex justify-between rounded'>
 			<img
-				className='h-44 lg:h-52 aspect-square rounded-full object-cover'
+				className='size-44 lg:size-52 mx-auto rounded-full object-cover'
 				src={img}
 				alt={`Chef ${name}'s picture`}
 			/>
 			<div className='w-full h-fit my-auto text-justify'>
-				<p className='mt-2 lg:mb-3 text-2xl text-black text-center lg:text-start font-Vollokorn font-semibold'>
+				<p className='mt-2 lg:mb-3 text-2xl text-black text-center md:text-start lg:text-start font-Vollokorn font-semibold'>
 					{name}
 				</p>
-				<p>{bio}</p>
-				<div className='mt-1 text-lg flex justify-between'>
-					<p className='flex items-center'>
+				<p className='text-center md:text-start text-wrap'>{bio}</p>
+				<div className='mt-1 flex justify-between'>
+					<p title='Rating' className='flex items-center'>
 						<span className='mr-1 text-yellow-500'>
 							<FaStar />
 						</span>
 						{rating ? rating : 'Null'}
 					</p>
-					<p className='flex items-center'>
+					<p title='Experience' className='flex items-center'>
 						<span className='mr-1'>
 							<FaBriefcase />
 						</span>
@@ -37,11 +37,13 @@ export default function Banner() {
 							? `${yearsOfExperience} years`
 							: 'Experience unavailable'}
 					</p>
-					<p className='flex items-center'>
+					<p title='Recipes' className='flex items-center'>
 						<span className='mr-1'>
 							<MdFastfood />
 						</span>
-						{recipes?.length} recipes
+						{`${recipes?.length} recipe${
+							recipes?.length > 1 ? 's' : ''
+						}`}
 					</p>
 				</div>
 			</div>
