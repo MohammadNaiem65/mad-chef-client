@@ -14,13 +14,14 @@ const Payment = lazy(() => import('../pages/Payment'));
 const Blog = lazy(() => import('../pages/Blog'));
 const Login = lazy(() => import('../pages/Login'));
 const Register = lazy(() => import('../pages/Register'));
+const ErrorPage = lazy(() => import('../pages/Error'));
 const Banner = lazy(() => import('../components/Recipes/Banner'));
 
 // User Profile Pages
 const UserMessages = lazy(() => import('../components/Profile/User/pages/Messages'));
 const UserMyProfile = lazy(() => import('../components/Profile/User/pages/MyProfile/MyProfile'));
 
-// Dashboard Pages - Profile 
+// Dashboard Pages - Profile
 const UserDashboard = lazy(() => import('../components/Profile/User/pages/Dashboard/Dashboard'));
 const UserLikes = lazy(() => import('../components/Profile/User/pages/Dashboard/Likes'));
 const UserBookmarks = lazy(() => import('../components/Profile/User/pages/Dashboard/Bookmarks'));
@@ -37,7 +38,6 @@ const UpgradeToPro = lazy(() => import('../components/Payment/BuyProPkg'));
 
 // Payment History - User Profile pages
 const UserPaymentHistory = lazy(() => import('../components/Profile/User/pages/PaymentHistory/PaymentHistory'));
-
 
 const routes = createBrowserRouter([
 	{
@@ -164,6 +164,7 @@ const routes = createBrowserRouter([
 				),
 			},
 		],
+		errorElement: <ErrorPage />,
 	},
 ]);
 
