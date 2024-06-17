@@ -14,8 +14,7 @@ import {
 	useDeletePaymentReceiptsMutation,
 	useGetPaymentReceiptsQuery,
 } from '../../../../../features/payment/paymentApi';
-import { NoContent, Spinner } from '../../../../../shared';
-import Sidebar from '../../Sidebar';
+import { NoContent } from '../../../../../shared';
 import Payment from './Payment';
 import { useEffect } from 'react';
 import showNotification from '../../../../../helpers/showNotification';
@@ -33,11 +32,10 @@ export default function PaymentHistory() {
 			error: deletePaymentErr,
 		},
 	] = useDeletePaymentReceiptsMutation();
-	const { data, isLoading, isSuccess, isError, error } =
-		useGetPaymentReceiptsQuery({
-			userId: _id,
-			filter: filter.curr,
-		});
+	const { data, isSuccess, isError, error } = useGetPaymentReceiptsQuery({
+		userId: _id,
+		filter: filter.curr,
+	});
 	const receipts = data?.data || {};
 
 	const handlePaymentReceiptDeletion = () => {
@@ -69,9 +67,7 @@ export default function PaymentHistory() {
 	// Decide what to render
 	let content;
 
-	if (isLoading) {
-		content = <Spinner />;
-	} else if (isError) {
+	if (isError) {
 		content = (
 			<div className='w-full mt-32 flex justify-center'>
 				<p className='w-fit h-fit p-2 bg-red-300 text-red-700 rounded-sm'>
@@ -122,24 +118,20 @@ export default function PaymentHistory() {
 	}
 
 	return (
-		<section className='w-full border-t border-gray-300 flex'>
+		<>
 			<Helmet>
 				<title>Payment History | Profile - Mad Chef</title>
 			</Helmet>
-
-			{/* Sidebar */}
-			<Sidebar />
-
-			{/* {content} */}
-			<section className='w-[88%] md:w-[75%]'>
+			
+			<section className='w-full'>
 				{/* Navbar for payment history page content */}
 				<nav className='w-[90%] mb-10 text-lg flex items-center divide-x-2 overflow-x-scroll md:overflow-x-auto'>
 					<button
 						className={`px-[3.25rem] py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
-							filter === 'all' && 'text-Primary'
+							filter.curr === 'all' && 'text-Primary'
 						}`}
 						onClick={() => handleSetFilter('all')}>
-						{filter === 'all' ? (
+						{filter.curr === 'all' ? (
 							<PiCardholderFill className='text-2xl' />
 						) : (
 							<PiCardholderLight className='text-2xl' />
@@ -148,10 +140,10 @@ export default function PaymentHistory() {
 					</button>
 					<button
 						className={`px-6 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
-							filter === 'succeeded' && 'text-Primary'
+							filter.curr === 'succeeded' && 'text-Primary'
 						}`}
 						onClick={() => handleSetFilter('succeeded')}>
-						{filter === 'succeeded' ? (
+						{filter.curr === 'succeeded' ? (
 							<MdFactCheck className='text-xl' />
 						) : (
 							<MdOutlineFactCheck className='text-xl' />
@@ -160,10 +152,10 @@ export default function PaymentHistory() {
 					</button>
 					<button
 						className={`px-8 py-2 flex items-center gap-x-3 hover:bg-Primary/10 ${
-							filter === 'failed' && 'text-Primary'
+							filter.curr === 'failed' && 'text-Primary'
 						}`}
 						onClick={() => handleSetFilter('failed')}>
-						{filter === 'failed' ? (
+						{filter.curr === 'failed' ? (
 							<MdError className='text-2xl' />
 						) : (
 							<MdErrorOutline className='text-2xl' />
@@ -191,6 +183,6 @@ export default function PaymentHistory() {
 
 				{content}
 			</section>
-		</section>
+		</>
 	);
 }

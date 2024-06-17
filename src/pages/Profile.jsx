@@ -1,32 +1,29 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, Suspense } from 'react';
+import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 
-import { selectUser } from '../features/auth/authSelectors';
-import User from '../components/Profile/User/User';
-import Chef from '../components/Profile/Chef/Chef';
-import Admin from '../components/Profile/Admin/Admin';
+import { modelImg } from '../assets';
+import { Spinner } from '../shared';
+import Sidebar from '../components/Profile/Sidebar';
 
 export default function Profile() {
-	const { userId, role } = useSelector(selectUser);
+	const { name, img, role } = useSelector((state) => state.user);
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (role === 'student') {
-			const mainPage =
-				pathname.split('/')?.length && pathname.split('/')[3];
-			const subPage =
-				pathname.split('/')?.length && pathname.split('/')[4];
+		const paths = pathname.split('/');
+		const mainPage = paths?.length && paths[3];
+		const subPage = paths?.length && paths[4];
 
-			// By default navigate the user to Bookmarks Sub Page of Dashboard or else send to the required page
+		if (role === 'student') {
 			if (subPage) {
 				navigate(`/profile/user/${mainPage}/${subPage}`);
 			} else if (mainPage && !subPage) {
 				navigate(`/profile/user/${mainPage}`);
 			} else {
-				navigate('/profile/user/dashboard/bookmarks');
+				navigate('/profile/user/dashboard');
 			}
 		} else if (role === 'chef') {
 			navigate('/profile/chef/dashboard');
@@ -38,16 +35,34 @@ export default function Profile() {
 	return (
 		<>
 			<Helmet>
-				<title>Profile - Mad Chef</title>
+				<title>Dashboard | Profile - Mad Chef</title>
 			</Helmet>
 
-			{role === 'student' ? (
-				<User />
-			) : role === 'chef' ? (
-				<Chef chefId={userId} />
-			) : (
-				role === 'admin' && <Admin adminId={userId} />
-			)}
+			<section className='w-full xl:w-4/5 mx-auto'>
+				{/* Header */}
+				<div className='w-full pb-8 flex items-center gap-x-6'>
+					<img
+						src={img ? img : modelImg}
+						alt='User Image'
+						className='size-20 md:size-28 aspect-square ml-4 object-cover rounded-full relative z-20'
+					/>
+					<div className='font-Popins'>
+						<p className='text-lg'>Hello</p>
+						<h3 className='text-xl md:text-2xl'>{name}</h3>
+					</div>
+				</div>
+
+				<section className='w-full border-t border-gray-300 flex'>
+					<Sidebar />
+
+					<section className='w-[88%] md:w-3/4'>
+						{/* Main content */}
+						<Suspense fallback={<Spinner />}>
+							<Outlet />
+						</Suspense>
+					</section>
+				</section>
+			</section>
 		</>
 	);
 }

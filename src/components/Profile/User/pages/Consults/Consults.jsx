@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate, Link, Outlet } from 'react-router-dom';
 import { FaWpforms } from 'react-icons/fa6';
 import { BiSupport } from 'react-icons/bi';
-import Sidebar from '../../Sidebar';
+import { Helmet } from 'react-helmet-async';
 
 export default function Consults() {
 	const navigate = useNavigate();
@@ -20,10 +20,12 @@ export default function Consults() {
 	}, [navigate, subPath]);
 
 	return (
-		<section className='border-t border-gray-300 flex'>
-			<Sidebar />
+		<>
+			<Helmet>
+				<title>Consults | Profile - Mad Chef</title>
+			</Helmet>
 
-			<section className='w-11/12 overflow-hidden'>
+			<section className='w-full overflow-hidden'>
 				<nav className='text-lg flex items-center divide-x-2'>
 					<Link
 						to='/profile/user/consults/my-consults'
@@ -45,6 +47,6 @@ export default function Consults() {
 
 				<Outlet />
 			</section>
-		</section>
+		</>
 	);
 }
