@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { modelImg } from '../assets';
 import { Spinner } from '../shared';
 import Sidebar from '../components/Profile/Sidebar';
+import AdminSidebar from '../components/Profile/AdminSidebar';
 
 export default function Profile() {
 	const { name, img, role } = useSelector((state) => state.user);
@@ -53,7 +54,7 @@ export default function Profile() {
 				</div>
 
 				<section className='w-full border-t border-gray-300 flex'>
-					<Sidebar />
+					{role === 'admin' ? <AdminSidebar /> : <Sidebar />}
 
 					<section className='w-[88%] md:w-3/4'>
 						{/* Main content */}
