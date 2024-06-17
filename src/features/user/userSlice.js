@@ -6,7 +6,6 @@ const initialState = {
 	email: null,
 	emailVerified: null,
 	role: null,
-	pkg: null,
 	img: null,
 	createdAt: null,
 	updatedAt: null,
@@ -17,15 +16,7 @@ const userSlice = createSlice({
 	initialState,
 	reducers: {
 		addUserData: (state, action) => {
-			state._id = action.payload._id;
-			state.name = action.payload.name;
-			state.email = action.payload.email;
-			state.emailVerified = action.payload.emailVerified;
-			state.role = action.payload.role;
-			state.pkg = action.payload.pkg;
-			state.img = action.payload.img;
-			state.createdAt = action.payload.createdAt;
-			state.updatedAt = action.payload.updatedAt;
+			Object.assign(state, action.payload);
 		},
 		removeUserData: (state) => {
 			Object.assign(state, {

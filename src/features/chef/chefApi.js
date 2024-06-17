@@ -1,6 +1,6 @@
 import apiSlice from '../api/apiSlice';
 
-const recipeApi = apiSlice.injectEndpoints({
+const chefApi = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getChefs: builder.query({
 			query: ({ page, limit, sort, order, include, exclude }) => {
@@ -82,5 +82,5 @@ const recipeApi = apiSlice.injectEndpoints({
 	}),
 });
 
-export default recipeApi;
-export const { useGetChefsQuery, useGetChefQuery } = recipeApi;
+export default chefApi;
+export const { useGetChefsQuery, useGetChefQuery } = chefApi;
