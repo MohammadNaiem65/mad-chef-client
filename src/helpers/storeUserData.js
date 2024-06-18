@@ -1,4 +1,5 @@
 import store from '../app/store';
+import chefApi from '../features/chef/chefApi';
 import userApi from '../features/user/userApi';
 import { addUserData } from '../features/user/userSlice';
 
@@ -17,37 +18,54 @@ import { addUserData } from '../features/user/userSlice';
  */
 export default async function storeUserData() {
 	// Get the userId from the store
-	const { userId } = store.getState().auth.user || {};
+	const { userId, role: userRole } = store.getState().auth.user || {};
+
+	let userData = null;
 
 	// Get user data from database using userId
-	const { data } = await store
-		.dispatch(userApi.endpoints.getUserData.initiate({ userId }))
-		.unwrap();
+	if (userRole === 'student') {
+		const { data } = await store
+			.dispatch(userApi.endpoints.getUserData.initiate({ userId }))
+			.unwrap();
 
-	const {
-		_id,
-		name,
-		email,
-		emailVerified,
-		role,
-		img,
-		createdAt,
-		updatedAt,
-		pkg,
-	} = data || {};
+		userData = {
+			_id: data?._id,
+			name: data?.name,
+			email: data?.email,
+			emailVerified: data?.emailVerified,
+			role: data?.role,
+			img: data?.img,
+			pkg: data?.pkg,
+			createdAt: data?.createdAt,
+			updatedAt: data?.updatedAt,
+		};
+	} else if (userRole === 'chef') {
+		const { data } = await store
+			.dispatch(
+				chefApi.endpoints.getChef.initiate({
+					chef_id: userId,
+					include: 'rating',
+					exclude: 'consultBookings',
+				})
+			)
+			.unwrap();
+
+		userData = {
+			_id: data?._id,
+			name: data?.name,
+			email: data?.email,
+			emailVerified: data?.emailVerified,
+			role: data?.role,
+			img: data?.img,
+			bio: data?.bio,
+			rating: data?.rating,
+			yearsOfExperience: data?.yearsOfExperience,
+			recipes: data?.recipes,
+			createdAt: data?.createdAt,
+			updatedAt: data?.updatedAt,
+		};
+	}
 
 	// Save the user data to the store
-	store.dispatch(
-		addUserData({
-			_id,
-			name,
-			email,
-			emailVerified,
-			role,
-			img,
-			createdAt,
-			updatedAt,
-			pkg,
-		})
-	);
+	store.dispatch(addUserData(userData));
 }

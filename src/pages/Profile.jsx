@@ -18,16 +18,16 @@ export default function Profile() {
 		const mainPage = paths?.length && paths[3];
 		const subPage = paths?.length && paths[4];
 
-		if (role === 'student') {
+		if (role === 'student' || role === 'chef') {
+			const pathRole = role === 'student' ? 'user' : 'chef';	
+
 			if (subPage) {
-				navigate(`/profile/user/${mainPage}/${subPage}`);
+				navigate(`/profile/${pathRole}/${mainPage}/${subPage}`);
 			} else if (mainPage && !subPage) {
-				navigate(`/profile/user/${mainPage}`);
+				navigate(`/profile/${pathRole}/${mainPage}`);
 			} else {
-				navigate('/profile/user/dashboard');
+				navigate(`/profile/${pathRole}/dashboard`);
 			}
-		} else if (role === 'chef') {
-			navigate('/profile/chef/dashboard');
 		} else if (role === 'admin') {
 			navigate('/profile/admin/dashboard');
 		}
