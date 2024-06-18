@@ -17,6 +17,9 @@ const Register = lazy(() => import('../pages/Register'));
 const ErrorPage = lazy(() => import('../pages/Error'));
 const Banner = lazy(() => import('../components/Recipes/Banner'));
 
+// Payment pages
+const UpgradeToPro = lazy(() => import('../components/Payment/BuyProPkg'));
+
 // User Profile Pages
 const UserMessages = lazy(() => import('../components/Profile/User/pages/Messages'));
 const UserMyProfile = lazy(() => import('../components/Profile/User/pages/MyProfile/MyProfile'));
@@ -33,11 +36,15 @@ const UserConsults = lazy(() => import('../components/Profile/User/pages/Consult
 const UserConsultsCards = lazy(() => import('../components/Profile/User/pages/Consults/MyConsults'));
 const ConsultForm = lazy(() => import('../components/Profile/User/pages/Consults/ConsultForm'));
 
-// Payment pages
-const UpgradeToPro = lazy(() => import('../components/Payment/BuyProPkg'));
-
 // Payment History - User Profile pages
 const UserPaymentHistory = lazy(() => import('../components/Profile/User/pages/PaymentHistory/PaymentHistory'));
+
+// Chef Profile pages
+const ChefMessages = lazy(() => import('../components/Profile/Chef/pages/Messages/Messages'));
+const ChefDashboard = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Dashboard'));
+const ChefConsults = lazy(() => import('../components/Profile/Chef/pages/Consults/Consults'));
+const ChefPaymentHistory = lazy(() => import('../components/Profile/Chef/pages/PaymentHistory/PaymentHistory'));
+const ChefMyProfile = lazy(() => import('../components/Profile/Chef/pages/MyProfile/MyProfile'));
 
 const routes = createBrowserRouter([
 	{
@@ -127,6 +134,28 @@ const routes = createBrowserRouter([
 						path: '/profile/user/my-profile',
 						element: <UserMyProfile />,
 					},
+
+					// Chef related routes
+					{
+						path: '/profile/chef/dashboard',
+						element: <ChefDashboard/>
+					},
+					{
+						path: '/profile/chef/messages',
+                        element: <ChefMessages />,
+					},
+					{
+						path: '/profile/chef/consults',
+						element: <ChefConsults />,
+					},
+					{
+						path: '/profile/chef/payment-history',
+                        element: <ChefPaymentHistory />,
+					},
+					{
+						path: '/profile/chef/my-profile',
+                        element: <ChefMyProfile />,
+					}
 				],
 			},
 			{
