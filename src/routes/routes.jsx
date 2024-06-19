@@ -41,10 +41,15 @@ const UserPaymentHistory = lazy(() => import('../components/Profile/User/pages/P
 
 // Chef Profile pages
 const ChefMessages = lazy(() => import('../components/Profile/Chef/pages/Messages/Messages'));
-const ChefDashboard = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Dashboard'));
 const ChefConsults = lazy(() => import('../components/Profile/Chef/pages/Consults/Consults'));
 const ChefPaymentHistory = lazy(() => import('../components/Profile/Chef/pages/PaymentHistory/PaymentHistory'));
 const ChefMyProfile = lazy(() => import('../components/Profile/Chef/pages/MyProfile/MyProfile'));
+
+// Dashboard Pages - Profile
+const ChefDashboard = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Dashboard'));
+const ChefRecipes = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Recipes/Recipes'));
+const ChefComments = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Comments/Comments'));
+const ChefReviews = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Reviews/Reviews'));
 
 const routes = createBrowserRouter([
 	{
@@ -138,11 +143,25 @@ const routes = createBrowserRouter([
 					// Chef related routes
 					{
 						path: '/profile/chef/dashboard',
-						element: <ChefDashboard/>
+						element: <ChefDashboard />,
+						children: [
+							{
+								path: '/profile/chef/dashboard/recipes',
+								element: <ChefRecipes />,
+							},
+							{
+								path: '/profile/chef/dashboard/comments',
+								element: <ChefComments />,
+							},
+							{
+								path: '/profile/chef/dashboard/reviews',
+								element: <ChefReviews />,
+							},
+						],
 					},
 					{
 						path: '/profile/chef/messages',
-                        element: <ChefMessages />,
+						element: <ChefMessages />,
 					},
 					{
 						path: '/profile/chef/consults',
@@ -150,12 +169,12 @@ const routes = createBrowserRouter([
 					},
 					{
 						path: '/profile/chef/payment-history',
-                        element: <ChefPaymentHistory />,
+						element: <ChefPaymentHistory />,
 					},
 					{
 						path: '/profile/chef/my-profile',
-                        element: <ChefMyProfile />,
-					}
+						element: <ChefMyProfile />,
+					},
 				],
 			},
 			{
