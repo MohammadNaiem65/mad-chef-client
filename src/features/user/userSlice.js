@@ -25,9 +25,9 @@ const userSlice = createSlice({
 				email: null,
 				emailVerified: null,
 				role: null,
-				pkg: null,
 				img: null,
 				createdAt: null,
+				updatedAt: null,
 			});
 		},
 	},

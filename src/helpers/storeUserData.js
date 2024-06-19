@@ -45,7 +45,7 @@ export default async function storeUserData() {
 				chefApi.endpoints.getChef.initiate({
 					chef_id: userId,
 					include: 'rating',
-					exclude: 'consultBookings',
+					exclude: 'consultBookings,recipes',
 				})
 			)
 			.unwrap();
@@ -60,7 +60,6 @@ export default async function storeUserData() {
 			bio: data?.bio,
 			rating: data?.rating,
 			yearsOfExperience: data?.yearsOfExperience,
-			recipes: data?.recipes,
 			createdAt: data?.createdAt,
 			updatedAt: data?.updatedAt,
 		};
