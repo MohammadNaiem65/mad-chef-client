@@ -36,14 +36,9 @@ const recipeApi = apiSlice.injectEndpoints({
 					}, [])
 					.join('&');
 
-				// Construct the URL without filter parameters
-				const urlWithoutFilterOptions = queryString
-					? `${baseUrl}?${queryString}`
-					: baseUrl;
-
 				let url;
 
-				// Add filter options which has values
+				// Add filter options if has values
 				const dataFilterKeys = Object.keys(data_filter);
 				if (dataFilterKeys.length > 0) {
 					const filterKeysWithValues = {};
@@ -53,22 +48,20 @@ const recipeApi = apiSlice.injectEndpoints({
 						}
 					});
 
-					if (Object.keys(filterKeysWithValues).length > 0) {
-						const stringifiedDataFilter =
-							JSON.stringify(filterKeysWithValues);
+					const stringifiedDataFilter =
+						JSON.stringify(filterKeysWithValues);
 
-						const encodedDataFiler = encodeURIComponent(
-							stringifiedDataFilter
-						);
+					const encodedDataFiler = encodeURIComponent(
+						stringifiedDataFilter
+					);
 
-						url =
-							urlWithoutFilterOptions +
-							`&data_filter=${encodedDataFiler}`;
+					if (queryString) {
+						url = `${baseUrl}?${queryString}&data_filter=${encodedDataFiler}`;
 					} else {
-						url = urlWithoutFilterOptions;
+						url = `${baseUrl}?data_filter=${encodedDataFiler}`;
 					}
 				} else {
-					url = urlWithoutFilterOptions;
+					url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
 				}
 
 				return { url };
