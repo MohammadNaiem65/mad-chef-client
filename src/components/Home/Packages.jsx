@@ -44,7 +44,7 @@ export default function Packages() {
 
 					<div className='h-20 w-11/12 mx-auto my-6 px-6 lg:px-8 bg-Primary/10 flex justify-between items-center rounded'>
 						<p>
-							<span className='text-3xl font-Vollokorn font-semibold text-slate-700'>
+							<span className='text-3xl font-Vollkorn font-semibold text-slate-700'>
 								Free
 							</span>
 							/month
@@ -107,10 +107,10 @@ export default function Packages() {
 
 					<div className='h-20 w-11/12 mx-auto my-6 px-6 lg:px-8 bg-Primary/10 flex justify-between items-center rounded'>
 						<p>
-							<span className='mr-2 text-3xl font-Vollokorn font-semibold text-slate-700 line-through'>
+							<span className='mr-2 text-3xl font-Vollkorn font-semibold text-slate-700 line-through'>
 								$5
 							</span>
-							<span className='text-3xl font-Vollokorn font-semibold text-slate-700'>
+							<span className='text-3xl font-Vollkorn font-semibold text-slate-700'>
 								$4
 							</span>
 							/month

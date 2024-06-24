@@ -46,7 +46,7 @@ export default function ChefRecipes({ chefId }) {
 				</p>
 			) : (
 				<div className='flex justify-between items-center'>
-					<h3 className='text-xl font-semibold font-Vollokorn'>
+					<h3 className='text-xl font-semibold font-Vollkorn'>
 						Recipes:
 					</h3>
 					<div className='text-3xl text-Primary flex items-center gap-x-2'>

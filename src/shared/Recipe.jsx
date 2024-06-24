@@ -20,7 +20,7 @@ export default function Recipe({ recipe }) {
 			/>
 			<div className='w-3/5 lg:w-4/5 ml-2 md:ml-3'>
 				<Link to={`/recipes/recipe/${recipe._id}`}>
-					<h2 className='w-[9.5rem] md:w-96 text-black  text-xl font-Vollokorn mb-1 truncate'>
+					<h2 className='w-[9.5rem] md:w-96 text-black  text-xl font-Vollkorn mb-1 truncate'>
 						{title}
 					</h2>
 				</Link>

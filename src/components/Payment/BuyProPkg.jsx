@@ -213,11 +213,11 @@ export default function BuyProPkg() {
 					onSubmit={handleSubmit}
 					className='w-full md:w-1/2 p-5 bg-transparent md:bg-white font-Popins rounded md:shadow-lg'>
 					<div>
-						<h2 className='mb-5 font-Vollokorn font-semibold text-slate-700 text-2xl text-center'>
+						<h2 className='mb-5 font-Vollkorn font-semibold text-slate-700 text-2xl text-center'>
 							Payment Details
 						</h2>
 
-						<h3 className='w-1/2 border-b-2 border-dashed border-Primary text-slate-700 text-xl font-Vollokorn'>
+						<h3 className='w-1/2 border-b-2 border-dashed border-Primary text-slate-700 text-xl font-Vollkorn'>
 							User Details
 						</h3>
 
@@ -249,7 +249,7 @@ export default function BuyProPkg() {
 					</div>
 
 					<div className='mt-6'>
-						<h3 className='w-1/2 mb-2 border-b-2 border-dashed border-Primary text-slate-700 text-xl font-Vollokorn'>
+						<h3 className='w-1/2 mb-2 border-b-2 border-dashed border-Primary text-slate-700 text-xl font-Vollkorn'>
 							Card Details
 						</h3>
 						<CardElement

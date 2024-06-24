@@ -50,7 +50,7 @@ export default function Sidebar({ setHideModal }) {
 				to={`/recipes/${chef?._id}`}
 				onClick={() => setShowBar((prev) => !prev)}
 				className={({ isActive }) =>
-					`p-3 mb-2 font-semibold font-Vollokorn rounded flex justify-between items-center cursor-pointer hover:bg-Primary/70 duration-300 group ${
+					`p-3 mb-2 font-semibold font-Vollkorn rounded flex justify-between items-center cursor-pointer hover:bg-Primary/70 duration-300 group ${
 						isActive
 							? 'bg-Primary/90'
 							: 'bg-Primary/50 lg:bg-Primary/20'
@@ -125,7 +125,7 @@ export default function Sidebar({ setHideModal }) {
 										? {
 												...prev,
 												currPage: prev.currPage + 1,
-										}
+										  }
 										: prev
 								)
 							}>

@@ -26,7 +26,7 @@ export default function Footer() {
 					<h4 className='font-semibold font-Popins text-lg'>
 						Useful links
 					</h4>
-					<div className='mt-3 font-Vollokorn text-lg flex flex-col'>
+					<div className='mt-3 font-Vollkorn text-lg flex flex-col'>
 						<Link to='/home' className='w-fit link-hover'>
 							Home
 						</Link>
@@ -54,7 +54,7 @@ export default function Footer() {
 					<h4 className='font-semibold font-Popins text-lg'>
 						Quick links
 					</h4>
-					<div className='mt-3  font-Vollokorn text-lg flex flex-col'>
+					<div className='mt-3  font-Vollkorn text-lg flex flex-col'>
 						<Link to='/blog' className='w-fit link-hover'>
 							Our Blog
 						</Link>

@@ -8,7 +8,7 @@ export default function Error() {
 					<h1 className='mb-4 text-Primary text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 dark:text-primary-500'>
 						404
 					</h1>
-					<p className='mb-4 text-3xl tracking-tight font-bold font-Vollokorn md:text-4xl dark:text-white'>
+					<p className='mb-4 text-3xl tracking-tight font-bold font-Vollkorn md:text-4xl dark:text-white'>
 						Something&apos;s missing.
 					</p>
 					<p className='mb-4 text-lg font-Popins font-light text-gray-500 dark:text-gray-400'>

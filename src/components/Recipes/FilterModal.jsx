@@ -45,7 +45,7 @@ export default function FilterModal({ setHideModal }) {
 				className='w-full md:w-11/12 lg:w-[50rem] md:h-[28rem] px-6 py-8 bg-Primary text-slate-700 rounded'
 				onClick={(e) => e.stopPropagation()}>
 				<div className='mb-5 md:mb-7 flex items-center justify-between'>
-					<h3 className='text-xl font-semibold font-Vollokorn'>
+					<h3 className='text-xl font-semibold font-Vollkorn'>
 						Search Filters
 					</h3>
 					<RxCross1

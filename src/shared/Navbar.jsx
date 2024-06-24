@@ -116,7 +116,7 @@ export default function Navbar() {
 			initial={false}
 			animate={showNavbar ? 'visible' : 'hidden'}
 			transition={{ duration: 0.4, ease: 'easeInOut' }}
-			className='min-h-[4.625rem] md:h-[5.5rem] lg:min-h-[7rem] px-9 md:px-8 lg:px-16 border-b-2 border-slate-300 backdrop-blur-md font-semibold font-Vollokorn text-lg flex justify-between items-center gap-x-6 fixed left-0 right-0 z-[1000]'>
+			className='min-h-[4.625rem] md:h-[5.5rem] lg:min-h-[7rem] px-9 md:px-8 lg:px-16 border-b-2 border-slate-300 backdrop-blur-md font-semibold font-Vollkorn text-lg flex justify-between items-center gap-x-6 fixed left-0 right-0 z-[1000]'>
 			<Link to='/' className='relative z-[99]'>
 				<picture className='md:-my-3'>
 					<source media='(min-width:427px)' srcSet={lgLogo} />

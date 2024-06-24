@@ -36,7 +36,7 @@ export default function ChefDetails({ author, like, createdAt }) {
 				alt={`${name}'s image`}
 				className='w-10 md:w-12 lg:w-14 aspect-square object-cover rounded-full'
 			/>
-			<div className='font-Vollokorn'>
+			<div className='font-Vollkorn'>
 				<p className='font-semibold flex items-center lg:text-lg'>
 					{name}
 					{copiedId ? (
