@@ -31,11 +31,27 @@ const consultApi = apiSlice.injectEndpoints({
 			},
 		}),
 		getConsults: builder.query({
-			query: ({ status }) => {
-				let url = '/consults/user';
+			query: ({ status, date }) => {
+				let url = '/consults';
 
 				if (status) {
 					url += `?status=${status}`;
+
+					if (date) {
+						const encodedDate = encodeURIComponent(
+							JSON.stringify(date)
+						);
+
+						url += `&date=${encodedDate}`;
+					}
+				}
+
+				if (!status && date) {
+					const encodedDate = encodeURIComponent(
+						JSON.stringify(date)
+					);
+
+					url += `?date=${encodedDate}`;
 				}
 
 				return { url };
