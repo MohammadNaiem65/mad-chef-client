@@ -63,14 +63,25 @@ const consultApi = apiSlice.injectEndpoints({
 				method: 'PATCH',
 			}),
 
-			async onQueryStarted({ _id }, { queryFulfilled, dispatch }) {
-				let canceledDoc = null;
+			async onQueryStarted(
+				{ _id },
+				{ queryFulfilled, dispatch, getState }
+			) {
+				const role = getState()?.user?.role || '';
 
-				// Optimistically update Active Consult cache
+				let canceledDoc = null;
+				const removeFromStatus =
+					role === 'student' ? 'accepted,pending' : 'pending';
+				const addToStatus =
+					role === 'student'
+						? 'completed,failed,rejected,cancelled'
+						: 'failed,rejected,cancelled';
+
+				// Optimistically remove the doc cache
 				const activeConsultPatchResult = dispatch(
 					apiSlice.util.updateQueryData(
 						'getConsults',
-						{ status: 'accepted,pending' },
+						{ status: removeFromStatus },
 						(draft) => {
 							const restData = draft.data.filter((doc) => {
 								// Save the document data
@@ -88,12 +99,12 @@ const consultApi = apiSlice.injectEndpoints({
 					)
 				);
 
-				// Optimistically update Consult History cache
+				// Optimistically remove the doc from the history
 				const ConsultHistoryPatchResult = dispatch(
 					apiSlice.util.updateQueryData(
 						'getConsults',
 						{
-							status: 'completed,failed,rejected,cancelled',
+							status: addToStatus,
 						},
 						(draft) => {
 							draft.data.push(canceledDoc);
@@ -114,26 +125,61 @@ const consultApi = apiSlice.injectEndpoints({
 				url: `/consults/consult/${_id}`,
 				method: 'DELETE',
 			}),
-			async onQueryStarted({ _id }, { queryFulfilled, dispatch }) {
+			async onQueryStarted(
+				{ _id },
+				{ queryFulfilled, dispatch, getState }
+			) {
+				const role = getState()?.user?.role || '';
+				const patchResults = [];
+
 				// Optimistically remove the document
-				const patchResult = dispatch(
-					apiSlice.util.updateQueryData(
-						'getConsults',
-						{ status: 'completed,failed,rejected,cancelled' },
-						(oldData) => ({
-							...oldData,
-							data: oldData.data.filter(
-								(consult) => consult?._id !== _id
-							),
-						})
-					)
-				);
+				if (role === 'student') {
+					const patchResult = dispatch(
+						apiSlice.util.updateQueryData(
+							'getConsults',
+							{ status: 'completed,failed,rejected,cancelled' },
+							(oldData) => ({
+								...oldData,
+								data: oldData.data.filter(
+									(consult) => consult?._id !== _id
+								),
+							})
+						)
+					);
+
+					patchResults.push(patchResult);
+				} else if (role === 'chef') {
+					const statuses = [
+						'pending',
+						'completed',
+						'failed,rejected,cancelled',
+					];
+
+					statuses.forEach((status) => {
+						const patchResult = dispatch(
+							apiSlice.util.updateQueryData(
+								'getConsults',
+								{ status },
+								(oldData) => ({
+									...oldData,
+									data: oldData.data.filter(
+										(consult) => consult?._id !== _id
+									),
+								})
+							)
+						);
+
+						patchResults.push(patchResult);
+					});
+				}
 
 				try {
 					await queryFulfilled;
 				} catch (err) {
-					// Revert the cache update
-					patchResult.undo();
+					// Revert the cache updates
+					patchResults.forEach((patchResult) => {
+						patchResult.undo();
+					});
 				}
 			},
 		}),
