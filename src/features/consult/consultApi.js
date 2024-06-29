@@ -57,6 +57,65 @@ const consultApi = apiSlice.injectEndpoints({
 				return { url };
 			},
 		}),
+		updateConsultStatus: builder.mutation({
+			query: ({ _id, data }) => ({
+				url: `/consults/chef/consult/${_id}`,
+				method: 'PATCH',
+				body: data,
+			}),
+
+			async onQueryStarted({ _id, data }, { queryFulfilled, dispatch }) {
+				let canceledDoc = null;
+				const { status, link } = data || {};
+				const addToStatus =
+					status === 'accepted'
+						? 'accepted'
+						: 'failed,rejected,cancelled';
+
+				// Optimistically remove the doc cache
+				const activeConsultPatchResult = dispatch(
+					apiSlice.util.updateQueryData(
+						'getConsults',
+						{ status: 'pending' },
+						(draft) => {
+							const restData = draft.data.filter((doc) => {
+								// Save the document data
+								if (doc._id === _id) {
+									canceledDoc = {
+										...doc,
+										status,
+										link,
+									};
+								}
+								return doc._id !== _id;
+							});
+
+							draft.data = restData;
+						}
+					)
+				);
+
+				// Optimistically remove the doc from the history
+				const ConsultHistoryPatchResult = dispatch(
+					apiSlice.util.updateQueryData(
+						'getConsults',
+						{
+							status: addToStatus,
+						},
+						(draft) => {
+							draft.data.push(canceledDoc);
+						}
+					)
+				);
+				try {
+					await queryFulfilled;
+				} catch (err) {
+					// Revert the cache update
+					activeConsultPatchResult.undo();
+					ConsultHistoryPatchResult.undo();
+				}
+			},
+		}),
 		cancelConsult: builder.mutation({
 			query: ({ _id }) => ({
 				url: `/consults/consult/${_id}`,
@@ -150,6 +209,7 @@ const consultApi = apiSlice.injectEndpoints({
 					patchResults.push(patchResult);
 				} else if (role === 'chef') {
 					const statuses = [
+						'accepted',
 						'pending',
 						'completed',
 						'failed,rejected,cancelled',
@@ -190,6 +250,7 @@ export default consultApi;
 export const {
 	useBookConsultMutation,
 	useGetConsultsQuery,
+	useUpdateConsultStatusMutation,
 	useCancelConsultMutation,
 	useDeleteConsultMutation,
 } = consultApi;
