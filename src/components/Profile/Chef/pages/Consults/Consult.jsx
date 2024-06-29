@@ -6,10 +6,11 @@ import {
 } from '../../../../../helpers';
 import { Avatar, ConfirmationModal } from '../../../../../shared';
 import {
-	useCancelConsultMutation,
 	useDeleteConsultMutation,
+	useUpdateConsultStatusMutation,
 } from '../../../../../features/consult/consultApi';
 import { useGetUserDataQuery } from '../../../../../features/user/userApi';
+import JoinLinkModal from './JoinLinkModal';
 
 const ACTION_TYPES = {
 	JOIN: 'join',
@@ -18,7 +19,9 @@ const ACTION_TYPES = {
 
 export default function Consult({ consult, cardRef }) {
 	const [showModal, setShowModal] = useState(false);
+	const [showJoinLinkModal, setShowJoinLinkModal] = useState(false);
 	const [takeAction, setTakeAction] = useState({ status: false, type: null });
+	const [modalAction, setModalAction] = useState({ action: '', fun: null });
 
 	const { _id, userId, username, date, startTime, endTime, status } =
 		consult || {};
@@ -26,21 +29,39 @@ export default function Consult({ consult, cardRef }) {
 	const { data } = useGetUserDataQuery({ userId, include: 'img' });
 	const { img } = data?.data || '';
 
-	const [
-		cancelConsult,
-		{ isSuccess: cancelConsultIsSucc, isError: cancelConsultIsErr },
-	] = useCancelConsultMutation();
-	const [
-		deleteConsult,
-		{ isSuccess: deleteConsultIsSucc, isError: deleteConsultIsErr },
-	] = useDeleteConsultMutation();
+	const [deleteConsult] = useDeleteConsultMutation();
+	const [updateConsultStatus] = useUpdateConsultStatusMutation();
 
-	const handleCancelConsult = () => {
-		cancelConsult({ _id });
+	const handleAcceptConsult = (joinLink) => {
+		const data = {
+			status: 'accepted',
+			link: joinLink,
+		};
+
+		showNotification('promise', 'Accepting Consult', {
+			promise: updateConsultStatus({
+				_id,
+				data,
+			}),
+			successMessage: 'Successfully accepted Consult',
+			errorMessage: 'An error occurred while accepting the Consult',
+		});
+	};
+
+	const handleRejectConsult = () => {
+		showNotification('promise', 'Accepting Consult', {
+			promise: updateConsultStatus({ _id, data: { status: 'rejected' } }),
+			successMessage: 'Successfully accepted Consult',
+			errorMessage: 'An error occurred while accepting the Consult',
+		});
 	};
 
 	const handleDeleteConsult = () => {
-		deleteConsult({ _id });
+		showNotification('promise', 'Deleting Consult', {
+			promise: deleteConsult({ _id }),
+			successMessage: 'Successfully deleted Consult',
+			errorMessage: 'An error occurred while deleting the Consult',
+		});
 	};
 
 	// Take action based on the status of the consult
@@ -68,36 +89,6 @@ export default function Consult({ consult, cardRef }) {
 			setTakeAction({ status: false, type: null });
 		}
 	}, [date, status]);
-
-	// Show notifications based on the action status
-	useEffect(() => {
-		if (cancelConsultIsSucc) {
-			showNotification(
-				'success',
-				'Successfully Cancelled the Consult request'
-			);
-		}
-		if (cancelConsultIsErr) {
-			showNotification(
-				'error',
-				'An error occurred while Cancelling the Consult request'
-			);
-		}
-		if (deleteConsultIsSucc) {
-			showNotification('success', 'Successfully Deleted the Consult');
-		}
-		if (deleteConsultIsErr) {
-			showNotification(
-				'error',
-				'An error occurred while Deleting the Consult request'
-			);
-		}
-	}, [
-		cancelConsultIsSucc,
-		cancelConsultIsErr,
-		deleteConsultIsSucc,
-		deleteConsultIsErr,
-	]);
 
 	return (
 		<>
@@ -162,40 +153,49 @@ export default function Consult({ consult, cardRef }) {
 						})}
 					</p>
 
-					{/* Cancel or Delete button */}
+					{/* Cancel or Delete button for pending consults */}
 					{status === 'pending' &&
 						takeAction.type !== ACTION_TYPES.DELETE && (
 							<div className='flex gap-x-3'>
 								<button
 									className='w-full mt-4 py-2 border-2 border-green-500 bg-green-500/50 backdrop-blur text-center font-mono font-black uppercase text-neutral-800 rounded transition-colors hover:bg-green-500 hover:text-white'
-									onClick={() => setShowModal(true)}>
+									onClick={() => setShowJoinLinkModal(true)}>
 									Accept
 								</button>
 								<button
 									className='w-full mt-4 py-2 border-2 border-red-500/60 bg-red-500/50 backdrop-blur text-center font-mono font-black uppercase text-neutral-800 rounded transition-colors hover:bg-red-500 hover:text-white'
-									onClick={() => setShowModal(true)}>
-									Cancel
+									onClick={() => {
+										setModalAction({
+											action: 'reject',
+											fun: handleRejectConsult,
+										});
+										setShowModal(true);
+									}}>
+									Reject
 								</button>
 							</div>
 						)}
 
-					{status === 'accepted' &&
-					takeAction.type !== ACTION_TYPES.DELETE ? (
-						takeAction.type === ACTION_TYPES.JOIN ? (
-							<button
-								className='mt-4 w-full rounded border-2 border-white bg-white py-2 text-center font-mono font-black uppercase text-neutral-800 backdrop-blur transition-colors hover:bg-white/30 hover:text-white'
-								onClick={() => setShowModal(true)}>
-								Join
-							</button>
-						) : (
-							<button className='mt-4 w-full rounded border-2 border-white bg-white py-2 text-center font-mono font-black uppercase text-neutral-800 backdrop-blur transition-colors hover:bg-white/30 hover:text-white'>
-								Wait For The Date
-							</button>
-						)
-					) : (
+					{takeAction.type === ACTION_TYPES.JOIN ? (
 						<button
 							className='mt-4 w-full rounded border-2 border-white bg-white py-2 text-center font-mono font-black uppercase text-neutral-800 backdrop-blur transition-colors hover:bg-white/30 hover:text-white'
 							onClick={() => setShowModal(true)}>
+							Join
+						</button>
+					) : status === 'accepted' && !takeAction.status ? (
+						<button className='mt-4 w-full rounded border-2 border-white bg-white py-2 text-center font-mono font-black uppercase text-neutral-800 backdrop-blur transition-colors hover:bg-white/30 hover:text-white'>
+							Wait For The Date
+						</button>
+					) : (
+						<button
+							className='mt-4 w-full rounded border-2 border-white bg-white py-2 text-center font-mono font-black uppercase text-neutral-800 backdrop-blur transition-colors hover:bg-white/30 hover:text-white'
+							onClick={() => {
+								setModalAction({
+									action: 'delete',
+									fun: handleDeleteConsult,
+								});
+								setShowModal(true);
+							}}>
 							DELETE
 						</button>
 					)}
@@ -208,7 +208,7 @@ export default function Consult({ consult, cardRef }) {
 					viewBox='0 0 320 384'
 					fill='none'
 					xmlns='http://www.w3.org/2000/svg'
-					className='absolute inset-0 z-0 lg:mt-3 -ml-4 md:ml-0'
+					className='lg:mt-3 -ml-4 lg:ml-0 absolute inset-0 z-0'
 					variants={{
 						hover: {
 							scale: 1.5,
@@ -259,17 +259,16 @@ export default function Consult({ consult, cardRef }) {
 			{showModal && (
 				<ConfirmationModal
 					title='Are You Sure?'
-					details={`Do you really want to ${
-						status === 'pending' || status === 'accepted'
-							? 'Cancel'
-							: 'Delete'
-					} the consult? And it can't be undo`}
+					details={`Do you really want to ${modalAction.action} the consult? And it can't be undo`}
 					setIsVisible={setShowModal}
-					onConfirm={
-						status === 'pending' || status === 'accepted'
-							? handleCancelConsult
-							: handleDeleteConsult
-					}
+					onConfirm={modalAction.fun}
+				/>
+			)}
+
+			{showJoinLinkModal && (
+				<JoinLinkModal
+					setShowModal={setShowJoinLinkModal}
+					onSubmitFn={handleAcceptConsult}
 				/>
 			)}
 		</>

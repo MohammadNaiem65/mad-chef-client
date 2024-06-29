@@ -104,15 +104,13 @@ export default function Consults() {
 					</button>
 				</nav>
 
-				<section className='p-5'>
+				<section className='p-5 z-0'>
 					<ConsultCards
 						isLoading={isLoading}
 						error={error?.msg || error?.message}
 						consults={consults}
 					/>
 				</section>
-
-				{/* {content} */}
 			</section>
 		</>
 	);

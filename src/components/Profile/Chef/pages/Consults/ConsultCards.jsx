@@ -88,12 +88,12 @@ export default function ConsultCards({ isLoading, error, consults = [] }) {
 	return (
 		<>
 			<div className='flex justify-between items-center'>
-				<h3 className='w-4/5 md:w-1/4 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
+				<h3 className='w-4/5 md:w-2/4 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>
 					My Consults :
 				</h3>
 
 				{/* Arrow controls */}
-				{consults.length >= 4 && (
+				{consults.length >= 3 && (
 					<div className='text-3xl text-Primary flex items-center gap-x-2'>
 						<button
 							onClick={handleSlidePrev}
