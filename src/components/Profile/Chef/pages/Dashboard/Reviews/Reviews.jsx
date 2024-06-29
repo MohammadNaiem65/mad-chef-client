@@ -33,7 +33,7 @@ export default function Reviews() {
 	return (
 		<section className='w-full my-5 px-2 md:px-5'>
 			<Helmet>
-				<title>Recipes | Profile - Mad Chef</title>
+				<title>Reviews | Profile - Mad Chef</title>
 			</Helmet>
 
 			<h3 className='w-3/4 md:w-1/2 mb-5 px-2 border-b-2 text-2xl font-semibold text-slate-700 border-Primary'>

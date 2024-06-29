@@ -81,25 +81,28 @@ export default function Sidebar() {
 					<BiSupport className='mx-auto md:mx-0 text-2xl' />{' '}
 					<span className='hidden md:inline'>Consults</span>
 				</Link>
-				<Link
-					to={`/profile/${
-						role === 'student' ? 'user' : role
-					}/payment-history`}
-					className={`h-11 md:py-2 flex items-center gap-x-2 xl:rounded-tl xl:rounded-bl hover:bg-Primary/20 ${
-						mainPath === 'payment-history'
-							? 'bg-blue-300 md:px-5'
-							: 'md:px-3'
-					}`}
-					title='Payment History'>
-					{mainPath === 'payment-history' ? (
-						<BsCreditCard2FrontFill className='mx-auto md:mx-0 text-2xl' />
-					) : (
-						<BsCreditCard2Front className='mx-auto md:mx-0 text-2xl' />
-					)}
-					<span className='hidden md:inline truncate'>
-						Payment History
-					</span>
-				</Link>
+				{role !==
+				(
+					<Link
+						to={`/profile/${
+							role === 'student' ? 'user' : role
+						}/payment-history`}
+						className={`h-11 md:py-2 flex items-center gap-x-2 xl:rounded-tl xl:rounded-bl hover:bg-Primary/20 ${
+							mainPath === 'payment-history'
+								? 'bg-blue-300 md:px-5'
+								: 'md:px-3'
+						}`}
+						title='Payment History'>
+						{mainPath === 'payment-history' ? (
+							<BsCreditCard2FrontFill className='mx-auto md:mx-0 text-2xl' />
+						) : (
+							<BsCreditCard2Front className='mx-auto md:mx-0 text-2xl' />
+						)}
+						<span className='hidden md:inline truncate'>
+							Payment History
+						</span>
+					</Link>
+				)}
 			</div>
 			<Link
 				to={`/profile/${role === 'student' ? 'user' : role}/my-profile`}

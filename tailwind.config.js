@@ -5,7 +5,7 @@ export default {
 		extend: {
 			fontFamily: {
 				Popins: ['Poppins', 'sans-serif'],
-				Vollokorn: ['Vollkorn', 'serif'],
+				Vollkorn: ['Vollkorn', 'serif'],
 			},
 			colors: {
 				Primary: '#8fb4ff',
