@@ -1,4 +1,5 @@
 import store from '../app/store';
+import adminApi from '../features/admin/adminApi';
 import chefApi from '../features/chef/chefApi';
 import userApi from '../features/user/userApi';
 import { addUserData } from '../features/user/userSlice';
@@ -60,6 +61,21 @@ export default async function storeUserData() {
 			bio: data?.bio,
 			rating: data?.rating,
 			yearsOfExperience: data?.yearsOfExperience,
+			createdAt: data?.createdAt,
+			updatedAt: data?.updatedAt,
+		};
+	} else if (userRole === 'admin') {
+		const data = await store
+			.dispatch(adminApi.endpoints.getAdminData.initiate({ id: userId }))
+			.unwrap();
+
+		userData = {
+			_id: data?._id,
+			name: data?.name,
+			email: data?.email,
+			emailVerified: data?.emailVerified,
+			role: data?.role,
+			img: data?.img,
 			createdAt: data?.createdAt,
 			updatedAt: data?.updatedAt,
 		};
