@@ -81,7 +81,7 @@ export default function Sidebar() {
 					<BiSupport className='mx-auto md:mx-0 text-2xl' />{' '}
 					<span className='hidden md:inline'>Consults</span>
 				</Link>
-				{role !==
+				{role === 'student' &&
 				(
 					<Link
 						to={`/profile/${
