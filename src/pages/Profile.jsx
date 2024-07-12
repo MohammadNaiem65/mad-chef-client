@@ -3,8 +3,7 @@ import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 
-import { modelImg } from '../assets';
-import { Spinner } from '../shared';
+import { Avatar, Spinner } from '../shared';
 import Sidebar from '../components/Profile/Sidebar';
 import AdminSidebar from '../components/Profile/AdminSidebar';
 
@@ -18,18 +17,14 @@ export default function Profile() {
 		const mainPage = paths?.length && paths[3];
 		const subPage = paths?.length && paths[4];
 
-		if (role === 'student' || role === 'chef') {
-			const pathRole = role === 'student' ? 'user' : 'chef';	
+		const pathRole = role === 'student' ? 'user' : role;
 
-			if (subPage) {
-				navigate(`/profile/${pathRole}/${mainPage}/${subPage}`);
-			} else if (mainPage && !subPage) {
-				navigate(`/profile/${pathRole}/${mainPage}`);
-			} else {
-				navigate(`/profile/${pathRole}/dashboard`);
-			}
-		} else if (role === 'admin') {
-			navigate('/profile/admin/dashboard');
+		if (subPage) {
+			navigate(`/profile/${pathRole}/${mainPage}/${subPage}`);
+		} else if (mainPage && !subPage) {
+			navigate(`/profile/${pathRole}/${mainPage}`);
+		} else {
+			navigate(`/profile/${pathRole}/dashboard`);
 		}
 	}, [navigate, role, pathname]);
 
@@ -43,7 +38,7 @@ export default function Profile() {
 				{/* Header */}
 				<div className='w-full pb-8 flex items-center gap-x-6'>
 					<img
-						src={img ? img : modelImg}
+						src={img ? img : <Avatar />}
 						alt='User Image'
 						className='size-20 md:size-28 aspect-square ml-4 object-cover rounded-full relative z-20'
 					/>
