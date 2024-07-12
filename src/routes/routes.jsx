@@ -20,36 +20,53 @@ const Banner = lazy(() => import('../components/Recipes/Banner'));
 // Payment pages
 const UpgradeToPro = lazy(() => import('../components/Payment/BuyProPkg'));
 
-// User Profile Pages
+// * User Profile Pages
 const UserMessages = lazy(() => import('../components/Profile/User/pages/Messages'));
 const UserMyProfile = lazy(() => import('../components/Profile/User/pages/MyProfile/MyProfile'));
 
-// Dashboard Pages - Profile
+// Dashboard Pages
 const UserDashboard = lazy(() => import('../components/Profile/User/pages/Dashboard/Dashboard'));
 const UserLikes = lazy(() => import('../components/Profile/User/pages/Dashboard/Likes'));
 const UserBookmarks = lazy(() => import('../components/Profile/User/pages/Dashboard/Bookmarks'));
 const UserRatings = lazy(() => import('../components/Profile/User/pages/Dashboard/Ratings'));
 const UserReviews = lazy(() => import('../components/Profile/User/pages/Dashboard/Reviews'));
 
-// Consult Pages - Profile
+// Consult Pages
 const UserConsults = lazy(() => import('../components/Profile/User/pages/Consults/Consults'));
 const UserConsultsCards = lazy(() => import('../components/Profile/User/pages/Consults/MyConsults'));
 const ConsultForm = lazy(() => import('../components/Profile/User/pages/Consults/ConsultForm'));
 
-// Payment History - User Profile pages
+// Payment History
 const UserPaymentHistory = lazy(() => import('../components/Profile/User/pages/PaymentHistory/PaymentHistory'));
 
-// Chef Profile pages
+// * Chef Profile pages
 const ChefMessages = lazy(() => import('../components/Profile/Chef/pages/Messages/Messages'));
 const ChefConsults = lazy(() => import('../components/Profile/Chef/pages/Consults/Consults'));
 const ChefPaymentHistory = lazy(() => import('../components/Profile/Chef/pages/PaymentHistory/PaymentHistory'));
 const ChefMyProfile = lazy(() => import('../components/Profile/Chef/pages/MyProfile/MyProfile'));
 
-// Dashboard Pages - Profile
+// Dashboard Pages
 const ChefDashboard = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Dashboard'));
 const ChefRecipes = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Recipes/Recipes'));
 const ChefComments = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Comments/Comments'));
 const ChefReviews = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Reviews/Reviews'));
+
+// * Admin Profile Pages
+const AdminProfile = lazy(() => import('../components/Profile/Admin/Admin'));
+const AdminPayments = lazy(() => import('../components/Profile/Admin/pages/Payments/Payments'));
+const AdminMyProfile = lazy(() => import('../components/Profile/Admin/pages/MyProfile/MyProfile'));
+
+// Dashboard Pages
+const AdminDashboard = lazy(() => import('../components/Profile/Admin/pages/Dashboard/Dashboard'));
+const AdminUsers = lazy(() => import('../components/Profile/Admin/pages/Dashboard/Users/Users'));
+const AdminChefs = lazy(() => import('../components/Profile/Admin/pages/Dashboard/Chefs/Chefs'));
+const AdminPromotionApplications = lazy(() => import('../components/Profile/Admin/pages/Dashboard/PromotionApplications/PromotionApplications'));
+
+// Contents Pages
+const AdminContents = lazy(() => import('../components/Profile/Admin/pages/Contents/Contents'));
+const AdminRecipes = lazy(() => import('../components/Profile/Admin/pages/Contents/Recipes/Recipes'));
+const AdminBlogs = lazy(() => import('../components/Profile/Admin/pages/Contents/Blogs/Blogs'));
+const AdminConsults = lazy(() => import('../components/Profile/Admin/pages/Contents/Consults/Consults'));
 
 const routes = createBrowserRouter([
 	{
@@ -174,6 +191,58 @@ const routes = createBrowserRouter([
 					{
 						path: '/profile/chef/my-profile',
 						element: <ChefMyProfile />,
+					},
+
+					// Admin related routes
+					{
+						path: '/profile/admin',
+						element: <AdminProfile />,
+						children: [
+							{
+								path: '/profile/admin/dashboard',
+								element: <AdminDashboard />,
+								children: [
+									{
+										path: '/profile/admin/dashboard/users',
+										element: <AdminUsers />,
+									},
+									{
+										path: '/profile/admin/dashboard/chefs',
+										element: <AdminChefs />,
+									},
+									{
+										path: '/profile/admin/dashboard/promotion-applications',
+										element: <AdminPromotionApplications />,
+									},
+								],
+							},
+							{
+								path: '/profile/admin/contents',
+								element: <AdminContents />,
+								children: [
+									{
+										path: '/profile/admin/contents/recipes',
+										element: <AdminRecipes />,
+									},
+									{
+										path: '/profile/admin/contents/blogs',
+										element: <AdminBlogs />,
+									},
+									{
+										path: '/profile/admin/contents/consults',
+										element: <AdminConsults />,
+									},
+								],
+							},
+							{
+								path: '/profile/admin/payments',
+								element: <AdminPayments />,
+							},
+							{
+								path: '/profile/admin/my-profile',
+								element: <AdminMyProfile />,
+							},
+						],
 					},
 				],
 			},
