@@ -3,7 +3,7 @@ import apiSlice from '../api/apiSlice';
 const adminApi = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getAdminData: builder.query({
-			query: ({id}) => ({
+			query: ({ id }) => ({
 				url: `/admins/admin/${id}`,
 				method: 'GET',
 			}),
