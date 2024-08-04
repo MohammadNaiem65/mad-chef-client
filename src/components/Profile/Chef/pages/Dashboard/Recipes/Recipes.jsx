@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 import { NoContent, Pagination, Recipe } from '../../../../../../shared';
 import { useGetRecipesQuery } from '../../../../../../features/recipe/recipeApi';
+import { usePaginationInfo } from '../../../../../../hooks';
 
 export default function Recipes() {
 	const { _id } = useSelector((state) => state.user);
@@ -16,9 +17,7 @@ export default function Recipes() {
 	const { data: recipes, meta } = data || {};
 
 	// Get the page details
-	const pageDetails = meta?.page?.split('/');
-	const currPage = pageDetails?.length && parseInt(pageDetails[0]);
-	const totalPages = pageDetails?.length && parseInt(pageDetails[1]);
+	const { activePage, totalPages } = usePaginationInfo(meta?.page || '');
 
 	let content;
 	if (isSuccess && recipes?.length === 0) {
@@ -36,7 +35,7 @@ export default function Recipes() {
 					<Recipe key={index} recipe={recipe} />
 				))}
 
-				<Pagination activePage={currPage} totalPages={totalPages} />
+				<Pagination activePage={activePage} totalPages={totalPages} />
 			</>
 		);
 	}
