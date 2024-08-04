@@ -1,4 +1,8 @@
-export default function Pagination({ activePage = 1, totalPages = 1 }) {
+export default function Pagination({
+	activePage = 1,
+	totalPages = 1,
+	setCurrPage = () => {},
+}) {
 	const pages = Array.from(
 		{ length: totalPages > 0 ? totalPages : 1 },
 		(_, index) => (
@@ -8,7 +12,8 @@ export default function Pagination({ activePage = 1, totalPages = 1 }) {
 					activePage === index + 1
 						? 'bg-Primary font-semibold text-white'
 						: 'bg-Primary/30 text-slate-700'
-				}`}>
+				}`}
+				onClick={() => setCurrPage(index + 1)}>
 				{index + 1}
 			</p>
 		)
