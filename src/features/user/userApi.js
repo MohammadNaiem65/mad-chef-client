@@ -33,6 +33,34 @@ const userApi = apiSlice.injectEndpoints({
 				return { url: finalUrl };
 			},
 		}),
+		getUsersData: builder.query({
+			query: ({ page = 1, limit = 10, sort = 'name', order = 'asc' }) => {
+				// Define the base URL
+				const baseUrl = '/users';
+
+				// Create an object with all parameters
+				const params = { page, limit, sort, order };
+
+				// Use reduce to construct the query string without filter parameter
+				const queryString = Object.entries(params)
+					.reduce((acc, [key, value]) => {
+						// Only include parameters that have a value
+						if (value) {
+							acc.push(`${key}=${encodeURIComponent(value)}`);
+						}
+						return acc;
+					}, [])
+					.join('&');
+
+				let finalUrl = baseUrl;
+
+				if (queryString) {
+					finalUrl += `?${queryString}`;
+				}
+
+				return { url: finalUrl };
+			},
+		}),
 		updateUserPkg: builder.mutation({
 			query: () => ({
 				url: '/users/user/update-package',
@@ -98,6 +126,7 @@ const userApi = apiSlice.injectEndpoints({
 				method: 'PATCH',
 				body: data,
 			}),
+
 			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
 				const { userId, docId, data } = arg;
 
@@ -136,6 +165,7 @@ const userApi = apiSlice.injectEndpoints({
 				url: `/users/user/${userId}/rating/recipe?docId=${docId}`,
 				method: 'DELETE',
 			}),
+
 			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
 				const { userId, docId } = arg;
 
@@ -177,6 +207,7 @@ const userApi = apiSlice.injectEndpoints({
 				method: 'PATCH',
 				body: data,
 			}),
+
 			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
 				const { userId, docId, data } = arg;
 
@@ -215,6 +246,7 @@ const userApi = apiSlice.injectEndpoints({
 				url: `/users/user/${userId}/review/chef?docId=${docId}`,
 				method: 'DELETE',
 			}),
+			
 			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
 				const { userId, docId } = arg;
 
@@ -253,6 +285,7 @@ const userApi = apiSlice.injectEndpoints({
 export default userApi;
 export const {
 	useGetUserDataQuery,
+	useGetUsersDataQuery,
 	useUpdateUserPkgMutation,
 	useGetChefReviewsByUserQuery,
 	useEditRecipeRatingByUserMutation,
