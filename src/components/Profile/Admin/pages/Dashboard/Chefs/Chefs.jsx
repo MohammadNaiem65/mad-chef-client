@@ -196,7 +196,7 @@ export default function Chefs() {
 
             {content}
 
-            {totalPages !== 1 && (
+            {totalPages !== 1 && !chefId && (
                 <Pagination
                     activePage={activePage}
                     totalPages={totalPages}
