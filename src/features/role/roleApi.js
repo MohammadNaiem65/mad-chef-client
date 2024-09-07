@@ -48,6 +48,18 @@ const roleApi = apiSlice.injectEndpoints({
                 return { url: `${baseUrl}?${queryString}` };
             },
         }),
+        updatePromotionApplicationStatus: builder.mutation({
+            query: ({ id, status }) => ({
+                url: `/roles/update-promotion-application-status?id=${id}&status=${status}`,
+                method: 'PATCH',
+            }),
+        }),
+        deletePromotionApplication: builder.mutation({
+            query: ({ id }) => ({
+                url: `/roles/delete-promotion-application/${id}`,
+                method: 'PATCH',
+            }),
+        }),
     }),
 });
 
@@ -57,4 +69,6 @@ export const {
     useCheckApplicationForPromotionQuery,
     useGetRolePromotionApplicationQuery,
     useGetRolePromotionApplicationsQuery,
+    useUpdatePromotionApplicationStatusMutation,
+    useDeletePromotionApplicationMutation,
 } = roleApi;
