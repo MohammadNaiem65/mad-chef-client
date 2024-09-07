@@ -8,7 +8,11 @@ import { MdPending, MdOutlineSmsFailed, MdDelete } from 'react-icons/md';
 import { TiTick } from 'react-icons/ti';
 import { RxCross1 } from 'react-icons/rx';
 
-import { perseDate } from '../../../../../../helpers';
+import { perseDate, showNotification } from '../../../../../../helpers';
+import {
+    useDeletePromotionApplicationMutation,
+    useUpdatePromotionApplicationStatusMutation,
+} from '../../../../../../features/role/roleApi';
 
 const ID_TAGS = {
     APPLICATION_ID: 'id/application',
@@ -19,6 +23,10 @@ export default function Application({ application }) {
     const { _id, usersId, role, status, createdAt, updatedAt } = application;
 
     const [copiedId, setCopiedId] = useState({ tag: '', copied: false });
+
+    const [updateApplicationStatus] =
+        useUpdatePromotionApplicationStatusMutation();
+    const [deleteApplication] = useDeletePromotionApplicationMutation();
 
     const copyId = async (id, tag) => {
         try {
@@ -34,8 +42,24 @@ export default function Application({ application }) {
         }
     };
 
+    const handleUpdateApplicationStatus = (status) => {
+        showNotification('promise', 'Updating application status...', {
+            promise: updateApplicationStatus({ id: _id, status: status }),
+            successMessage: 'Successfully updated the application status.',
+            errorMessage: 'Something went wrong, try again later.',
+        });
+    };
+
+    const handleDeleteApplication = () => {
+        showNotification('promise', 'Deleting application...', {
+            promise: deleteApplication({ id: _id }),
+            successMessage: 'Successfully deleted the application.',
+            errorMessage: 'Something went wrong, try again later.',
+        });
+    };
+
     return (
-        <div className='w-[58.875rem] lg:w-full p-2 text-sm text-gray-500 grid grid-cols-12 group/parent'>
+        <div className='w-[58.875rem] lg:w-full p-2 text-sm text-gray-500 grid grid-cols-12 group/parent hover:bg-slate-200'>
             <div className='col-span-2 flex items-center gap-x-[2px]'>
                 <span>
                     {copiedId.tag === ID_TAGS.APPLICATION_ID ? (
@@ -90,20 +114,29 @@ export default function Application({ application }) {
                 )}
             </span>
 
-            {/* Date */}
+            {/* Applied Date */}
             <span className='col-span-2 capitalize truncate'>
                 {perseDate(updatedAt || createdAt, 'short')}
             </span>
 
-            {/* Date */}
+            {/* Actions */}
             <span className='col-span-2 capitalize truncate flex items-center gap-x-2'>
                 {status === 'pending' ? (
                     <>
-                        <TiTick className='text-2xl cursor-pointer hover:text-green-500' />
-                        <RxCross1 className='text-xl cursor-pointer hover:text-red-500' />{' '}
+                        <TiTick
+                            className='text-2xl cursor-pointer hover:text-green-500'
+                            onClick={() => handleUpdateApplicationStatus(202)}
+                        />
+                        <RxCross1
+                            className='text-xl cursor-pointer hover:text-red-500'
+                            onClick={() => handleUpdateApplicationStatus(400)}
+                        />{' '}
                     </>
                 ) : (
-                    <MdDelete className='text-xl cursor-pointer hover:text-red-500' />
+                    <MdDelete
+                        className='text-xl cursor-pointer hover:text-red-500'
+                        onClick={handleDeleteApplication}
+                    />
                 )}
             </span>
         </div>
