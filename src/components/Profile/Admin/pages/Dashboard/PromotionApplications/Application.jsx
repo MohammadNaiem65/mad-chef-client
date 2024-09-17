@@ -19,7 +19,7 @@ const ID_TAGS = {
     USER_ID: 'id/user',
 };
 
-export default function Application({ application }) {
+export default function Application({ application, filter }) {
     const { _id, usersId, role, status, createdAt, updatedAt } = application;
 
     const [copiedId, setCopiedId] = useState({ tag: '', copied: false });
@@ -44,7 +44,11 @@ export default function Application({ application }) {
 
     const handleUpdateApplicationStatus = (status) => {
         showNotification('promise', 'Updating application status...', {
-            promise: updateApplicationStatus({ id: _id, status: status }),
+            promise: updateApplicationStatus({
+                id: _id,
+                status: status,
+                filter,
+            }),
             successMessage: 'Successfully updated the application status.',
             errorMessage: 'Something went wrong, try again later.',
         });
@@ -52,9 +56,9 @@ export default function Application({ application }) {
 
     const handleDeleteApplication = () => {
         showNotification('promise', 'Deleting application...', {
-            promise: deleteApplication({ id: _id }),
+            promise: deleteApplication({ id: _id, filter }),
             successMessage: 'Successfully deleted the application.',
-            errorMessage: 'Something went wrong, try again later.',
+            errorMessage: 'Something went wrong, try again later.', 
         });
     };
 

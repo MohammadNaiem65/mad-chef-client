@@ -24,7 +24,7 @@ export default function User({ user }) {
 	};
 
 	return (
-		<div className='w-[58.875rem] lg:w-full p-2 text-sm text-gray-500 grid grid-cols-12 group/parent'>
+		<div className='w-[58.875rem] lg:w-full p-2 text-sm text-gray-500 grid grid-cols-12 group/parent hover:bg-slate-200'>
 			<div className='col-span-2 flex items-center gap-x-[2px]'>
 				<span>
 					{copiedId ? (

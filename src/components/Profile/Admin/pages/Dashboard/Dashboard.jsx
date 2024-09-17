@@ -41,7 +41,7 @@ export default function Dashboard() {
 				</Link>
 				<Link
 					to='/profile/admin/dashboard/promotion-applications'
-					className={`xl:w-72 px-5 py-2 flex justify-center items-center gap-x-3 hover:bg-Primary/10 ${
+					className={`md:w-72 px-5 py-2 flex justify-center items-center gap-x-3 hover:bg-Primary/10${
 						subPath === 'promotion-applications' && 'text-Primary'
 					}`}
 					title='Promotion Applications'>
@@ -50,7 +50,7 @@ export default function Dashboard() {
 					) : (
 						<SiReacthookform className='text-xl md:text-2xl' />
 					)}
-					<span className='w-fit'>Promotion Applications</span>
+					<span className='w-48 md:w-full'>Promotion Applications</span>
 				</Link>
 			</nav>
 

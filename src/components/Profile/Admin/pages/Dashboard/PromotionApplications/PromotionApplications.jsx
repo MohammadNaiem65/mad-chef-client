@@ -35,12 +35,18 @@ export default function PromotionApplications() {
         },
         { skip: !applicationId }
     );
+
+    const filter = {
+        page: currPage,
+        sort: 'updatedAt,createdAt,status',
+        order: '',
+    };
     const {
         data: applications,
         isLoading: isLoadingApplications,
         isError: isErrorApplications,
         error: applicationsError,
-    } = useGetRolePromotionApplicationsQuery({ page: currPage });
+    } = useGetRolePromotionApplicationsQuery(filter);
 
     const { activePage, totalPages } = usePaginationInfo(
         applications?.meta?.page || ''
@@ -123,6 +129,7 @@ export default function PromotionApplications() {
                     <Application
                         key={application._id}
                         application={application}
+                        filter={filter}
                     />
                 ))}
             </section>
@@ -197,7 +204,7 @@ export default function PromotionApplications() {
 
             {content}
 
-            {totalPages !== 1 && !applicationId && !error && (
+            {!loading && totalPages !== 1 && !applicationId && !error && (
                 <Pagination
                     activePage={activePage}
                     totalPages={totalPages}
