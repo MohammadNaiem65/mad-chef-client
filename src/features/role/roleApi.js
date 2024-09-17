@@ -53,12 +53,63 @@ const roleApi = apiSlice.injectEndpoints({
                 url: `/roles/update-promotion-application-status?id=${id}&status=${status}`,
                 method: 'PATCH',
             }),
+
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                const { id, status, filter } = arg;
+
+                // Optimistically update the document cache
+                const updateResult = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getRolePromotionApplications',
+                        filter,
+                        (draft) => {
+                            const applicationToUpdateStatus = draft?.data?.find(
+                                (application) => application?._id === id
+                            );
+
+                            applicationToUpdateStatus.status =
+                                status === 202 ? 'accepted' : 'rejected';
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch (err) {
+                    updateResult.undo();
+                }
+            },
         }),
         deletePromotionApplication: builder.mutation({
             query: ({ id }) => ({
                 url: `/roles/delete-promotion-application/${id}`,
-                method: 'PATCH',
+                method: 'DELETE',
             }),
+
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                const { id, filter } = arg;
+
+                // Optimistically delete the document cache
+                const patchResult = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getRolePromotionApplications',
+                        filter,
+                        (draft) => {
+                            const restApplications = draft?.data?.filter(
+                                (application) => application?._id !== id
+                            );
+
+                            draft.data = restApplications;
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch (err) {
+                    patchResult.undo();
+                }
+            },
         }),
     }),
 });
