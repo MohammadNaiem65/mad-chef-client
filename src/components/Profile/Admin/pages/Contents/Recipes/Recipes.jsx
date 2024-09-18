@@ -9,11 +9,14 @@ import {
     RoundSpinner,
 } from '../../../../../../shared';
 import {
+    useDeleteRecipeMutation,
     useGetRecipeQuery,
     useGetRecipesQuery,
+    useUpdateRecipeStatusMutation,
 } from '../../../../../../features/recipe/recipeApi';
-import Recipe from './Recipe';
 import { usePaginationInfo } from '../../../../../../hooks';
+import showNotification from '../../../../../../helpers/showNotification';
+import Recipe from './Recipe';
 
 export default function Recipes() {
     const [showSearchBar, setShowSearchBar] = useState(false);
@@ -23,16 +26,18 @@ export default function Recipes() {
     const [recipes, setRecipes] = useState([]);
     const [currPage, setCurrPage] = useState(1);
 
+    const filters = {
+        page: currPage,
+        include: 'author,region,rating,status',
+        role: 'admin',
+    };
+
     const {
         data: recipesData,
         isLoading: recipesIsLoading,
         isError: recipesIsError,
         error: recipesError,
-    } = useGetRecipesQuery({
-        page: currPage,
-        include: 'author,region,rating,status',
-        role: 'admin',
-    });
+    } = useGetRecipesQuery(filters);
     const {
         data: recipeData,
         isLoading: recipeIsLoading,
@@ -41,6 +46,8 @@ export default function Recipes() {
     } = useGetRecipeQuery(recipeId, {
         skip: !recipeId,
     });
+    const [updateStatus] = useUpdateRecipeStatusMutation();
+    const [deleteRecipe] = useDeleteRecipeMutation();
 
     const { activePage, totalPages } = usePaginationInfo(
         recipesData?.meta?.page || ''
@@ -80,6 +87,24 @@ export default function Recipes() {
         }
     }, [recipeError?.data, recipesError?.data, recipeIsError, recipesIsError]);
 
+    // Handle update recipe status
+    const updateRecipeStatus = (recipeId, status) => {
+        showNotification('promise', 'Updating the recipe status...', {
+            promise: updateStatus({ recipeId, status, filters }),
+            successMessage: 'Successfully updated the status.',
+            errorMessage: 'An error occurred while updating.',
+        });
+    };
+
+    // Handle delete recipe
+    const handleDeleteRecipe = (recipeId) => {
+        showNotification('promise', 'Deleting the recipe...', {
+            promise: deleteRecipe({ recipeId, filters }),
+            successMessage: 'Successfully deleted the status.',
+            errorMessage: 'An error occurred while deleting.',
+        });
+    };
+
     // ** Decide what to render
     let content;
 
@@ -115,7 +140,12 @@ export default function Recipes() {
 
                 {/* Recipes */}
                 {recipes.map((recipe) => (
-                    <Recipe key={recipe._id} recipe={recipe} />
+                    <Recipe
+                        key={recipe._id}
+                        recipe={recipe}
+                        updateRecipeStatus={updateRecipeStatus}
+                        handleDeleteRecipe={handleDeleteRecipe}
+                    />
                 ))}
             </section>
         );

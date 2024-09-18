@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { BiSolidHide } from 'react-icons/bi';
+import { FaRegEye } from 'react-icons/fa';
 import { FaCheck } from 'react-icons/fa6';
 import { GrStatusGood } from 'react-icons/gr';
 import {
@@ -8,14 +10,18 @@ import {
 } from 'react-icons/hi2';
 import { MdDelete, MdOutlineSmsFailed, MdPending } from 'react-icons/md';
 import { RxCross1 } from 'react-icons/rx';
-import { Link } from 'react-router-dom';
+import { VscEyeClosed } from 'react-icons/vsc';
 
 const ID_TAGS = {
     RECIPE_ID: 'id/recipe',
     CHEF_ID: 'id/chef',
 };
 
-export default function Recipe({ recipe }) {
+export default function Recipe({
+    recipe,
+    updateRecipeStatus,
+    handleDeleteRecipe,
+}) {
     const { _id, author, rating, region, status } = recipe;
 
     const [copiedId, setCopiedId] = useState({ tag: '', copied: false });
@@ -91,6 +97,8 @@ export default function Recipe({ recipe }) {
                     <MdPending className='mt-1 ml-1 text-orange-300' />
                 ) : status === 'published' ? (
                     <GrStatusGood className='mt-1 ml-1 text-green-400' />
+                ) : status === 'hidden' ? (
+                    <VscEyeClosed className='mt-1 ml-1 text-red-400' />
                 ) : (
                     <MdOutlineSmsFailed className='mt-1 ml-1 text-red-400 text-md' />
                 )}
@@ -100,15 +108,36 @@ export default function Recipe({ recipe }) {
             <span className='col-span-2 capitalize truncate flex items-center gap-x-2'>
                 {status === 'pending' ? (
                     <>
-                        <FaCheck className='text-xl cursor-pointer hover:text-green-500' />
-                        <RxCross1 className='text-xl cursor-pointer hover:text-red-500' />{' '}
+                        <FaCheck
+                            title='Publish'
+                            className='text-xl cursor-pointer hover:text-green-500'
+                            onClick={() => updateRecipeStatus(_id, 'published')}
+                        />
+                        <RxCross1
+                            title='Decline'
+                            className='text-xl cursor-pointer hover:text-red-500'
+                            onClick={() => updateRecipeStatus(_id, 'rejected')}
+                        />{' '}
                     </>
                 ) : status === 'published' ? (
-                    <button className='px-1 border-2 border-red-500 text-red-500 flex items-center gap-x-1 rounded'>
+                    <button
+                        className='px-1 border-2 border-red-500 text-red-500 flex items-center gap-x-1 rounded'
+                        onClick={() => updateRecipeStatus(_id, 'hidden')}
+                    >
                         Hide <BiSolidHide className='mt-1' />
                     </button>
+                ) : status === 'hidden' ? (
+                    <button
+                        className='px-1 border-2 border-green-500 text-green-500 flex items-center gap-x-1 rounded'
+                        onClick={() => updateRecipeStatus(_id, 'published')}
+                    >
+                        Publish <FaRegEye className='mt-1' />
+                    </button>
                 ) : (
-                    <MdDelete className='text-xl cursor-pointer hover:text-red-500' />
+                    <MdDelete
+                        className='text-xl cursor-pointer hover:text-red-500'
+                        onClick={() => handleDeleteRecipe(_id)}
+                    />
                 )}
             </span>
         </div>
