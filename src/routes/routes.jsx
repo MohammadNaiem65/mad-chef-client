@@ -66,7 +66,6 @@ const AdminPromotionApplications = lazy(() => import('../components/Profile/Admi
 const AdminContents = lazy(() => import('../components/Profile/Admin/pages/Contents/Contents'));
 const AdminRecipes = lazy(() => import('../components/Profile/Admin/pages/Contents/Recipes/Recipes'));
 const AdminBlogs = lazy(() => import('../components/Profile/Admin/pages/Contents/Blogs/Blogs'));
-const AdminConsults = lazy(() => import('../components/Profile/Admin/pages/Contents/Consults/Consults'));
 
 const routes = createBrowserRouter([
 	{
@@ -227,10 +226,6 @@ const routes = createBrowserRouter([
 									{
 										path: '/profile/admin/contents/blogs',
 										element: <AdminBlogs />,
-									},
-									{
-										path: '/profile/admin/contents/consults',
-										element: <AdminConsults />,
 									},
 								],
 							},
