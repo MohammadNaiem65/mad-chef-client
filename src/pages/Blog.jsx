@@ -6,7 +6,9 @@ export default function Blog() {
 			<Helmet>
 				<title>Blog - Mad Chef</title>
 			</Helmet>
-			Blog
+			
+			
+			<div className="mt-[13rem] md:mt-[18rem] text-center">No blogs uploaded yet.</div>
 		</section>
 	);
 }
