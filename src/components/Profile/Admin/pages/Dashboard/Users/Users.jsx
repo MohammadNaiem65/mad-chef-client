@@ -186,7 +186,7 @@ export default function Users() {
 
             {content}
 
-            {currPage && !userId && (
+            {!loading && !userId && totalPages > 1 && (
                 <Pagination
                     activePage={activePage}
                     totalPages={totalPages}
