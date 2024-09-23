@@ -19,7 +19,7 @@ const cardDetails = [
 
 export default function FeatureRecipes() {
 	return (
-		<section className='w-10/12 md:w-11/12 lg:w-10/12 mx-auto mt-16 flex flex-col md:flex-row gap-y-5 md:gap-x-3'>
+		<section className='w-10/12 md:w-11/12 lg:w-10/12 mx-auto mt-16 flex flex-col md:flex-row md:justify-between gap-y-5 md:gap-x-3'>
 			{cardDetails.map((card) => {
 				const { id, img, title, sub } = card;
 				return (
