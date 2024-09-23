@@ -43,6 +43,8 @@ export default function Users() {
     } = useGetUsersDataQuery({ page: currPage }, { skip: userId });
     const { data, meta } = usersData || {};
 
+    const { activePage, totalPages } = usePaginationInfo(meta?.page || '');
+
     // Set the users array using the data from useGetUsersDataQuery
     useEffect(() => {
         if (data?.length > 0 && !userId) {
@@ -57,13 +59,11 @@ export default function Users() {
         }
     }, [userData?.data]);
 
-    const { activePage, totalPages } = usePaginationInfo(meta?.page || '');
-
     // Handle the loading state
     useEffect(() => {
         if (isLoadingUserData || isLoadingUsersData) {
             setLoading(true);
-        } else if (!isLoadingUserData || isLoadingUsersData) {
+        } else if (!isLoadingUserData || !isLoadingUsersData) {
             setLoading(false);
         }
     }, [isLoadingUserData, isLoadingUsersData]);
@@ -156,7 +156,8 @@ export default function Users() {
                     Users:
                 </h3>
 
-                <div className={`w-1/2 flex items-center justify-end`}>
+                <div className='w-1/2 flex items-center justify-end'>
+                    {/* Form for smaller devices */}
                     <form
                         className={`relative ${
                             showSearchBar
@@ -164,6 +165,20 @@ export default function Users() {
                                 : 'translate-x-[140%] duration-200'
                         }`}
                     >
+                        <input
+                            type='text'
+                            value={userId}
+                            onChange={(e) => setUserId(e.target.value)}
+                            className='w-[18rem] px-2 py-1 bg-slate-200 text-slate-500 font-semibold border-Primary/70 outline-Primary/70 rounded'
+                            placeholder='Enter User ID'
+                        />
+                        <button type='submit'>
+                            <IoSearch className='text-2xl absolute right-3 top-1' />
+                        </button>
+                    </form>
+
+                    {/* Form for larger devices */}
+                    <form className='hidden lg:block relative'>
                         <input
                             type='text'
                             value={userId}
