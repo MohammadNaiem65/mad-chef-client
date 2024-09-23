@@ -11,7 +11,7 @@ export default function TopChefs() {
     });
     const { data: chefs } = data || {};
 
-	// Decide what to render
+    // Decide what to render
     let content;
 
     if (isLoading) {
@@ -44,21 +44,19 @@ export default function TopChefs() {
     }
 
     return (
-        isSuccess && (
-            <section className='md:w-11/12 lg:w-10/12 mt-16 lg:mt-20 md:mx-auto relative'>
-                {/* Section title */}
-                <h2 className='section-title'>
-                    America&apos;s
-                    <span className='section-title-span after:w-[112%]'>
-                        Best Chefs
-                    </span>
-                    <br />
-                    are on Mad Chef
-                </h2>
+        <section className='md:w-11/12 lg:w-10/12 mt-16 lg:mt-20 md:mx-auto relative'>
+            {/* Section title */}
+            <h2 className='section-title'>
+                America&apos;s
+                <span className='section-title-span after:w-[112%]'>
+                    Best Chefs
+                </span>
+                <br />
+                are on Mad Chef
+            </h2>
 
-                {/* Section content */}
-                {content}
-            </section>
-        )
+            {/* Section content */}
+            {content}
+        </section>
     );
 }
