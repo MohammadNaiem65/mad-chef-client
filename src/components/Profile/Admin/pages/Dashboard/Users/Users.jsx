@@ -73,24 +73,24 @@ export default function Users() {
         if (isErrorUserData || isErrorUsersData) {
             if (isErrorUserData) {
                 setError(
-                    errorUserData?.data?.error ||
+                    errorUserData?.data?.message ||
                         'An error occurred while fetching the user data.'
                 );
 
                 showNotification(
                     'error',
-                    errorUserData?.data?.error ||
+                    errorUserData?.data?.message ||
                         'An error occurred while fetching the user data.'
                 );
             } else if (isErrorUsersData) {
                 setError(
-                    errorUsersData?.data?.error ||
+                    errorUsersData?.data?.message ||
                         'An error occurred while fetching the user data.'
                 );
 
                 showNotification(
                     'error',
-                    errorUsersData?.data?.error ||
+                    errorUsersData?.data?.message ||
                         'An error occurred while fetching the user data.'
                 );
             }
@@ -98,8 +98,8 @@ export default function Users() {
     }, [
         isErrorUserData,
         isErrorUsersData,
-        errorUserData?.data?.error,
-        errorUsersData?.data?.error,
+        errorUserData?.data?.message,
+        errorUsersData?.data?.message,
     ]);
 
     // Decide what to render
