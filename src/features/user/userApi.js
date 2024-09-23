@@ -4,292 +4,319 @@ import { setCredentials } from '../auth/authSlice';
 import { addUserData } from './userSlice';
 
 const userApi = apiSlice.injectEndpoints({
-	endpoints: (builder) => ({
-		getUserData: builder.query({
-			query: ({ userId, include, exclude }) => {
-				// Define the base URL
-				const baseUrl = `/users/user/${userId}`;
+    endpoints: (builder) => ({
+        getUserData: builder.query({
+            query: ({ userId, include, exclude }) => {
+                // Define the base URL
+                const baseUrl = `/users/user/${userId}`;
 
-				// Create an object with all parameters
-				const params = { include, exclude };
+                // Create an object with all parameters
+                const params = { include, exclude };
 
-				// Use reduce to construct the query string without filter parameter
-				const queryString = Object.entries(params)
-					.reduce((acc, [key, value]) => {
-						// Only include parameters that have a value
-						if (value) {
-							acc.push(`${key}=${encodeURIComponent(value)}`);
-						}
-						return acc;
-					}, [])
-					.join('&');
+                // Use reduce to construct the query string without filter parameter
+                const queryString = Object.entries(params)
+                    .reduce((acc, [key, value]) => {
+                        // Only include parameters that have a value
+                        if (value) {
+                            acc.push(`${key}=${encodeURIComponent(value)}`);
+                        }
+                        return acc;
+                    }, [])
+                    .join('&');
 
-				let finalUrl = baseUrl;
+                let finalUrl = baseUrl;
 
-				if (queryString) {
-					finalUrl += `?${queryString}`;
-				}
+                if (queryString) {
+                    finalUrl += `?${queryString}`;
+                }
 
-				return { url: finalUrl };
-			},
-		}),
-		getUsersData: builder.query({
-			query: ({ page = 1, limit = 10, sort = 'name', order = 'asc' }) => {
-				// Define the base URL
-				const baseUrl = '/users';
+                return { url: finalUrl };
+            },
+        }),
+        getUsersData: builder.query({
+            query: ({ page = 1, limit = 10, sort = 'name', order = 'asc' }) => {
+                // Define the base URL
+                const baseUrl = '/users';
 
-				// Create an object with all parameters
-				const params = { page, limit, sort, order };
+                // Create an object with all parameters
+                const params = { page, limit, sort, order };
 
-				// Use reduce to construct the query string without filter parameter
-				const queryString = Object.entries(params)
-					.reduce((acc, [key, value]) => {
-						// Only include parameters that have a value
-						if (value) {
-							acc.push(`${key}=${encodeURIComponent(value)}`);
-						}
-						return acc;
-					}, [])
-					.join('&');
+                // Use reduce to construct the query string without filter parameter
+                const queryString = Object.entries(params)
+                    .reduce((acc, [key, value]) => {
+                        // Only include parameters that have a value
+                        if (value) {
+                            acc.push(`${key}=${encodeURIComponent(value)}`);
+                        }
+                        return acc;
+                    }, [])
+                    .join('&');
 
-				let finalUrl = baseUrl;
+                let finalUrl = baseUrl;
 
-				if (queryString) {
-					finalUrl += `?${queryString}`;
-				}
+                if (queryString) {
+                    finalUrl += `?${queryString}`;
+                }
 
-				return { url: finalUrl };
-			},
-		}),
-		updateUserPkg: builder.mutation({
-			query: () => ({
-				url: '/users/user/update-package',
-				method: 'PATCH',
-			}),
+                return { url: finalUrl };
+            },
+        }),
+        updateUserProfilePicture: builder.mutation({
+            query: ({ formData }) => ({
+                url: '/users/user/upload-profile-picture',
+                method: 'POST',
+                body: formData,
+            }),
 
-			async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
-				try {
-					const { data } = await queryFulfilled;
-					const { accessToken } = data?.data || {};
+            async onQueryStarted(arg, { queryFulfilled, getState, dispatch }) {
+                const { imgUrl } = arg;
 
-					const {
-						_id,
-						name,
-						email,
-						emailVerified,
-						role,
-						img,
-						createdAt,
-						updatedAt,
-					} = getState().user;
+                try {
+                    await queryFulfilled;
 
-					// Update the user data in the store
-					dispatch(
-						addUserData({
-							_id,
-							name,
-							email,
-							emailVerified,
-							role,
-							img,
-							createdAt,
-							updatedAt,
-							pkg: 'pro',
-						})
-					);
+                    const existingChefData = getState().user;
 
-					const { user } = getState().auth;
+                    // update the chef data
+                    const updatedData = { ...existingChefData, img: imgUrl };
 
-					const updatedUser = { ...user };
-					updatedUser.pkg = 'pro';
+                    // update the cache
+                    dispatch(addUserData(updatedData));
+                } catch (error) {
+                    // do nothing
+                }
+            },
+        }),
+        updateUserPkg: builder.mutation({
+            query: () => ({
+                url: '/users/user/update-package',
+                method: 'PATCH',
+            }),
 
-					dispatch(
-						setCredentials({
-							user: updatedUser,
-							accessToken,
-						})
-					);
+            async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    const { accessToken } = data?.data || {};
 
-					// Store auth data in the local storage
-					localStorage.setItem(
-						'auth',
-						JSON.stringify({ user: updatedUser, accessToken })
-					);
-				} catch (error) {
-					// Do nothing here
-				}
-			},
-		}),
-		editRecipeRatingByUser: builder.mutation({
-			query: ({ userId, docId, data }) => ({
-				url: `/users/user/${userId}/rating/recipe?docId=${docId}`,
-				method: 'PATCH',
-				body: data,
-			}),
+                    const {
+                        _id,
+                        name,
+                        email,
+                        emailVerified,
+                        role,
+                        img,
+                        createdAt,
+                        updatedAt,
+                    } = getState().user;
 
-			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-				const { userId, docId, data } = arg;
+                    // Update the user data in the store
+                    dispatch(
+                        addUserData({
+                            _id,
+                            name,
+                            email,
+                            emailVerified,
+                            role,
+                            img,
+                            createdAt,
+                            updatedAt,
+                            pkg: 'pro',
+                        })
+                    );
 
-				// Optimistically update the recipe rating
-				const updatePatchResult = dispatch(
-					apiSlice.util.updateQueryData(
-						'getRecipeRatings',
-						{ data_filter: { userId } },
-						(draft) => {
-							const ratings = draft?.data;
+                    const { user } = getState().auth;
 
-							const recipeToEdit = ratings.find(
-								(rating) => rating?._id === docId
-							);
+                    const updatedUser = { ...user };
+                    updatedUser.pkg = 'pro';
 
-							recipeToEdit.rating = data.rating;
-							recipeToEdit.message = data.message;
-						}
-					)
-				);
+                    dispatch(
+                        setCredentials({
+                            user: updatedUser,
+                            accessToken,
+                        })
+                    );
 
-				try {
-					await queryFulfilled;
-				} catch (error) {
-					// Revert the optimistic patch updates and notify the user
-					updatePatchResult.undo();
-					showNotification(
-						'error',
-						'An error occurred while updating the rating.'
-					);
-				}
-			},
-		}),
-		deleteRecipeRatingByUser: builder.mutation({
-			query: ({ userId, docId }) => ({
-				url: `/users/user/${userId}/rating/recipe?docId=${docId}`,
-				method: 'DELETE',
-			}),
+                    // Store auth data in the local storage
+                    localStorage.setItem(
+                        'auth',
+                        JSON.stringify({ user: updatedUser, accessToken })
+                    );
+                } catch (error) {
+                    // Do nothing here
+                }
+            },
+        }),
+        editRecipeRatingByUser: builder.mutation({
+            query: ({ userId, docId, data }) => ({
+                url: `/users/user/${userId}/rating/recipe?docId=${docId}`,
+                method: 'PATCH',
+                body: data,
+            }),
 
-			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-				const { userId, docId } = arg;
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                const { userId, docId, data } = arg;
 
-				// Optimistically delete the chef review document
-				const deletePatchResult = dispatch(
-					apiSlice.util.updateQueryData(
-						'getRecipeRatings',
-						{ data_filter: { userId } },
-						(draft) => {
-							const documents = draft?.data;
+                // Optimistically update the recipe rating
+                const updatePatchResult = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getRecipeRatings',
+                        { data_filter: { userId } },
+                        (draft) => {
+                            const ratings = draft?.data;
 
-							const docsWithoutDeletedOne = documents?.filter(
-								(doc) => doc._id !== docId
-							);
+                            const recipeToEdit = ratings.find(
+                                (rating) => rating?._id === docId
+                            );
 
-							draft.data = docsWithoutDeletedOne;
-						}
-					)
-				);
+                            recipeToEdit.rating = data.rating;
+                            recipeToEdit.message = data.message;
+                        }
+                    )
+                );
 
-				try {
-					await queryFulfilled;
-				} catch (error) {
-					// Revert the optimistically deleting rating document and notify the user
-					deletePatchResult.undo();
-					showNotification(
-						'error',
-						'An error occurred while deleting the rating'
-					);
-				}
-			},
-		}),
-		getChefReviewsByUser: builder.query({
-			query: ({ userId }) => `/users/user/${userId}/review/chef`,
-		}),
-		editChefReviewsByUser: builder.mutation({
-			query: ({ userId, docId, data }) => ({
-				url: `/users/user/${userId}/review/chef?docId=${docId}`,
-				method: 'PATCH',
-				body: data,
-			}),
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    // Revert the optimistic patch updates and notify the user
+                    updatePatchResult.undo();
+                    showNotification(
+                        'error',
+                        'An error occurred while updating the rating.'
+                    );
+                }
+            },
+        }),
+        deleteRecipeRatingByUser: builder.mutation({
+            query: ({ userId, docId }) => ({
+                url: `/users/user/${userId}/rating/recipe?docId=${docId}`,
+                method: 'DELETE',
+            }),
 
-			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-				const { userId, docId, data } = arg;
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                const { userId, docId } = arg;
 
-				// Optimistically update the recipe rating
-				const updatePatchResult = dispatch(
-					apiSlice.util.updateQueryData(
-						'getChefReviewsByUser',
-						{ userId },
-						(draft) => {
-							const ratings = draft?.data;
+                // Optimistically delete the chef review document
+                const deletePatchResult = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getRecipeRatings',
+                        { data_filter: { userId } },
+                        (draft) => {
+                            const documents = draft?.data;
 
-							const recipeToEdit = ratings.find(
-								(rating) => rating?._id === docId
-							);
+                            const docsWithoutDeletedOne = documents?.filter(
+                                (doc) => doc._id !== docId
+                            );
 
-							recipeToEdit.rating = data.rating;
-							recipeToEdit.message = data.message;
-						}
-					)
-				);
+                            draft.data = docsWithoutDeletedOne;
+                        }
+                    )
+                );
 
-				try {
-					await queryFulfilled;
-				} catch (error) {
-					// Revert the optimistic patch updates and notify the user
-					updatePatchResult.undo();
-					showNotification(
-						'error',
-						'An error occurred while updating the review'
-					);
-				}
-			},
-		}),
-		deleteChefReviewByUser: builder.mutation({
-			query: ({ userId, docId }) => ({
-				url: `/users/user/${userId}/review/chef?docId=${docId}`,
-				method: 'DELETE',
-			}),
-			
-			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-				const { userId, docId } = arg;
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    // Revert the optimistically deleting rating document and notify the user
+                    deletePatchResult.undo();
+                    showNotification(
+                        'error',
+                        'An error occurred while deleting the rating'
+                    );
+                }
+            },
+        }),
+        getChefReviewsByUser: builder.query({
+            query: ({ userId }) => `/users/user/${userId}/review/chef`,
+        }),
+        editChefReviewsByUser: builder.mutation({
+            query: ({ userId, docId, data }) => ({
+                url: `/users/user/${userId}/review/chef?docId=${docId}`,
+                method: 'PATCH',
+                body: data,
+            }),
 
-				// Optimistically delete the chef review document
-				const deletePatchResult = dispatch(
-					apiSlice.util.updateQueryData(
-						'getChefReviewsByUser',
-						{ userId },
-						(draft) => {
-							const documents = draft?.data;
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                const { userId, docId, data } = arg;
 
-							const docsWithoutDeletedOne = documents?.filter(
-								(doc) => doc._id !== docId
-							);
+                // Optimistically update the recipe rating
+                const updatePatchResult = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getChefReviewsByUser',
+                        { userId },
+                        (draft) => {
+                            const ratings = draft?.data;
 
-							draft.data = docsWithoutDeletedOne;
-						}
-					)
-				);
+                            const recipeToEdit = ratings.find(
+                                (rating) => rating?._id === docId
+                            );
 
-				try {
-					await queryFulfilled;
-				} catch (error) {
-					// Revert the optimistically deleting review document and notify the user
-					deletePatchResult.undo();
-					showNotification(
-						'error',
-						'An error occurred while deleting the review'
-					);
-				}
-			},
-		}),
-	}),
+                            recipeToEdit.rating = data.rating;
+                            recipeToEdit.message = data.message;
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    // Revert the optimistic patch updates and notify the user
+                    updatePatchResult.undo();
+                    showNotification(
+                        'error',
+                        'An error occurred while updating the review'
+                    );
+                }
+            },
+        }),
+        deleteChefReviewByUser: builder.mutation({
+            query: ({ userId, docId }) => ({
+                url: `/users/user/${userId}/review/chef?docId=${docId}`,
+                method: 'DELETE',
+            }),
+
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                const { userId, docId } = arg;
+
+                // Optimistically delete the chef review document
+                const deletePatchResult = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getChefReviewsByUser',
+                        { userId },
+                        (draft) => {
+                            const documents = draft?.data;
+
+                            const docsWithoutDeletedOne = documents?.filter(
+                                (doc) => doc._id !== docId
+                            );
+
+                            draft.data = docsWithoutDeletedOne;
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    // Revert the optimistically deleting review document and notify the user
+                    deletePatchResult.undo();
+                    showNotification(
+                        'error',
+                        'An error occurred while deleting the review'
+                    );
+                }
+            },
+        }),
+    }),
 });
 
 export default userApi;
 export const {
-	useGetUserDataQuery,
-	useGetUsersDataQuery,
-	useUpdateUserPkgMutation,
-	useGetChefReviewsByUserQuery,
-	useEditRecipeRatingByUserMutation,
-	useDeleteRecipeRatingByUserMutation,
-	useEditChefReviewsByUserMutation,
-	useDeleteChefReviewByUserMutation,
+    useGetUserDataQuery,
+    useGetUsersDataQuery,
+    useUpdateUserPkgMutation,
+    useUpdateUserDataMutation,
+    useUpdateUserProfilePictureMutation,
+    useGetChefReviewsByUserQuery,
+    useEditRecipeRatingByUserMutation,
+    useDeleteRecipeRatingByUserMutation,
+    useEditChefReviewsByUserMutation,
+    useDeleteChefReviewByUserMutation,
 } = userApi;

@@ -1,4 +1,5 @@
 import apiSlice from '../api/apiSlice';
+import { addUserData } from '../user/userSlice';
 
 const chefApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -119,6 +120,31 @@ const chefApi = apiSlice.injectEndpoints({
                 body: data,
             }),
         }),
+        updateChefProfilePicture: builder.mutation({
+            query: ({ formData }) => ({
+                url: '/chefs/chef/upload-profile-picture',
+                method: 'POST',
+                body: formData,
+            }),
+
+            async onQueryStarted(arg, { queryFulfilled, getState, dispatch }) {
+                const { imgUrl } = arg;
+
+                try {
+                    await queryFulfilled;
+
+                    const existingChefData = getState().user;
+
+                    // update the chef data
+                    const updatedData = { ...existingChefData, img: imgUrl };
+
+                    // update the cache
+                    dispatch(addUserData(updatedData));
+                } catch (error) {
+                    // do nothing
+                }
+            },
+        }),
     }),
 });
 
@@ -128,4 +154,5 @@ export const {
     useGetChefQuery,
     useGetChefReviewsQuery,
     useAddChefReviewMutation,
+    useUpdateChefProfilePictureMutation,
 } = chefApi;
