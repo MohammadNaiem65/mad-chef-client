@@ -43,9 +43,12 @@ export default function Recipes() {
         isLoading: recipeIsLoading,
         isError: recipeIsError,
         error: recipeError,
-    } = useGetRecipeQuery(recipeId, {
-        skip: !recipeId,
-    });
+    } = useGetRecipeQuery(
+        { recipeId },
+        {
+            skip: !recipeId,
+        }
+    );
     const [updateStatus] = useUpdateRecipeStatusMutation();
     const [deleteRecipe] = useDeleteRecipeMutation();
 

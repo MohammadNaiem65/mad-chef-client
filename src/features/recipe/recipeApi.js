@@ -2,6 +2,35 @@ import apiSlice from '../api/apiSlice';
 
 const recipeApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
+        getRecipe: builder.query({
+            query: ({ recipeId, include, exclude }) => {
+                // Define the base URL
+                const baseUrl = `/recipes/recipe/${recipeId}`;
+
+                // Create an object with all parameters
+                const params = {
+                    include,
+                    exclude,
+                };
+
+                // Use reduce to construct the query string without filter parameter
+                const queryString = Object.entries(params)
+                    .reduce((acc, [key, value]) => {
+                        // Only include parameters that have a value
+                        if (value) {
+                            acc.push(`${key}=${encodeURIComponent(value)}`);
+                        }
+                        return acc;
+                    }, [])
+                    .join('&');
+
+                let url;
+
+                url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+
+                return { url };
+            },
+        }),
         getRecipes: builder.query({
             query: ({
                 data_filter = {},
@@ -74,9 +103,6 @@ const recipeApi = apiSlice.injectEndpoints({
         }),
         getLikedRecipes: builder.query({
             query: ({ userId }) => `/users/user/${userId}/likes`,
-        }),
-        getRecipe: builder.query({
-            query: (recipeId) => `/recipes/recipe/${recipeId}`,
         }),
         getRecipeRatings: builder.query({
             query: ({
@@ -222,8 +248,8 @@ const recipeApi = apiSlice.injectEndpoints({
 
 export default recipeApi;
 export const {
-    useGetRecipesQuery,
     useGetRecipeQuery,
+    useGetRecipesQuery,
     useGetBookmarkedRecipesQuery,
     useGetLikedRecipesQuery,
     useGetRecipeRatingsQuery,
