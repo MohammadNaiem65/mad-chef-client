@@ -191,8 +191,8 @@ const recipeApi = apiSlice.injectEndpoints({
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
                 const { recipeId, status, filters } = arg;
 
-                // Optimistically update the cache
-                const patchResult = dispatch(
+                // Optimistically update the "getRecipes" query cache
+                const patchResultOne = dispatch(
                     apiSlice.util.updateQueryData(
                         'getRecipes',
                         filters,
@@ -206,10 +206,24 @@ const recipeApi = apiSlice.injectEndpoints({
                     )
                 );
 
+                // Optimistically update the "getRecipe" query cache
+                const patchResultTwo = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getRecipe',
+                        { recipeId },
+                        (draft) => {
+                            const recipeData = draft.data;
+
+                            recipeData.status = status;
+                        }
+                    )
+                );
+
                 try {
                     await queryFulfilled;
                 } catch (error) {
-                    patchResult.undo();
+                    patchResultOne.undo();
+                    patchResultTwo.undo();
                 }
             },
         }),
