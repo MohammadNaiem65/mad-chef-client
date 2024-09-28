@@ -105,6 +105,75 @@ const recipeApi = apiSlice.injectEndpoints({
         getBookmarkedRecipes: builder.query({
             query: ({ userId }) => `/users/user/${userId}/bookmarks`,
         }),
+        bookmarkRecipe: builder.mutation({
+            query: ({ userId, recipeId }) => ({
+                url: `/users/user/${userId}/add-bookmark?recipeId=${recipeId}`,
+                method: 'POST',
+            }),
+
+            async onQueryStarted(
+                { userId, recipeId },
+                { queryFulfilled, dispatch }
+            ) {
+                const patchResult = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getBookmarkedRecipe',
+                        { userId, recipeId },
+                        (draft) => {
+                            draft.data = { userId, recipeId };
+                        }
+                    )
+                );
+
+                try {
+                    const result = await queryFulfilled;
+
+                    // Add document _id into getBookmarkedRecipe cache
+                    dispatch(
+                        apiSlice.util.updateQueryData(
+                            'getBookmarkedRecipe',
+                            { userId, recipeId },
+                            (draft) => {
+                                draft = result.data;
+
+                                return draft;
+                            }
+                        )
+                    );
+                } catch (error) {
+                    // Revert the changes
+                    patchResult.undo();
+                }
+            },
+        }),
+        removeBookmarkFromRecipe: builder.mutation({
+            query: ({ userId, recipeId }) => ({
+                url: `/users/user/${userId}/remove-bookmark?recipeId=${recipeId}`,
+                method: 'DELETE',
+            }),
+
+            async onQueryStarted(
+                { userId, recipeId },
+                { queryFulfilled, dispatch }
+            ) {
+                const patchResult = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getBookmarkedRecipe',
+                        { userId, recipeId },
+                        (draft) => {
+                            draft.data = {};
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    // Revert the changes
+                    patchResult.undo();
+                }
+            },
+        }),
         getLikedRecipe: builder.query({
             query: ({ userId, recipeId }) =>
                 `/users/user/${userId}/like?recipeId=${recipeId}`,
@@ -380,6 +449,8 @@ export const {
     useGetRecipesQuery,
     useGetBookmarkedRecipeQuery,
     useGetBookmarkedRecipesQuery,
+    useBookmarkRecipeMutation,
+    useRemoveBookmarkFromRecipeMutation,
     useGetLikedRecipeQuery,
     useGetLikedRecipesQuery,
     useAddLikeToRecipeMutation,
