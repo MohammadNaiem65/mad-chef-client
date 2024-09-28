@@ -98,11 +98,125 @@ const recipeApi = apiSlice.injectEndpoints({
                 return { url };
             },
         }),
+        getBookmarkedRecipe: builder.query({
+            query: ({ userId, recipeId }) =>
+                `/users/user/${userId}/bookmark?recipeId=${recipeId}`,
+        }),
         getBookmarkedRecipes: builder.query({
             query: ({ userId }) => `/users/user/${userId}/bookmarks`,
         }),
+        getLikedRecipe: builder.query({
+            query: ({ userId, recipeId }) =>
+                `/users/user/${userId}/like?recipeId=${recipeId}`,
+        }),
         getLikedRecipes: builder.query({
             query: ({ userId }) => `/users/user/${userId}/likes`,
+        }),
+        addLikeToRecipe: builder.mutation({
+            query: ({ userId, recipeId }) => ({
+                url: `/users/user/${userId}/add-like?recipeId=${recipeId}`,
+                method: 'POST',
+            }),
+
+            async onQueryStarted(
+                { userId, recipeId },
+                { queryFulfilled, dispatch }
+            ) {
+                const patchResultOne = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getRecipe',
+                        { recipeId },
+                        (draft) => {
+                            ++draft.data.like;
+                        }
+                    )
+                );
+
+                const patchResultTwo = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getLikedRecipe',
+                        { userId, recipeId },
+                        (draft) => {
+                            draft = {
+                                message: 'Successful',
+                                data: {
+                                    userId,
+                                    recipeId,
+                                },
+                            };
+
+                            return draft;
+                        }
+                    )
+                );
+
+                try {
+                    const result = await queryFulfilled;
+
+                    // Add document _id getLikedRecipe cache
+                    dispatch(
+                        apiSlice.util.updateQueryData(
+                            'getLikedRecipe',
+                            { userId, recipeId },
+                            (draft) => {
+                                draft.data = result.data;
+                            }
+                        )
+                    );
+                } catch (error) {
+                    // Revert the changes
+                    patchResultOne.undo();
+                    patchResultTwo.undo();
+                }
+            },
+        }),
+        removeLikeFromRecipe: builder.mutation({
+            query: ({ userId, recipeId }) => ({
+                url: `/users/user/${userId}/remove-like?recipeId=${recipeId}`,
+                method: 'DELETE',
+            }),
+
+            async onQueryStarted(
+                { userId, recipeId },
+                { queryFulfilled, dispatch }
+            ) {
+                const patchResultOne = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getRecipe',
+                        { recipeId },
+                        (draft) => {
+                            if (draft.data.like === 0) {
+                                draft.data.like = 0;
+                            } else {
+                                --draft.data.like;
+                            }
+                        }
+                    )
+                );
+
+                const patchResultTwo = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getLikedRecipe',
+                        { userId, recipeId },
+                        (draft) => {
+                            draft = {
+                                message: "You didn't like the recipe.",
+                                data: {},
+                            };
+
+                            return draft;
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    // Revert the changes
+                    patchResultOne.undo();
+                    patchResultTwo.undo();
+                }
+            },
         }),
         getRecipeRatings: builder.query({
             query: ({
@@ -264,8 +378,12 @@ export default recipeApi;
 export const {
     useGetRecipeQuery,
     useGetRecipesQuery,
+    useGetBookmarkedRecipeQuery,
     useGetBookmarkedRecipesQuery,
+    useGetLikedRecipeQuery,
     useGetLikedRecipesQuery,
+    useAddLikeToRecipeMutation,
+    useRemoveLikeFromRecipeMutation,
     useGetRecipeRatingsQuery,
     useUpdateRecipeStatusMutation,
     useDeleteRecipeMutation,
