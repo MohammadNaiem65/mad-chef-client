@@ -228,7 +228,9 @@ const recipeApi = apiSlice.injectEndpoints({
                             'getLikedRecipe',
                             { userId, recipeId },
                             (draft) => {
-                                draft.data = result.data;
+                                draft = result.data;
+
+                                return draft;
                             }
                         )
                     );
