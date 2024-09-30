@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
 import Rating from './Rating';
 import ArrowLink from './ArrowLink';
 
 export default function Recipe({ recipe }) {
-    const { _id, img, title, ingredients, status, rating } = recipe;
+    const { _id, img, title, ingredients, author, status, rating } = recipe;
+    const { _id: currUserId, role } = useSelector((state) => state.user);
 
     return (
         <motion.div
@@ -39,7 +41,7 @@ export default function Recipe({ recipe }) {
                 <ArrowLink to={`/recipes/recipe/${_id}`} />
             </div>
 
-            {status && (
+            {role === 'author' && currUserId === author && (
                 <p
                     className={`px-2 py-1 font-semibold capitalize absolute top-0 right-3 ${
                         status === 'pending'
