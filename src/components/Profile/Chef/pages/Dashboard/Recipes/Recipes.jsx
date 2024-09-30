@@ -11,7 +11,7 @@ export default function Recipes() {
         data_filter: {
             chefId: _id,
         },
-        include: '_id,img,title,ingredients,status,rating',
+        include: '_id,img,title,ingredients,status,author,rating',
         role: 'chef',
     });
 
