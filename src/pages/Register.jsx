@@ -1,326 +1,250 @@
-// external imports
-import { useEffect, useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-
+import { updateProfile } from 'firebase/auth';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 
-// internal imports
 import { signInWithGoogle, signUpWithPassword } from '../helpers/authHelper';
 import {
-	useAuthenticateMutation,
-	useAuthenticateForTokenMutation,
+    useAuthenticateMutation,
+    useAuthenticateForTokenMutation,
 } from '../features/auth/authApi';
-import { updateProfile } from 'firebase/auth';
 import RoundSpinner from '../shared/RoundSpinner/RoundSpinner';
-import showNotification from '../helpers/showNotification';
-import removeNotifications from '../helpers/removeNotifications';
-import formatFirebaseError from '../helpers/formatFirebaseError';
+import {
+    formatFirebaseError,
+    removeNotifications,
+    showNotification,
+} from '../helpers';
 
+// Password regex for validation
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 export default function Register() {
-	// local states
-	const [formData, setFormData] = useState({
-		name: '',
-		email: '',
-		password: '',
-		confirmPassword: '',
-	});
-	const [passwordType, setPasswordType] = useState(true);
-	const [loading, setLoading] = useState(false);
-	const [err, setErr] = useState('');
+    // State for form data
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
+    const [passwordType, setPasswordType] = useState('password');
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
 
-	// hooks
-	const navigate = useNavigate();
-	const [authenticate, { isLoading, isSuccess, isError, error }] =
-		useAuthenticateMutation();
-	const [
-		authenticateForToken,
-		{
-			isLoading: providerAuthLoading,
-			isSuccess: providerAuthSuccess,
-			isError: providerAuthIsError,
-			error: providerError,
-		},
-	] = useAuthenticateForTokenMutation();
+    const navigate = useNavigate();
 
-	// if any fields value changes - remove the error
-	useEffect(() => {
-		setErr('');
-	}, [formData.email, formData.password, formData.confirmPassword]);
+    // RTK Query hooks for authentication
+    const [authenticate] = useAuthenticateMutation();
+    const [authenticateForToken] = useAuthenticateForTokenMutation();
 
-	// handle loading state
-	useEffect(() => {
-		removeNotifications();
-		if (!isLoading) {
-			setLoading(false);
-		} else if (!providerAuthLoading) {
-			setLoading(false);
-		}
-	}, [isLoading, providerAuthLoading]);
+    // Effect to clear any existing notifications when component mounts
+    useEffect(() => {
+        removeNotifications();
+    }, []);
 
-	useEffect(() => {
-		if (isLoading) {
-			setLoading(true);
-		} else if (providerAuthLoading) {
-			showNotification('loading', 'Almost done...');
-			setLoading(true);
-		}
-	}, [isLoading, providerAuthLoading]);
+    // Handler for input changes
+    const handleInputChange = useCallback((e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        // Clear error for the field being edited
+        setErrors((prev) => ({ ...prev, [name]: '' }));
+    }, []);
 
-	// set error if any error received from the server
-	useEffect(() => {
-		// stop the loader
-		setLoading(false);
+    // Toggle password visibility
+    const togglePasswordVisibility = useCallback(() => {
+        setPasswordType((prev) => (prev === 'password' ? 'text' : 'password'));
+    }, []);
 
-		if (isError || providerAuthIsError) {
-			setErr(error?.data ? error.data : providerError.data);
-			showNotification('error', err);
-		}
-	}, [isError, error, providerAuthIsError, providerError, err]);
+    // Validate form data
+    const validateForm = useCallback(() => {
+        const newErrors = {};
+        if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = 'Passwords do not match.';
+        }
+        if (!PWD_REGEX.test(formData.password)) {
+            newErrors.password =
+                'Password must contain a capital and lowercase letter, a number, a special character and be 8 to 24 characters long.';
+        }
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }, [formData.password, formData.confirmPassword]);
 
-	// navigate the user to the proper page after authentication
-	useEffect(() => {
-		// stop the loader and notify
-		setLoading(false);
+    // Handle form submission
+    const handleSubmitForm = async (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
 
-		if (isSuccess) {
-			navigate('/login');
-			showNotification('success', 'Successfully registered!');
-		} else if (providerAuthSuccess) {
-			navigate('/');
-			showNotification('success', 'Successfully logged in');
-		}
-	}, [navigate, isSuccess, providerAuthSuccess]);
+        setLoading(true);
 
-	// handle email registration
-	const handleSubmitForm = async (e) => {
-		e.preventDefault();
+        try {
+            // Sign up user with Firebase
+            const { user } = await signUpWithPassword(
+                formData.email,
+                formData.password
+            );
 
-		// set loading state and show loading notification
-		showNotification('loading', 'Validating your credentials...');
-		setLoading(true);
+            // Update user profile
+            await updateProfile(user, { displayName: formData.name });
 
-		// check if password and confirm password matched
-		if (formData.password !== formData.confirmPassword) {
-			removeNotifications();
-			showNotification('error', 'Password does not match.');
-			return setErr('Password does not match.');
-		}
-		// validate password
-		else if (!PWD_REGEX.test(formData.password)) {
-			removeNotifications();
-			showNotification('error', 'Check the error message');
-			return setErr(
-				'Password must contain a capital and smaller latter, a number, a special character and it should be 8 to 24 characters long.'
-			);
-		}
+            // Get ID token
+            const token = await user.getIdToken(true);
 
-		try {
-			// sign up user
-			const { user } = await signUpWithPassword(
-				formData.email,
-				formData.password
-			);
+            // Use showNotification with 'promise' type for authentication
+            await showNotification('promise', 'Registering your account...', {
+                promise: authenticate({ token }).unwrap(),
+                successMessage: 'Successfully registered!',
+                errorMessage: 'Registration failed. Please try again.',
+            });
 
-			// save username to firebase and get idToken
-			await updateProfile(user, { displayName: formData.name });
-			const token = await user.getIdToken(true);
+            navigate('/login');
+        } catch (error) {
+            showNotification('error', formatFirebaseError(error));
+        } finally {
+            setLoading(false);
+        }
+    };
 
-			// send request to server
-			authenticate({ token });
-		} catch (error) {
-			removeNotifications();
-			setLoading(false);
-			setErr(formatFirebaseError(error));
-		}
-	};
+    // Handle Google Sign In
+    const handleGoogleSignIn = useCallback(async () => {
+        setLoading(true);
+        try {
+            const res = await signInWithGoogle();
 
-	// handle google registration
-	const handleGoogleSignIn = () => {
-		// start the loader
-		setLoading(true);
+            // Use showNotification with 'promise' type for Google authentication
+            await showNotification('promise', 'Authenticating with Google...', {
+                promise: authenticateForToken({
+                    token: res?.user?.accessToken,
+                }).unwrap(),
+                successMessage: 'Successfully logged in with Google!',
+                errorMessage: 'Google authentication failed. Please try again.',
+            });
 
-		signInWithGoogle()
-			.then((res) =>
-				authenticateForToken({ token: res?.user?.accessToken })
-			)
-			.catch((error) => {
-				removeNotifications();
-				setLoading(false);
-				setErr(formatFirebaseError(error));
-			});
-	};
+            navigate('/');
+        } catch (error) {
+            showNotification('error', formatFirebaseError(error));
+        } finally {
+            setLoading(false);
+        }
+    }, [authenticateForToken, navigate]);
 
-	return (
-		<section className='w-11/12 md:w-4/5 lg:w-1/3 mx-auto my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 relative rounded'>
-			{/* Set title */}
-			<Helmet>
-				<title>Register - Mad Chef</title>
-			</Helmet>
+    return (
+        <>
+            <Helmet>
+                <title>Register - Mad Chef</title>
+            </Helmet>
+            <section className='w-11/12 md:w-4/5 lg:w-1/3 mx-auto my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 relative rounded'>
+                <h2 className='text-[2.6rem] text-Primary text-center font-semibold font-Popins'>
+                    Register
+                </h2>
+                <form
+                    className='w-10/12 md:w-fit mx-auto mt-6 md:mt-5 md:px-5'
+                    onSubmit={handleSubmitForm}
+                >
+                    {/* Dynamically render form fields */}
+                    {['name', 'email', 'password', 'confirmPassword'].map(
+                        (field) => (
+                            <div key={field} className='mb-4'>
+                                <label
+                                    htmlFor={field}
+                                    className='md:text-xl block mb-1 tracking-wide capitalize'
+                                >
+                                    {field === 'confirmPassword'
+                                        ? 'Confirm Password'
+                                        : field}
+                                </label>
+                                <div className='relative'>
+                                    <input
+                                        type={
+                                            field
+                                                .toLocaleLowerCase()
+                                                .includes('password')
+                                                ? passwordType
+                                                : field
+                                        }
+                                        id={field}
+                                        name={field}
+                                        placeholder={`Enter your ${
+                                            field === 'confirmPassword'
+                                                ? 'password again'
+                                                : field
+                                        }.`}
+                                        className={`w-full md:w-[25rem] xl:w-96 px-3 py-1 text-sm md:text-base border-2 border-transparent outline-Primary rounded ${
+                                            errors[field] && 'border-red-300'
+                                        }`}
+                                        value={formData[field]}
+                                        onChange={handleInputChange}
+                                        required
+                                        disabled={loading}
+                                    />
+                                    {field
+                                        .toLocaleLowerCase()
+                                        .includes('password') && (
+                                        <button
+                                            type='button'
+                                            className='absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer focus:outline-Primary'
+                                            onClick={togglePasswordVisibility}
+                                            aria-label={`${
+                                                passwordType === 'password'
+                                                    ? 'Show'
+                                                    : 'Hide'
+                                            } password`}
+                                        >
+                                            {passwordType === 'password' ? (
+                                                <FaEyeSlash />
+                                            ) : (
+                                                <FaEye />
+                                            )}
+                                        </button>
+                                    )}
+                                </div>
+                                {errors[field] && (
+                                    <p className='text-red-500 text-sm mt-1'>
+                                        {errors[field]}
+                                    </p>
+                                )}
+                            </div>
+                        )
+                    )}
+                    <p className='mt-2 text-sm px-1'>
+                        Already have account?{' '}
+                        <Link
+                            to='/login'
+                            className='text-slate-950 hover:text-Primary underline focus:outline-Primary'
+                        >
+                            Login
+                        </Link>{' '}
+                        here.
+                    </p>
 
-			<h2 className='text-[2.6rem] text-Primary text-center font-semibold font-Popins'>
-				Register
-			</h2>
+                    {loading ? (
+                        <RoundSpinner />
+                    ) : (
+                        <button
+                            className='btn btn-primary block mx-auto mt-5 text-lg cursor-pointer disabled:bg-Primary focus:outline-Primary'
+                            type='submit'
+                            disabled={loading}
+                        >
+                            Register
+                        </button>
+                    )}
 
-			<form
-				className='w-10/12 md:w-fit mx-auto mt-6 md:mt-5 md:px-5'
-				onSubmit={handleSubmitForm}>
-				{/* Name */}
-				<>
-					<label
-						htmlFor='name'
-						className='md:text-xl block mb-1 tracking-wide'>
-						Name
-					</label>
-					<input
-						type='name'
-						id='name'
-						name='name'
-						placeholder='Enter your name.'
-						className='w-full px-3 py-1 text-sm md:text-base outline-Primary rounded'
-						value={formData.name}
-						onChange={(e) =>
-							setFormData((prev) => ({
-								...prev,
-								name: e.target.value,
-							}))
-						}
-						required
-						disabled={loading}
-					/>
-				</>
-
-				{/* Email */}
-				<>
-					<label
-						htmlFor='email'
-						className='md:text-xl block mt-4 mb-1 tracking-wide'>
-						Email
-					</label>
-					<input
-						type='email'
-						id='email'
-						name='email'
-						placeholder='Enter your email.'
-						className='w-full px-3 py-1 text-sm md:text-base outline-Primary rounded'
-						value={formData.email}
-						onChange={(e) =>
-							setFormData((prev) => ({
-								...prev,
-								email: e.target.value,
-							}))
-						}
-						required
-						disabled={loading}
-					/>
-				</>
-
-				{/* Password */}
-				<>
-					<label
-						htmlFor='password'
-						className='md:text-xl block mb-1 mt-4 md:mt-5 tracking-wide'>
-						Password
-					</label>
-					<div className='relative'>
-						<input
-							type={passwordType ? 'password' : 'text'}
-							id='password'
-							name='password'
-							placeholder='Enter your password.'
-							className='w-full px-3 py-1 text-sm md:text-base outline-Primary rounded'
-							value={formData.password}
-							onChange={(e) =>
-								setFormData((prev) => ({
-									...prev,
-									password: e.target.value,
-								}))
-							}
-							required
-							disabled={loading}
-						/>
-						<p
-							className='absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer'
-							onClick={() => setPasswordType(!passwordType)}>
-							{passwordType ? <FaEyeSlash /> : <FaEye />}
-						</p>
-					</div>
-				</>
-
-				{/* Confirm password */}
-				<>
-					<label
-						htmlFor='confirm-password'
-						className='md:text-xl block mb-1 mt-4 md:mt-5 tracking-wide'>
-						Confirm Password
-					</label>
-					<div className='md:w-96 relative'>
-						<input
-							type={passwordType ? 'password' : 'text'}
-							id='confirm-password'
-							name='confirmPassword'
-							placeholder='Confirm your password.'
-							className='w-full px-3 py-1 text-sm md:text-base outline-Primary rounded'
-							value={formData.confirmPassword}
-							onChange={(e) =>
-								setFormData((prev) => ({
-									...prev,
-									confirmPassword: e.target.value,
-								}))
-							}
-							required
-							disabled={loading}
-						/>
-						<p
-							className='absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer'
-							onClick={() => setPasswordType(!passwordType)}>
-							{passwordType ? <FaEyeSlash /> : <FaEye />}
-						</p>
-					</div>
-				</>
-
-				<p className='mt-2 text-sm px-1'>
-					Already have account?{' '}
-					<Link
-						to='/login'
-						className='text-slate-950 hover:text-Primary underline'>
-						Login
-					</Link>{' '}
-					here.
-				</p>
-
-				{/* Show error here */}
-				{err && (
-					<p className='mt-3 py-1 bg-red-200/60 text-red-700 text-center rounded'>
-						{err}
-					</p>
-				)}
-
-				{loading ? (
-					<RoundSpinner />
-				) : (
-					<button
-						className='btn btn-primary block mx-auto mt-5 text-lg cursor-pointer disabled:bg-Primary'
-						type='submit'
-						disabled={loading}>
-						Register
-					</button>
-				)}
-
-				{/* Footer Links */}
-				<div className='w-full'>
-					<p className='text-xl text-center mt-5 mb-2'>Or</p>
-					<div className='text-4xl flex justify-center gap-x-5'>
-						<FcGoogle
-							className='cursor-pointer'
-							onClick={!loading ? handleGoogleSignIn : undefined}
-						/>
-					</div>
-				</div>
-			</form>
-		</section>
-	);
+                    <div className='w-full'>
+                        <p className='text-xl text-center mt-5 mb-2'>Or</p>
+                        <div className='text-4xl flex justify-center gap-x-5'>
+                            <FcGoogle
+                                className='cursor-pointer focus:outline-Primary focus:shadow-Primary'
+                                onClick={
+                                    !loading ? handleGoogleSignIn : undefined
+                                }
+                                role='button'
+                                aria-label='Sign in with Google'
+                                tabIndex={0}
+                            />
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </>
+    );
 }
