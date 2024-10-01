@@ -1,215 +1,211 @@
-// External imports
-import { useEffect, useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 
-// internal imports
-import { useAuthenticateForTokenMutation } from '../features/auth/authApi';
 import { signInWithGoogle, signInWithPassword } from '../helpers/authHelper';
+import { useAuthenticateForTokenMutation } from '../features/auth/authApi';
 import RoundSpinner from '../shared/RoundSpinner/RoundSpinner';
-import showNotification from '../helpers/showNotification';
-import removeNotifications from '../helpers/removeNotifications';
-import formatFirebaseError from '../helpers/formatFirebaseError';
+import {
+    formatFirebaseError,
+    removeNotifications,
+    showNotification,
+} from '../helpers';
 
 export default function Login() {
-	// local states
-	const [passwordType, setPasswordType] = useState(true);
-	const [loading, setLoading] = useState(false);
-	const [err, setErr] = useState('');
-	const [formData, setFormData] = useState({
-		email: '',
-		password: '',
-	});
+    // State for form data
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
+    const [passwordType, setPasswordType] = useState('password');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-	// hooks
-	const navigate = useNavigate();
-	const location = useLocation();
-	const [authenticateForToken, { isLoading, isSuccess, isError, error }] =
-		useAuthenticateForTokenMutation();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-	// Get location
-	const from = location.state?.from?.pathname || '/';
+    // RTK Query hook for authentication
+    const [authenticateForToken] = useAuthenticateForTokenMutation();
 
-	// if any fields value changes - remove the error
-	useEffect(() => {
-		setErr('');
-	}, [formData.email, formData.password, formData.confirmPassword]);
+    // Get the path to redirect after successful login
+    const from = location.state?.from?.pathname || '/';
 
-	// handle loading state of authentication process
-	useEffect(() => {
-		if (isLoading) {
-			showNotification('loading', 'Almost there...');
-			setLoading(true);
-		}
-	}, [isLoading]);
+    // Effect to clear any existing notifications when component mounts
+    useEffect(() => {
+        removeNotifications();
+    }, []);
 
-	// handle successful authentication
-	useEffect(() => {
-		if (isSuccess) {
-			removeNotifications();
-			showNotification('success', 'Successfully logged in!');
-			setLoading(false);
-			navigate(from);
-		}
-	}, [navigate, from, isSuccess]);
+    // Handler for input changes
+    const handleInputChange = useCallback((e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        setError(''); // Clear error when input changes
+    }, []);
 
-	// handle error of authentication process
-	useEffect(() => {
-		if (isError) {
-			removeNotifications();
-			showNotification('error', error.data);
-			setLoading(false);
-			setErr(error.data);
-		}
-	}, [isError, error]);
+    // Toggle password visibility
+    const togglePasswordVisibility = useCallback(() => {
+        setPasswordType((prev) => (prev === 'password' ? 'text' : 'password'));
+    }, []);
 
-	// handle login with email
-	const handleSubmitForm = (e) => {
-		e.preventDefault();
+    // Handle form submission
+    const handleSubmitForm = async (e) => {
+        e.preventDefault();
+        setLoading(true);
 
-		// start loading state
-		setLoading(true);
-		showNotification('loading', 'Validating your credentials...');
+        try {
+            const res = await signInWithPassword(
+                formData.email,
+                formData.password
+            );
 
-		// sign in with firebase
-		signInWithPassword(formData.email, formData.password)
-			.then((res) =>
-				authenticateForToken({ token: res?.user?.accessToken })
-			)
-			.catch((error) => {
-				removeNotifications();
-				setLoading(false);
-				setErr(formatFirebaseError(error));
-			});
-	};
+            // Use showNotification with 'promise' type for authentication
+            await showNotification('promise', 'Logging in...', {
+                promise: authenticateForToken({
+                    token: res?.user?.accessToken,
+                }).unwrap(),
+                successMessage: 'Successfully logged in!',
+                errorMessage: 'Login failed. Please try again.',
+            });
 
-	// handle google registration
-	const handleGoogleSignIn = () => {
-		// start the loader
-		setLoading(true);
+            navigate(from);
+        } catch (error) {
+            setError(formatFirebaseError(error));
+            showNotification('error', formatFirebaseError(error));
+        } finally {
+            setLoading(false);
+        }
+    };
 
-		signInWithGoogle()
-			.then((res) =>
-				authenticateForToken({ token: res?.user?.accessToken })
-			)
-			.catch((error) => {
-				removeNotifications();
-				setLoading(false);
-				setErr(formatFirebaseError(error));
-			});
-	};
+    // Handle Google Sign In
+    const handleGoogleSignIn = useCallback(async () => {
+        setLoading(true);
+        try {
+            const res = await signInWithGoogle();
 
-	return (
-		<section className='w-11/12 md:w-4/5 lg:w-1/3 mx-auto my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 rounded'>
-			<Helmet>
-				<title>Login - Mad Chef</title>
-			</Helmet>
+            // Use showNotification with 'promise' type for Google authentication
+            await showNotification('promise', 'Authenticating with Google...', {
+                promise: authenticateForToken({
+                    token: res?.user?.accessToken,
+                }).unwrap(),
+                successMessage: 'Successfully logged in with Google!',
+                errorMessage: 'Google authentication failed. Please try again.',
+            });
 
-			<h2 className='text-[2.6rem] text-Primary text-center font-semibold font-Popins'>
-				Login
-			</h2>
+            navigate(from);
+        } catch (error) {
+            setError(formatFirebaseError(error));
+            showNotification('error', formatFirebaseError(error));
+        } finally {
+            setLoading(false);
+        }
+    }, [authenticateForToken, navigate, from]);
 
-			<form
-				className='w-10/12 md:w-11/12 mx-auto mt-6 md:mt-5'
-				onSubmit={handleSubmitForm}>
-				{/* Email */}
-				<>
-					<label
-						htmlFor='email'
-						className='md:text-xl block mb-1 tracking-wide'>
-						Email
-					</label>
-					<input
-						type='email'
-						id='email'
-						name='email'
-						placeholder='Enter your email.'
-						className='w-full px-3 py-1 text-sm md:text-base outline-Primary rounded'
-						required
-						disabled={loading}
-						value={formData.email}
-						onChange={(e) =>
-							setFormData((prev) => ({
-								...prev,
-								email: e.target.value,
-							}))
-						}
-					/>
-				</>
+    return (
+        <>
+            <Helmet>
+                <title>Login - Mad Chef</title>
+            </Helmet>
+            <section className='w-11/12 md:w-4/5 lg:w-1/3 mx-auto my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 relative rounded'>
+                <h2 className='text-[2.6rem] text-Primary text-center font-semibold font-Popins'>
+                    Login
+                </h2>
+                <form
+                    className='w-10/12 md:w-fit mx-auto mt-6 md:mt-5 md:px-5'
+                    onSubmit={handleSubmitForm}
+                >
+                    {/* Dynamically render form fields */}
+                    {['email', 'password'].map((field) => (
+                        <div key={field} className='mb-4'>
+                            <label
+                                htmlFor={field}
+                                className='md:text-xl block mb-1 tracking-wide capitalize'
+                            >
+                                {field}
+                            </label>
+                            <div className='relative'>
+                                <input
+                                    type={
+                                        field === 'password'
+                                            ? passwordType
+                                            : field
+                                    }
+                                    id={field}
+                                    name={field}
+                                    placeholder={`Enter your ${field}.`}
+                                    className='w-full md:w-[25rem] xl:w-96 px-3 py-1 text-sm md:text-base border-2 border-transparent outline-Primary rounded'
+                                    value={formData[field]}
+                                    onChange={handleInputChange}
+                                    required
+                                    disabled={loading}
+                                />
+                                {field === 'password' && (
+                                    <button
+                                        type='button'
+                                        className='absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer focus:outline-Primary'
+                                        onClick={togglePasswordVisibility}
+                                        aria-label={`${
+                                            passwordType === 'password'
+                                                ? 'Show'
+                                                : 'Hide'
+                                        } password`}
+                                    >
+                                        {passwordType === 'password' ? (
+                                            <FaEyeSlash />
+                                        ) : (
+                                            <FaEye />
+                                        )}
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                    <p className='mt-2 text-sm px-1'>
+                        New here?{' '}
+                        <Link
+                            to='/register'
+                            className='text-slate-950 hover:text-Primary underline focus:outline-Primary'
+                        >
+                            Register
+                        </Link>{' '}
+                        now.
+                    </p>
 
-				{/* Password */}
-				<>
-					<label
-						htmlFor='password'
-						className='md:text-xl block mb-1 mt-4 md:mt-5 tracking-wide'>
-						Password
-					</label>
-					<div className='relative'>
-						<input
-							type={passwordType ? 'password' : 'text'}
-							id='password'
-							name='password'
-							placeholder='Enter your password.'
-							className='w-full px-3 py-1 text-sm md:text-base outline-Primary rounded'
-							required
-							disabled={loading}
-							value={formData.password}
-							onChange={(e) =>
-								setFormData((prev) => ({
-									...prev,
-									password: e.target.value,
-								}))
-							}
-						/>
-						<p
-							className='absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer'
-							onClick={() => setPasswordType(!passwordType)}>
-							{passwordType ? <FaEyeSlash /> : <FaEye />}
-						</p>
-					</div>
-				</>
+                    {error && (
+                        <p className='mt-3 py-1 bg-red-200/60 text-red-700 text-center rounded'>
+                            {error}
+                        </p>
+                    )}
 
-				<p className='mt-2 text-sm px-1'>
-					New Here?{' '}
-					<Link
-						to='/register'
-						className='text-slate-950 hover:text-Primary underline'>
-						Register
-					</Link>{' '}
-					now.
-				</p>
+                    {loading ? (
+                        <RoundSpinner />
+                    ) : (
+                        <button
+                            className='btn btn-primary block mx-auto mt-5 text-lg cursor-pointer disabled:bg-Primary focus:outline-Primary'
+                            type='submit'
+                            disabled={loading}
+                        >
+                            Login
+                        </button>
+                    )}
 
-				{/* Show error here */}
-				{err && (
-					<p className='mt-3 py-1 bg-red-200/60 text-red-700 text-center rounded'>
-						{err}
-					</p>
-				)}
-
-				{loading ? (
-					<RoundSpinner />
-				) : (
-					<button
-						className='btn btn-primary block mx-auto mt-5 text-lg cursor-pointer'
-						disabled={loading}
-						type='submit'>
-						Login
-					</button>
-				)}
-
-				{/* Footer Links */}
-				<div className='w-full'>
-					<p className='text-xl text-center mt-5 mb-2'>Or</p>
-					<div className='text-4xl flex justify-center gap-x-5'>
-						<FcGoogle
-							className='cursor-pointer'
-							onClick={!loading ? handleGoogleSignIn : undefined}
-						/>
-					</div>
-				</div>
-			</form>
-		</section>
-	);
+                    <div className='w-full'>
+                        <p className='text-xl text-center mt-5 mb-2'>Or</p>
+                        <div className='text-4xl flex justify-center gap-x-5'>
+                            <FcGoogle
+                                className='cursor-pointer focus:outline-Primary focus:shadow-Primary'
+                                onClick={
+                                    !loading ? handleGoogleSignIn : undefined
+                                }
+                                role='button'
+                                aria-label='Sign in with Google'
+                                tabIndex={0}
+                            />
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </>
+    );
 }
