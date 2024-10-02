@@ -1,10 +1,11 @@
 import {
-	GoogleAuthProvider,
-	createUserWithEmailAndPassword,
-	getAuth,
-	sendEmailVerification,
-	signInWithEmailAndPassword,
-	signInWithPopup,
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword,
+    getAuth,
+    sendEmailVerification,
+    sendPasswordResetEmail as sendPasswordResetEmailByFirebase,
+    signInWithEmailAndPassword,
+    signInWithPopup,
 } from 'firebase/auth';
 import app from '../../firebase.config';
 
@@ -13,27 +14,31 @@ const auth = getAuth(app);
 
 // Sign up user with password
 const signUpWithPassword = (email, password) =>
-	createUserWithEmailAndPassword(auth, email, password);
+    createUserWithEmailAndPassword(auth, email, password);
 
 // Create/Sign in user with google
 const signInWithGoogle = () => signInWithPopup(auth, new GoogleAuthProvider());
 
 // Sign in user with password
 const signInWithPassword = (email, password) =>
-	signInWithEmailAndPassword(auth, email, password);
+    signInWithEmailAndPassword(auth, email, password);
+
+const sendPasswordResetEmail = (email) =>
+    sendPasswordResetEmailByFirebase(auth, email);
 
 // Send email to verify user email
 const verifyEmailAddress = async () => {
-	const user = auth.currentUser;
+    const user = auth.currentUser;
 
-	const url = `https://mad-chef-server.vercel.app/users/user/verify-email?uid=${user.uid}`;
+    const url = `https://mad-chef-server.vercel.app/users/user/verify-email?uid=${user.uid}`;
 
-	return sendEmailVerification(user, { url });
+    return sendEmailVerification(user, { url });
 };
 
 export {
-	signUpWithPassword,
-	signInWithPassword,
-	signInWithGoogle,
-	verifyEmailAddress,
+    signUpWithPassword,
+    signInWithPassword,
+    signInWithGoogle,
+    sendPasswordResetEmail,
+    verifyEmailAddress,
 };
