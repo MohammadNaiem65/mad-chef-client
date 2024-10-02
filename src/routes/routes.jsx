@@ -14,6 +14,7 @@ const Payment = lazy(() => import('../pages/Payment'));
 const Blog = lazy(() => import('../pages/Blog'));
 const Login = lazy(() => import('../pages/Login'));
 const Register = lazy(() => import('../pages/Register'));
+const ForgetPassword = lazy(() => import('../pages/ForgetPassword'));
 const ErrorPage = lazy(() => import('../pages/Error'));
 const Banner = lazy(() => import('../components/Recipes/Banner'));
 
@@ -272,6 +273,14 @@ const routes = createBrowserRouter([
 				element: (
 					<PublicRoute>
 						<Register />
+					</PublicRoute>
+				),
+			},
+			{
+				path: '/forget-password',
+				element: (
+					<PublicRoute>
+						<ForgetPassword />
 					</PublicRoute>
 				),
 			},

@@ -161,16 +161,28 @@ export default function Login() {
                             </div>
                         </div>
                     ))}
-                    <p className='mt-2 text-sm px-1'>
-                        New here?{' '}
-                        <Link
-                            to='/register'
-                            className='text-slate-950 hover:text-Primary underline focus:outline-Primary'
-                        >
-                            Register
-                        </Link>{' '}
-                        now.
-                    </p>
+
+                    <div className='flex justify-between items-center'>
+                        <p className='mt-2 text-sm px-1'>
+                            New here?{' '}
+                            <Link
+                                to='/register'
+                                className='text-slate-950 hover:text-Primary underline focus:outline-Primary'
+                            >
+                                Register
+                            </Link>{' '}
+                            now.
+                        </p>
+
+                        <p className='mt-2 text-sm px-1'>
+                            <Link
+                                to='/forget-password'
+                                className='text-slate-950 hover:text-Primary underline focus:outline-Primary'
+                            >
+                                Forget Password
+                            </Link>
+                        </p>
+                    </div>
 
                     {error && (
                         <p className='mt-3 py-1 bg-red-200/60 text-red-700 text-center rounded'>
