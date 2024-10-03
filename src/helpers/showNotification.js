@@ -24,9 +24,7 @@ export default function showNotification(notificationType, message, options) {
                 error: options?.errorMessage || 'An error occurred', // Message to display on error
             });
         } else {
-            throw new Error(
-                'Options must include a promise property when notificationType is "promise"'
-            );
+            return toast.loading(message);
         }
     } else {
         // For other notification types, use the regular toast method
