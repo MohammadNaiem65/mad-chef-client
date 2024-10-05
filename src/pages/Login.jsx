@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
@@ -32,11 +32,6 @@ export default function Login() {
     // Get the path to redirect after successful login
     const from = location.state?.from?.pathname || '/';
 
-    // Effect to clear any existing notifications when component mounts
-    useEffect(() => {
-        removeNotifications();
-    }, []);
-
     // Handler for input changes
     const handleInputChange = useCallback((e) => {
         const { name, value } = e.target;
@@ -53,6 +48,7 @@ export default function Login() {
     const handleSubmitForm = async (e) => {
         e.preventDefault();
         setLoading(true);
+        showNotification('promise', 'Logging in...');
 
         try {
             const res = await signInWithPassword(
@@ -60,45 +56,63 @@ export default function Login() {
                 formData.password
             );
 
-            // Use showNotification with 'promise' type for authentication
-            await showNotification('promise', 'Logging in...', {
-                promise: authenticateForToken({
-                    token: res?.user?.accessToken,
-                }).unwrap(),
-                successMessage: 'Successfully logged in!',
-                errorMessage: 'Login failed. Please try again.',
-            });
+            await authenticateForToken({
+                token: res?.user?.accessToken,
+            }).unwrap();
 
-            navigate(from);
-        } catch (error) {
-            setError(formatFirebaseError(error));
-            showNotification('error', formatFirebaseError(error));
-        } finally {
             setLoading(false);
+            removeNotifications();
+            navigate(from);
+            showNotification('success', 'Successfully logged in!');
+        } catch (error) {
+            setLoading(false);
+            removeNotifications();
+
+            setError(
+                error?.name === 'FirebaseError'
+                    ? formatFirebaseError(error)
+                    : error?.data?.message
+            );
+            showNotification(
+                'error',
+                error?.name === 'FirebaseError'
+                    ? formatFirebaseError(error)
+                    : error?.data?.message
+            );
         }
     };
 
     // Handle Google Sign In
     const handleGoogleSignIn = useCallback(async () => {
+        setError('');
         setLoading(true);
+        showNotification('promise', 'Logging in...');
+
         try {
             const res = await signInWithGoogle();
 
-            // Use showNotification with 'promise' type for Google authentication
-            await showNotification('promise', 'Authenticating with Google...', {
-                promise: authenticateForToken({
-                    token: res?.user?.accessToken,
-                }).unwrap(),
-                successMessage: 'Successfully logged in with Google!',
-                errorMessage: 'Google authentication failed. Please try again.',
-            });
+            await authenticateForToken({
+                token: res?.user?.accessToken,
+            }).unwrap();
 
+            removeNotifications();
             navigate(from);
+            showNotification('success', 'Successfully logged in!');
         } catch (error) {
-            setError(formatFirebaseError(error));
-            showNotification('error', formatFirebaseError(error));
-        } finally {
             setLoading(false);
+            removeNotifications();
+
+            setError(
+                error?.name === 'FirebaseError'
+                    ? formatFirebaseError(error)
+                    : error?.data?.message
+            );
+            showNotification(
+                'error',
+                error?.name === 'FirebaseError'
+                    ? formatFirebaseError(error)
+                    : error?.data?.message
+            );
         }
     }, [authenticateForToken, navigate, from]);
 

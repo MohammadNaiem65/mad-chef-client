@@ -6,10 +6,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 
 import { signInWithGoogle, signUpWithPassword } from '../helpers/authHelper';
-import {
-    useAuthenticateMutation,
-    useAuthenticateForTokenMutation,
-} from '../features/auth/authApi';
+import { useAuthenticateMutation } from '../features/auth/authApi';
 import RoundSpinner from '../shared/RoundSpinner/RoundSpinner';
 import {
     formatFirebaseError,
@@ -35,13 +32,8 @@ export default function Register() {
     const navigate = useNavigate();
 
     // RTK Query hooks for authentication
-    const [authenticate] = useAuthenticateMutation();
-    const [authenticateForToken] = useAuthenticateForTokenMutation();
-
-    // Effect to clear any existing notifications when component mounts
-    useEffect(() => {
-        removeNotifications();
-    }, []);
+    const [authenticate, { error: authenticationErr }] =
+        useAuthenticateMutation();
 
     // Handler for input changes
     const handleInputChange = useCallback((e) => {
@@ -76,6 +68,7 @@ export default function Register() {
         if (!validateForm()) return;
 
         setLoading(true);
+        showNotification('loading', 'Registering your account...');
 
         try {
             // Sign up user with Firebase
@@ -90,43 +83,56 @@ export default function Register() {
             // Get ID token
             const token = await user.getIdToken(true);
 
-            // Use showNotification with 'promise' type for authentication
-            await showNotification('promise', 'Registering your account...', {
-                promise: authenticate({ token }).unwrap(),
-                successMessage: 'Successfully registered!',
-                errorMessage: 'Registration failed. Please try again.',
-            });
+            await authenticate({ token }).unwrap();
 
+            removeNotifications();
             navigate('/login');
+            showNotification('success', 'Successfully registered');
         } catch (error) {
-            showNotification('error', formatFirebaseError(error));
-        } finally {
             setLoading(false);
+            removeNotifications();
+
+            showNotification(
+                'error',
+                error?.name === 'FirebaseError'
+                    ? formatFirebaseError(error)
+                    : error?.data?.message
+            );
         }
     };
 
     // Handle Google Sign In
     const handleGoogleSignIn = useCallback(async () => {
         setLoading(true);
+        showNotification('loading', 'Registering your account...');
+
         try {
             const res = await signInWithGoogle();
 
-            // Use showNotification with 'promise' type for Google authentication
-            await showNotification('promise', 'Authenticating with Google...', {
-                promise: authenticateForToken({
-                    token: res?.user?.accessToken,
-                }).unwrap(),
-                successMessage: 'Successfully logged in with Google!',
-                errorMessage: 'Google authentication failed. Please try again.',
-            });
+            await authenticate({ token: res?.user?.accessToken }).unwrap();
 
-            navigate('/');
+            removeNotifications();
+            navigate('/login');
+            showNotification('success', 'Successfully registered');
         } catch (error) {
-            showNotification('error', formatFirebaseError(error));
-        } finally {
             setLoading(false);
+            removeNotifications();
+
+            showNotification(
+                'error',
+                error?.name === 'FirebaseError'
+                    ? formatFirebaseError(error)
+                    : error?.data?.message
+            );
         }
-    }, [authenticateForToken, navigate]);
+    }, [authenticate, navigate]);
+
+    // Show error notification
+    useEffect(() => {
+        if (authenticationErr?.data?.message) {
+            showNotification('error', authenticationErr?.data?.message);
+        }
+    }, [authenticationErr?.data?.message]);
 
     return (
         <>
