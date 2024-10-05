@@ -10,12 +10,12 @@ const paymentApi = apiSlice.injectEndpoints({
             }),
         }),
         getPaymentReceipts: builder.query({
-            query: ({ userId, filter, page, limit }) => {
+            query: ({ studentId, filter, page, limit }) => {
                 // Define the base URL
                 const baseUrl = '/payments/payment-receipt';
 
                 // Create an object with all parameters
-                const params = { userId, filter, page, limit };
+                const params = { studentId, filter, page, limit };
 
                 // Use reduce to construct the query string without filter parameter
                 const queryString = Object.entries(params)

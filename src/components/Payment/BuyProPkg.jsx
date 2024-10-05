@@ -144,14 +144,12 @@ export default function BuyProPkg() {
 
             // Create payment receipt
             const data = {
-                userId: _id,
+                studentId: _id,
                 username: name,
                 pkg: 'student/pro-pkg',
                 email,
                 amount,
             };
-
-            console.log(data);
 
             if (paymentIntent?.status === 'succeeded') {
                 const { id: transactionId } = paymentIntent;
