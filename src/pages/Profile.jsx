@@ -5,10 +5,12 @@ import { useSelector } from 'react-redux';
 import { CiCamera } from 'react-icons/ci';
 
 import { Avatar, Spinner } from '../shared';
-import Sidebar from '../components/Profile/Sidebar';
-import AdminSidebar from '../components/Profile/AdminSidebar';
-import PhotoUploaderModal from '../components/Profile/PhotoUploaderModal';
 import { showNotification } from '../helpers';
+import {
+    AdminSidebar,
+    PhotoUploaderModal,
+    Sidebar,
+} from '../components/Profile';
 import { useUpdateChefProfilePictureMutation } from '../features/chef/chefApi';
 import { useUpdateUserProfilePictureMutation } from '../features/user/userApi';
 import { useUpdateAdminProfilePictureMutation } from '../features/admin/adminApi';
@@ -16,6 +18,7 @@ import { useUpdateAdminProfilePictureMutation } from '../features/admin/adminApi
 export default function Profile() {
     const [showModal, setShowModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isRouteReady, setIsRouteReady] = useState(false);
 
     const { name, img, role } = useSelector((state) => state.user);
     const { pathname } = useLocation();
@@ -49,17 +52,18 @@ export default function Profile() {
     // Navigate the user to proper destination based on role
     useEffect(() => {
         const paths = pathname.split('/');
-        const mainPage = paths?.length && paths[3];
-        const subPage = paths?.length && paths[4];
+        const mainPage = paths?.length > 3 ? paths[3] : 'dashboard';
+        const subPage = paths?.length > 4 ? paths[4] : '';
 
         const pathRole = role === 'student' ? 'user' : role;
 
-        if (subPage) {
-            navigate(`/profile/${pathRole}/${mainPage}/${subPage}`);
-        } else if (mainPage && !subPage) {
-            navigate(`/profile/${pathRole}/${mainPage}`);
-        } else {
-            navigate(`/profile/${pathRole}/dashboard`);
+        if (pathRole && mainPage) {
+            let newPath = `/profile/${pathRole}/${mainPage}`;
+            if (subPage) {
+                newPath += `/${subPage}`;
+            }
+            navigate(newPath);
+            setIsRouteReady(true);
         }
     }, [navigate, role, pathname]);
 
@@ -86,19 +90,11 @@ export default function Profile() {
 
     // Handle loading state
     useEffect(() => {
-        if (
+        setIsLoading(
             userProfileUpdateIsLoading ||
-            chefProfileUpdateIsLoading ||
-            adminProfileUpdateIsLoading
-        ) {
-            setIsLoading(true);
-        } else if (
-            !userProfileUpdateIsLoading ||
-            !chefProfileUpdateIsLoading ||
-            !adminProfileUpdateIsLoading
-        ) {
-            setIsLoading(false);
-        }
+                chefProfileUpdateIsLoading ||
+                adminProfileUpdateIsLoading
+        );
     }, [
         userProfileUpdateIsLoading,
         chefProfileUpdateIsLoading,
@@ -119,6 +115,11 @@ export default function Profile() {
             errorMessage: 'An error occurred. Try again later.',
         });
     };
+
+    // Return the user if the route is not generated yet
+    if (!isRouteReady) {
+        return <Spinner />;
+    }
 
     return (
         <>
