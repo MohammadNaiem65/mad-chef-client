@@ -26,7 +26,7 @@ export default function Payments() {
     const { activePage, totalPages } = usePaginationInfo(meta?.page);
 
     const handleSetFilter = (status) => {
-        setCurrPage(1)
+        setCurrPage(1);
         if (status !== filter.curr) {
             setFilter((prev) => ({ curr: status, prev: prev.curr }));
         }
@@ -39,7 +39,7 @@ export default function Payments() {
         content = (
             <div className='w-full mt-32 flex justify-center'>
                 <p className='w-fit h-fit p-2 bg-red-300 text-red-700 rounded-sm'>
-                    {error?.message}
+                    {error?.data?.message}
                 </p>
             </div>
         );

@@ -8,7 +8,7 @@ import usePaginationInfo from '../../../../../hooks/usePaginationInfo';
 export default function Ratings() {
     const { _id: userId } = useSelector((state) => state.user);
     const { data, isLoading, isSuccess, isError, error } =
-        useGetRecipeRatingsQuery({ data_filter: { userId } });
+        useGetRecipeRatingsQuery({ data_filter: { studentId: userId } });
 
     const { data: ratings, meta } = data || {};
 
