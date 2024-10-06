@@ -8,7 +8,6 @@ const adminApi = apiSlice.injectEndpoints({
                 url: `/admins/admin/${id}`,
                 method: 'GET',
             }),
-            transformResponse: (response) => response.data,
         }),
         updateAdminProfilePicture: builder.mutation({
             query: ({ formData }) => ({
