@@ -1,7 +1,7 @@
 import store from '../app/store';
 import adminApi from '../features/admin/adminApi';
 import chefApi from '../features/chef/chefApi';
-import userApi from '../features/user/userApi';
+import studentApi from '../features/student/studentApi';
 import { addUserData } from '../features/user/userSlice';
 
 /**
@@ -18,69 +18,73 @@ import { addUserData } from '../features/user/userSlice';
  * @returns {Promise<void>} A promise that resolves when the user data has been successfully stored.
  */
 export default async function storeUserData() {
-	// Get the userId from the store
-	const { userId, role: userRole } = store.getState().auth.user || {};
+    // Get the userId from the store
+    const { userId, role: userRole } = store.getState().auth.user || {};
 
-	let userData = null;
+    let userData = null;
 
-	// Get user data from database using userId
-	if (userRole === 'student') {
-		const { data } = await store
-			.dispatch(userApi.endpoints.getUserData.initiate({ userId }))
-			.unwrap();
+    // Get user data from database using userId
+    if (userRole === 'student') {
+        const { data } = await store
+            .dispatch(
+                studentApi.endpoints.getStudentData.initiate({
+                    studentId: userId,
+                })
+            )
+            .unwrap();
 
-		userData = {
-			_id: data?._id,
-			name: data?.name,
-			email: data?.email,
-			emailVerified: data?.emailVerified,
-			role: data?.role,
-			img: data?.img,
-			pkg: data?.pkg,
-			createdAt: data?.createdAt,
-			updatedAt: data?.updatedAt,
-		};
-	} else if (userRole === 'chef') {
-		const { data } = await store
-			.dispatch(
-				chefApi.endpoints.getChef.initiate({
-					chef_id: userId,
-					include: 'rating',
-					exclude: 'consultBookings,recipes',
-				})
-			)
-			.unwrap();
+        userData = {
+            _id: data?._id,
+            name: data?.name,
+            email: data?.email,
+            emailVerified: data?.emailVerified,
+            role: data?.role,
+            img: data?.img,
+            pkg: data?.pkg,
+            createdAt: data?.createdAt,
+            updatedAt: data?.updatedAt,
+        };
+    } else if (userRole === 'chef') {
+        const { data } = await store
+            .dispatch(
+                chefApi.endpoints.getChef.initiate({
+                    chef_id: userId,
+                    include: 'rating',
+                    exclude: 'consultBookings,recipes',
+                })
+            )
+            .unwrap();
 
-		userData = {
-			_id: data?._id,
-			name: data?.name,
-			email: data?.email,
-			emailVerified: data?.emailVerified,
-			role: data?.role,
-			img: data?.img,
-			bio: data?.bio,
-			rating: data?.rating,
-			yearsOfExperience: data?.yearsOfExperience,
-			createdAt: data?.createdAt,
-			updatedAt: data?.updatedAt,
-		};
-	} else if (userRole === 'admin') {
-		const data = await store
-			.dispatch(adminApi.endpoints.getAdminData.initiate({ id: userId }))
-			.unwrap();
+        userData = {
+            _id: data?._id,
+            name: data?.name,
+            email: data?.email,
+            emailVerified: data?.emailVerified,
+            role: data?.role,
+            img: data?.img,
+            bio: data?.bio,
+            rating: data?.rating,
+            yearsOfExperience: data?.yearsOfExperience,
+            createdAt: data?.createdAt,
+            updatedAt: data?.updatedAt,
+        };
+    } else if (userRole === 'admin') {
+        const { data } = await store
+            .dispatch(adminApi.endpoints.getAdminData.initiate({ id: userId }))
+            .unwrap();
 
-		userData = {
-			_id: data?._id,
-			name: data?.name,
-			email: data?.email,
-			emailVerified: data?.emailVerified,
-			role: data?.role,
-			img: data?.img,
-			createdAt: data?.createdAt,
-			updatedAt: data?.updatedAt,
-		};
-	}
+        userData = {
+            _id: data?._id,
+            name: data?.name,
+            email: data?.email,
+            emailVerified: data?.emailVerified,
+            role: data?.role,
+            img: data?.img,
+            createdAt: data?.createdAt,
+            updatedAt: data?.updatedAt,
+        };
+    }
 
-	// Save the user data to the store
-	store.dispatch(addUserData(userData));
+    // Save the user data to the store
+    store.dispatch(addUserData(userData));
 }

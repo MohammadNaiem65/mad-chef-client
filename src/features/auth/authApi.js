@@ -1,5 +1,5 @@
 import apiSlice from '../api/apiSlice';
-import userApi from '../user/userApi';
+import studentApi from '../student/studentApi';
 import { addUserData, removeUserData } from '../user/userSlice';
 import { removeCredentials, setCredentials } from './authSlice';
 
@@ -41,7 +41,7 @@ const authApi = apiSlice.injectEndpoints({
 
                     // Get user data from database using userId
                     const { data: userDataResult } = await dispatch(
-                        userApi.endpoints.getUserData.initiate({
+                        studentApi.endpoints.getStudentData.initiate({
                             userId: user?.userId,
                         })
                     ).unwrap();

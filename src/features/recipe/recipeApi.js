@@ -99,28 +99,29 @@ const recipeApi = apiSlice.injectEndpoints({
             },
         }),
         getBookmarkedRecipe: builder.query({
-            query: ({ userId, recipeId }) =>
-                `/users/user/${userId}/bookmark?recipeId=${recipeId}`,
+            query: ({ studentId, recipeId }) =>
+                `/students/student/${studentId}/bookmark?recipeId=${recipeId}`,
         }),
         getBookmarkedRecipes: builder.query({
-            query: ({ userId }) => `/users/user/${userId}/bookmarks`,
+            query: ({ studentId }) =>
+                `/students/student/${studentId}/bookmarks`,
         }),
         bookmarkRecipe: builder.mutation({
-            query: ({ userId, recipeId }) => ({
-                url: `/users/user/${userId}/add-bookmark?recipeId=${recipeId}`,
+            query: ({ studentId, recipeId }) => ({
+                url: `/students/student/${studentId}/add-bookmark?recipeId=${recipeId}`,
                 method: 'POST',
             }),
 
             async onQueryStarted(
-                { userId, recipeId },
+                { studentId, recipeId },
                 { queryFulfilled, dispatch }
             ) {
                 const patchResult = dispatch(
                     apiSlice.util.updateQueryData(
                         'getBookmarkedRecipe',
-                        { userId, recipeId },
+                        { studentId, recipeId },
                         (draft) => {
-                            draft.data = { userId, recipeId };
+                            draft.data = { studentId, recipeId };
                         }
                     )
                 );
@@ -132,7 +133,7 @@ const recipeApi = apiSlice.injectEndpoints({
                     dispatch(
                         apiSlice.util.updateQueryData(
                             'getBookmarkedRecipe',
-                            { userId, recipeId },
+                            { studentId, recipeId },
                             (draft) => {
                                 draft = result.data;
 
@@ -147,19 +148,19 @@ const recipeApi = apiSlice.injectEndpoints({
             },
         }),
         removeBookmarkFromRecipe: builder.mutation({
-            query: ({ userId, recipeId }) => ({
-                url: `/users/user/${userId}/remove-bookmark?recipeId=${recipeId}`,
+            query: ({ studentId, recipeId }) => ({
+                url: `/students/student/${studentId}/remove-bookmark?recipeId=${recipeId}`,
                 method: 'DELETE',
             }),
 
             async onQueryStarted(
-                { userId, recipeId },
+                { studentId, recipeId },
                 { queryFulfilled, dispatch }
             ) {
                 const patchResult = dispatch(
                     apiSlice.util.updateQueryData(
                         'getBookmarkedRecipe',
-                        { userId, recipeId },
+                        { studentId, recipeId },
                         (draft) => {
                             draft.data = {};
                         }
@@ -175,20 +176,20 @@ const recipeApi = apiSlice.injectEndpoints({
             },
         }),
         getLikedRecipe: builder.query({
-            query: ({ userId, recipeId }) =>
-                `/users/user/${userId}/like?recipeId=${recipeId}`,
+            query: ({ studentId, recipeId }) =>
+                `/students/student/${studentId}/like?recipeId=${recipeId}`,
         }),
         getLikedRecipes: builder.query({
-            query: ({ userId }) => `/users/user/${userId}/likes`,
+            query: ({ studentId }) => `/students/student/${studentId}/likes`,
         }),
         addLikeToRecipe: builder.mutation({
-            query: ({ userId, recipeId }) => ({
-                url: `/users/user/${userId}/add-like?recipeId=${recipeId}`,
+            query: ({ studentId, recipeId }) => ({
+                url: `/students/student/${studentId}/add-like?recipeId=${recipeId}`,
                 method: 'POST',
             }),
 
             async onQueryStarted(
-                { userId, recipeId },
+                { studentId, recipeId },
                 { queryFulfilled, dispatch }
             ) {
                 const patchResultOne = dispatch(
@@ -204,12 +205,12 @@ const recipeApi = apiSlice.injectEndpoints({
                 const patchResultTwo = dispatch(
                     apiSlice.util.updateQueryData(
                         'getLikedRecipe',
-                        { userId, recipeId },
+                        { studentId, recipeId },
                         (draft) => {
                             draft = {
                                 message: 'Successful',
                                 data: {
-                                    userId,
+                                    studentId,
                                     recipeId,
                                 },
                             };
@@ -226,7 +227,7 @@ const recipeApi = apiSlice.injectEndpoints({
                     dispatch(
                         apiSlice.util.updateQueryData(
                             'getLikedRecipe',
-                            { userId, recipeId },
+                            { studentId, recipeId },
                             (draft) => {
                                 draft = result.data;
 
@@ -242,13 +243,13 @@ const recipeApi = apiSlice.injectEndpoints({
             },
         }),
         removeLikeFromRecipe: builder.mutation({
-            query: ({ userId, recipeId }) => ({
-                url: `/users/user/${userId}/remove-like?recipeId=${recipeId}`,
+            query: ({ studentId, recipeId }) => ({
+                url: `/students/student/${studentId}/remove-like?recipeId=${recipeId}`,
                 method: 'DELETE',
             }),
 
             async onQueryStarted(
-                { userId, recipeId },
+                { studentId, recipeId },
                 { queryFulfilled, dispatch }
             ) {
                 const patchResultOne = dispatch(
@@ -268,7 +269,7 @@ const recipeApi = apiSlice.injectEndpoints({
                 const patchResultTwo = dispatch(
                     apiSlice.util.updateQueryData(
                         'getLikedRecipe',
-                        { userId, recipeId },
+                        { studentId, recipeId },
                         (draft) => {
                             draft = {
                                 message: "You didn't like the recipe.",
