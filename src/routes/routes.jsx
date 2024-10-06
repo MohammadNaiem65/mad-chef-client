@@ -21,272 +21,330 @@ const Banner = lazy(() => import('../components/Recipes/Banner'));
 // Payment pages
 const UpgradeToPro = lazy(() => import('../components/Payment/BuyProPkg'));
 
-// * User Profile Pages
-const UserMessages = lazy(() => import('../components/Profile/User/pages/Messages'));
-const UserMyProfile = lazy(() => import('../components/Profile/User/pages/MyProfile/MyProfile'));
+// * Student Profile Pages
+const StudentMessages = lazy(() =>
+    import('../components/Profile/Student/pages/Messages')
+);
+const StudentMyProfile = lazy(() =>
+    import('../components/Profile/Student/pages/MyProfile/MyProfile')
+);
 
 // Dashboard Pages
-const UserDashboard = lazy(() => import('../components/Profile/User/pages/Dashboard/Dashboard'));
-const UserLikes = lazy(() => import('../components/Profile/User/pages/Dashboard/Likes'));
-const UserBookmarks = lazy(() => import('../components/Profile/User/pages/Dashboard/Bookmarks'));
-const UserRatings = lazy(() => import('../components/Profile/User/pages/Dashboard/Ratings'));
-const UserReviews = lazy(() => import('../components/Profile/User/pages/Dashboard/Reviews'));
+const StudentDashboard = lazy(() =>
+    import('../components/Profile/Student/pages/Dashboard/Dashboard')
+);
+const StudentLikes = lazy(() =>
+    import('../components/Profile/Student/pages/Dashboard/Likes')
+);
+const StudentBookmarks = lazy(() =>
+    import('../components/Profile/Student/pages/Dashboard/Bookmarks')
+);
+const StudentRatings = lazy(() =>
+    import('../components/Profile/Student/pages/Dashboard/Ratings')
+);
+const StudentReviews = lazy(() =>
+    import('../components/Profile/Student/pages/Dashboard/Reviews')
+);
 
 // Consult Pages
-const UserConsults = lazy(() => import('../components/Profile/User/pages/Consults/Consults'));
-const UserConsultsCards = lazy(() => import('../components/Profile/User/pages/Consults/MyConsults'));
-const ConsultForm = lazy(() => import('../components/Profile/User/pages/Consults/ConsultForm'));
+const StudentConsults = lazy(() =>
+    import('../components/Profile/Student/pages/Consults/Consults')
+);
+const StudentConsultsCards = lazy(() =>
+    import('../components/Profile/Student/pages/Consults/MyConsults')
+);
+const ConsultForm = lazy(() =>
+    import('../components/Profile/Student/pages/Consults/ConsultForm')
+);
 
 // Payment History
-const UserPaymentHistory = lazy(() => import('../components/Profile/User/pages/PaymentHistory/PaymentHistory'));
+const StudentPaymentHistory = lazy(() =>
+    import('../components/Profile/Student/pages/PaymentHistory/PaymentHistory')
+);
 
 // * Chef Profile pages
-const ChefMessages = lazy(() => import('../components/Profile/Chef/pages/Messages/Messages'));
-const ChefConsults = lazy(() => import('../components/Profile/Chef/pages/Consults/Consults'));
-const ChefPaymentHistory = lazy(() => import('../components/Profile/Chef/pages/PaymentHistory/PaymentHistory'));
-const ChefMyProfile = lazy(() => import('../components/Profile/Chef/pages/MyProfile/MyProfile'));
+const ChefMessages = lazy(() =>
+    import('../components/Profile/Chef/pages/Messages/Messages')
+);
+const ChefConsults = lazy(() =>
+    import('../components/Profile/Chef/pages/Consults/Consults')
+);
+const ChefPaymentHistory = lazy(() =>
+    import('../components/Profile/Chef/pages/PaymentHistory/PaymentHistory')
+);
+const ChefMyProfile = lazy(() =>
+    import('../components/Profile/Chef/pages/MyProfile/MyProfile')
+);
 
 // Dashboard Pages
-const ChefDashboard = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Dashboard'));
-const ChefRecipes = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Recipes/Recipes'));
-const ChefComments = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Comments/Comments'));
-const ChefReviews = lazy(() => import('../components/Profile/Chef/pages/Dashboard/Reviews/Reviews'));
+const ChefDashboard = lazy(() =>
+    import('../components/Profile/Chef/pages/Dashboard/Dashboard')
+);
+const ChefRecipes = lazy(() =>
+    import('../components/Profile/Chef/pages/Dashboard/Recipes/Recipes')
+);
+const ChefComments = lazy(() =>
+    import('../components/Profile/Chef/pages/Dashboard/Comments/Comments')
+);
+const ChefReviews = lazy(() =>
+    import('../components/Profile/Chef/pages/Dashboard/Reviews/Reviews')
+);
 
 // * Admin Profile Pages
 const AdminProfile = lazy(() => import('../components/Profile/Admin/Admin'));
-const AdminPayments = lazy(() => import('../components/Profile/Admin/pages/Payments/Payments'));
-const AdminMyProfile = lazy(() => import('../components/Profile/Admin/pages/MyProfile/MyProfile'));
+const AdminPayments = lazy(() =>
+    import('../components/Profile/Admin/pages/Payments/Payments')
+);
+const AdminMyProfile = lazy(() =>
+    import('../components/Profile/Admin/pages/MyProfile/MyProfile')
+);
 
 // Dashboard Pages
-const AdminDashboard = lazy(() => import('../components/Profile/Admin/pages/Dashboard/Dashboard'));
-const AdminUsers = lazy(() => import('../components/Profile/Admin/pages/Dashboard/Users/Users'));
-const AdminChefs = lazy(() => import('../components/Profile/Admin/pages/Dashboard/Chefs/Chefs'));
-const AdminPromotionApplications = lazy(() => import('../components/Profile/Admin/pages/Dashboard/PromotionApplications/PromotionApplications'));
+const AdminDashboard = lazy(() =>
+    import('../components/Profile/Admin/pages/Dashboard/Dashboard')
+);
+const AdminUsers = lazy(() =>
+    import('../components/Profile/Admin/pages/Dashboard/Users/Users')
+);
+const AdminChefs = lazy(() =>
+    import('../components/Profile/Admin/pages/Dashboard/Chefs/Chefs')
+);
+const AdminPromotionApplications = lazy(() =>
+    import(
+        '../components/Profile/Admin/pages/Dashboard/PromotionApplications/PromotionApplications'
+    )
+);
 
 // Contents Pages
-const AdminContents = lazy(() => import('../components/Profile/Admin/pages/Contents/Contents'));
-const AdminRecipes = lazy(() => import('../components/Profile/Admin/pages/Contents/Recipes/Recipes'));
-const AdminBlogs = lazy(() => import('../components/Profile/Admin/pages/Contents/Blogs/Blogs'));
+const AdminContents = lazy(() =>
+    import('../components/Profile/Admin/pages/Contents/Contents')
+);
+const AdminRecipes = lazy(() =>
+    import('../components/Profile/Admin/pages/Contents/Recipes/Recipes')
+);
+const AdminBlogs = lazy(() =>
+    import('../components/Profile/Admin/pages/Contents/Blogs/Blogs')
+);
 
 const routes = createBrowserRouter([
-	{
-		path: '/',
-		element: <App />,
-		children: [
-			{
-				path: '/',
-				element: <Home />,
-			},
-			{
-				path: '/home',
-				element: <Home />,
-			},
-			{
-				path: '/recipes',
-				element: <Recipes />,
-				children: [
-					{
-						path: '/recipes/:chefId',
-						element: <Banner />,
-					},
-				],
-			},
-			{
-				path: '/recipes/recipe/:recipeId',
-				element: (
-					<PrivateRoute>
-						<RecipeDetails />
-					</PrivateRoute>
-				),
-			},
-			{
-				path: '/profile',
-				element: (
-					<PrivateRoute>
-						<Profile />
-					</PrivateRoute>
-				),
-				children: [
-					// User related routes
-					{
-						path: '/profile/user/dashboard',
-						element: <UserDashboard />,
-						children: [
-							{
-								path: '/profile/user/dashboard/likes',
-								element: <UserLikes />,
-							},
-							{
-								path: '/profile/user/dashboard/bookmarks',
-								element: <UserBookmarks />,
-							},
-							{
-								path: '/profile/user/dashboard/recipe-ratings',
-								element: <UserRatings />,
-							},
-							{
-								path: '/profile/user/dashboard/chef-reviews',
-								element: <UserReviews />,
-							},
-						],
-					},
-					{
-						path: '/profile/user/messages',
-						element: <UserMessages />,
-					},
-					{
-						path: '/profile/user/consults',
-						element: <UserConsults />,
-						children: [
-							{
-								path: '/profile/user/consults/my-consults',
-								element: <UserConsultsCards />,
-							},
-							{
-								path: '/profile/user/consults/form',
-								element: <ConsultForm />,
-							},
-						],
-					},
-					{
-						path: '/profile/user/payment-history',
-						element: <UserPaymentHistory />,
-					},
-					{
-						path: '/profile/user/my-profile',
-						element: <UserMyProfile />,
-					},
+    {
+        path: '/',
+        element: <App />,
+        children: [
+            {
+                path: '/',
+                element: <Home />,
+            },
+            {
+                path: '/home',
+                element: <Home />,
+            },
+            {
+                path: '/recipes',
+                element: <Recipes />,
+                children: [
+                    {
+                        path: '/recipes/:chefId',
+                        element: <Banner />,
+                    },
+                ],
+            },
+            {
+                path: '/recipes/recipe/:recipeId',
+                element: (
+                    <PrivateRoute>
+                        <RecipeDetails />
+                    </PrivateRoute>
+                ),
+            },
+            {
+                path: '/profile',
+                element: (
+                    <PrivateRoute>
+                        <Profile />
+                    </PrivateRoute>
+                ),
+                children: [
+                    // Student related routes
+                    {
+                        path: '/profile/student/dashboard',
+                        element: <StudentDashboard />,
+                        children: [
+                            {
+                                path: '/profile/student/dashboard/likes',
+                                element: <StudentLikes />,
+                            },
+                            {
+                                path: '/profile/student/dashboard/bookmarks',
+                                element: <StudentBookmarks />,
+                            },
+                            {
+                                path: '/profile/student/dashboard/recipe-ratings',
+                                element: <StudentRatings />,
+                            },
+                            {
+                                path: '/profile/student/dashboard/chef-reviews',
+                                element: <StudentReviews />,
+                            },
+                        ],
+                    },
+                    {
+                        path: '/profile/student/messages',
+                        element: <StudentMessages />,
+                    },
+                    {
+                        path: '/profile/student/consults',
+                        element: <StudentConsults />,
+                        children: [
+                            {
+                                path: '/profile/student/consults/my-consults',
+                                element: <StudentConsultsCards />,
+                            },
+                            {
+                                path: '/profile/student/consults/form',
+                                element: <ConsultForm />,
+                            },
+                        ],
+                    },
+                    {
+                        path: '/profile/student/payment-history',
+                        element: <StudentPaymentHistory />,
+                    },
+                    {
+                        path: '/profile/student/my-profile',
+                        element: <StudentMyProfile />,
+                    },
 
-					// Chef related routes
-					{
-						path: '/profile/chef/dashboard',
-						element: <ChefDashboard />,
-						children: [
-							{
-								path: '/profile/chef/dashboard/recipes',
-								element: <ChefRecipes />,
-							},
-							{
-								path: '/profile/chef/dashboard/comments',
-								element: <ChefComments />,
-							},
-							{
-								path: '/profile/chef/dashboard/reviews',
-								element: <ChefReviews />,
-							},
-						],
-					},
-					{
-						path: '/profile/chef/messages',
-						element: <ChefMessages />,
-					},
-					{
-						path: '/profile/chef/consults',
-						element: <ChefConsults />,
-					},
-					{
-						path: '/profile/chef/payment-history',
-						element: <ChefPaymentHistory />,
-					},
-					{
-						path: '/profile/chef/my-profile',
-						element: <ChefMyProfile />,
-					},
+                    // Chef related routes
+                    {
+                        path: '/profile/chef/dashboard',
+                        element: <ChefDashboard />,
+                        children: [
+                            {
+                                path: '/profile/chef/dashboard/recipes',
+                                element: <ChefRecipes />,
+                            },
+                            {
+                                path: '/profile/chef/dashboard/comments',
+                                element: <ChefComments />,
+                            },
+                            {
+                                path: '/profile/chef/dashboard/reviews',
+                                element: <ChefReviews />,
+                            },
+                        ],
+                    },
+                    {
+                        path: '/profile/chef/messages',
+                        element: <ChefMessages />,
+                    },
+                    {
+                        path: '/profile/chef/consults',
+                        element: <ChefConsults />,
+                    },
+                    {
+                        path: '/profile/chef/payment-history',
+                        element: <ChefPaymentHistory />,
+                    },
+                    {
+                        path: '/profile/chef/my-profile',
+                        element: <ChefMyProfile />,
+                    },
 
-					// Admin related routes
-					{
-						path: '/profile/admin',
-						element: <AdminProfile />,
-						children: [
-							{
-								path: '/profile/admin/dashboard',
-								element: <AdminDashboard />,
-								children: [
-									{
-										path: '/profile/admin/dashboard/users',
-										element: <AdminUsers />,
-									},
-									{
-										path: '/profile/admin/dashboard/chefs',
-										element: <AdminChefs />,
-									},
-									{
-										path: '/profile/admin/dashboard/promotion-applications',
-										element: <AdminPromotionApplications />,
-									},
-								],
-							},
-							{
-								path: '/profile/admin/contents',
-								element: <AdminContents />,
-								children: [
-									{
-										path: '/profile/admin/contents/recipes',
-										element: <AdminRecipes />,
-									},
-									{
-										path: '/profile/admin/contents/blogs',
-										element: <AdminBlogs />,
-									},
-								],
-							},
-							{
-								path: '/profile/admin/payments',
-								element: <AdminPayments />,
-							},
-							{
-								path: '/profile/admin/my-profile',
-								element: <AdminMyProfile />,
-							},
-						],
-					},
-				],
-			},
-			{
-				path: '/payment',
-				element: (
-					<PrivateRoute>
-						<Payment />
-					</PrivateRoute>
-				),
-				children: [
-					{
-						path: '/payment/user/upgrade-to-pro',
-						element: <UpgradeToPro />,
-					},
-				],
-			},
-			{
-				path: '/blog',
-				element: <Blog />,
-			},
-			{
-				path: '/login',
-				element: (
-					<PublicRoute>
-						<Login />
-					</PublicRoute>
-				),
-			},
-			{
-				path: '/register',
-				element: (
-					<PublicRoute>
-						<Register />
-					</PublicRoute>
-				),
-			},
-			{
-				path: '/forget-password',
-				element: (
-					<PublicRoute>
-						<ForgetPassword />
-					</PublicRoute>
-				),
-			},
-		],
-		errorElement: <ErrorPage />,
-	},
+                    // Admin related routes
+                    {
+                        path: '/profile/admin',
+                        element: <AdminProfile />,
+                        children: [
+                            {
+                                path: '/profile/admin/dashboard',
+                                element: <AdminDashboard />,
+                                children: [
+                                    {
+                                        path: '/profile/admin/dashboard/users',
+                                        element: <AdminUsers />,
+                                    },
+                                    {
+                                        path: '/profile/admin/dashboard/chefs',
+                                        element: <AdminChefs />,
+                                    },
+                                    {
+                                        path: '/profile/admin/dashboard/promotion-applications',
+                                        element: <AdminPromotionApplications />,
+                                    },
+                                ],
+                            },
+                            {
+                                path: '/profile/admin/contents',
+                                element: <AdminContents />,
+                                children: [
+                                    {
+                                        path: '/profile/admin/contents/recipes',
+                                        element: <AdminRecipes />,
+                                    },
+                                    {
+                                        path: '/profile/admin/contents/blogs',
+                                        element: <AdminBlogs />,
+                                    },
+                                ],
+                            },
+                            {
+                                path: '/profile/admin/payments',
+                                element: <AdminPayments />,
+                            },
+                            {
+                                path: '/profile/admin/my-profile',
+                                element: <AdminMyProfile />,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                path: '/payment',
+                element: (
+                    <PrivateRoute>
+                        <Payment />
+                    </PrivateRoute>
+                ),
+                children: [
+                    {
+                        path: '/payment/user/upgrade-to-pro',
+                        element: <UpgradeToPro />,
+                    },
+                ],
+            },
+            {
+                path: '/blog',
+                element: <Blog />,
+            },
+            {
+                path: '/login',
+                element: (
+                    <PublicRoute>
+                        <Login />
+                    </PublicRoute>
+                ),
+            },
+            {
+                path: '/register',
+                element: (
+                    <PublicRoute>
+                        <Register />
+                    </PublicRoute>
+                ),
+            },
+            {
+                path: '/forget-password',
+                element: (
+                    <PublicRoute>
+                        <ForgetPassword />
+                    </PublicRoute>
+                ),
+            },
+        ],
+        errorElement: <ErrorPage />,
+    },
 ]);
 
 export default routes;
