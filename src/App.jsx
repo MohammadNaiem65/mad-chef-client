@@ -23,7 +23,7 @@ function App() {
 
     // Return if the auth is not checked yet
     if (!authChecked) {
-        return;
+        return <Spinner />;
     }
 
     return !authChecked ? (
