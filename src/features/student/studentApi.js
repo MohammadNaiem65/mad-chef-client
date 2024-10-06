@@ -1,14 +1,14 @@
 import showNotification from '../../helpers/showNotification';
 import apiSlice from '../api/apiSlice';
 import { setCredentials } from '../auth/authSlice';
-import { addUserData } from './userSlice';
+import { addUserData } from '../user/userSlice';
 
-const userApi = apiSlice.injectEndpoints({
+const studentApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getUserData: builder.query({
-            query: ({ userId, include, exclude }) => {
+        getStudentData: builder.query({
+            query: ({ studentId, include, exclude }) => {
                 // Define the base URL
-                const baseUrl = `/users/user/${userId}`;
+                const baseUrl = `/students/student/${studentId}`;
 
                 // Create an object with all parameters
                 const params = { include, exclude };
@@ -33,10 +33,10 @@ const userApi = apiSlice.injectEndpoints({
                 return { url: finalUrl };
             },
         }),
-        getUsersData: builder.query({
+        getStudentsData: builder.query({
             query: ({ page = 1, limit = 10, sort = 'name', order = 'asc' }) => {
                 // Define the base URL
-                const baseUrl = '/users';
+                const baseUrl = '/students';
 
                 // Create an object with all parameters
                 const params = { page, limit, sort, order };
@@ -61,9 +61,40 @@ const userApi = apiSlice.injectEndpoints({
                 return { url: finalUrl };
             },
         }),
-        updateUserProfilePicture: builder.mutation({
+        updateStudentData: builder.mutation({
+            query: ({ data }) => ({
+                url: '/students/student/update-data',
+                method: 'PATCH',
+                body: data,
+            }),
+
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                const { studentId, data } = arg;
+
+                const queryPatchResult = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getStudentData',
+                        { studentId },
+                        (draft) => {
+                            const prevData = draft.data.data;
+
+                            const updatedData = { ...prevData, ...data };
+
+                            draft.data.data = updatedData;
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    queryPatchResult.undo();
+                }
+            },
+        }),
+        updateStudentProfilePicture: builder.mutation({
             query: ({ formData }) => ({
-                url: '/users/user/upload-profile-picture',
+                url: '/students/student/upload-profile-picture',
                 method: 'POST',
                 body: formData,
             }),
@@ -86,9 +117,9 @@ const userApi = apiSlice.injectEndpoints({
                 }
             },
         }),
-        updateUserPkg: builder.mutation({
+        updateStudentPkg: builder.mutation({
             query: () => ({
-                url: '/users/user/update-package',
+                url: '/students/student/update-package',
                 method: 'PATCH',
             }),
 
@@ -97,28 +128,12 @@ const userApi = apiSlice.injectEndpoints({
                     const { data } = await queryFulfilled;
                     const { accessToken } = data?.data || {};
 
-                    const {
-                        _id,
-                        name,
-                        email,
-                        emailVerified,
-                        role,
-                        img,
-                        createdAt,
-                        updatedAt,
-                    } = getState().user;
+                    const userData = getState().user || {};
 
                     // Update the user data in the store
                     dispatch(
                         addUserData({
-                            _id,
-                            name,
-                            email,
-                            emailVerified,
-                            role,
-                            img,
-                            createdAt,
-                            updatedAt,
+                            ...userData,
                             pkg: 'pro',
                         })
                     );
@@ -145,21 +160,21 @@ const userApi = apiSlice.injectEndpoints({
                 }
             },
         }),
-        editRecipeRatingByUser: builder.mutation({
-            query: ({ userId, docId, data }) => ({
-                url: `/users/user/${userId}/rating/recipe?docId=${docId}`,
+        editRecipeRatingByStudent: builder.mutation({
+            query: ({ studentId, docId, data }) => ({
+                url: `/students/student/${studentId}/rating/recipe?docId=${docId}`,
                 method: 'PATCH',
                 body: data,
             }),
 
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-                const { userId, docId, data } = arg;
+                const { studentId, docId, data } = arg;
 
                 // Optimistically update the recipe rating
                 const updatePatchResult = dispatch(
                     apiSlice.util.updateQueryData(
                         'getRecipeRatings',
-                        { data_filter: { userId } },
+                        { data_filter: { studentId } },
                         (draft) => {
                             const ratings = draft?.data;
 
@@ -185,20 +200,20 @@ const userApi = apiSlice.injectEndpoints({
                 }
             },
         }),
-        deleteRecipeRatingByUser: builder.mutation({
-            query: ({ userId, docId }) => ({
-                url: `/users/user/${userId}/rating/recipe?docId=${docId}`,
+        deleteRecipeRatingByStudent: builder.mutation({
+            query: ({ studentId, docId }) => ({
+                url: `/students/student/${studentId}/rating/recipe?docId=${docId}`,
                 method: 'DELETE',
             }),
 
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-                const { userId, docId } = arg;
+                const { studentId, docId } = arg;
 
                 // Optimistically delete the chef review document
                 const deletePatchResult = dispatch(
                     apiSlice.util.updateQueryData(
                         'getRecipeRatings',
-                        { data_filter: { userId } },
+                        { data_filter: { studentId } },
                         (draft) => {
                             const documents = draft?.data;
 
@@ -223,24 +238,25 @@ const userApi = apiSlice.injectEndpoints({
                 }
             },
         }),
-        getChefReviewsByUser: builder.query({
-            query: ({ userId }) => `/users/user/${userId}/review/chef`,
+        getChefReviewsByStudent: builder.query({
+            query: ({ studentId }) =>
+                `/students/student/${studentId}/review/chef`,
         }),
-        editChefReviewsByUser: builder.mutation({
-            query: ({ userId, docId, data }) => ({
-                url: `/users/user/${userId}/review/chef?docId=${docId}`,
+        editChefReviewsByStudent: builder.mutation({
+            query: ({ studentId, docId, data }) => ({
+                url: `/students/student/${studentId}/review/chef?docId=${docId}`,
                 method: 'PATCH',
                 body: data,
             }),
 
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-                const { userId, docId, data } = arg;
+                const { studentId, docId, data } = arg;
 
                 // Optimistically update the recipe rating
                 const updatePatchResult = dispatch(
                     apiSlice.util.updateQueryData(
                         'getChefReviewsByUser',
-                        { userId },
+                        { studentId },
                         (draft) => {
                             const ratings = draft?.data;
 
@@ -266,20 +282,20 @@ const userApi = apiSlice.injectEndpoints({
                 }
             },
         }),
-        deleteChefReviewByUser: builder.mutation({
-            query: ({ userId, docId }) => ({
-                url: `/users/user/${userId}/review/chef?docId=${docId}`,
+        deleteChefReviewByStudent: builder.mutation({
+            query: ({ studentId, docId }) => ({
+                url: `/students/student/${studentId}/review/chef?docId=${docId}`,
                 method: 'DELETE',
             }),
 
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-                const { userId, docId } = arg;
+                const { studentId, docId } = arg;
 
                 // Optimistically delete the chef review document
                 const deletePatchResult = dispatch(
                     apiSlice.util.updateQueryData(
                         'getChefReviewsByUser',
-                        { userId },
+                        { studentId },
                         (draft) => {
                             const documents = draft?.data;
 
@@ -307,16 +323,16 @@ const userApi = apiSlice.injectEndpoints({
     }),
 });
 
-export default userApi;
+export default studentApi;
 export const {
-    useGetUserDataQuery,
-    useGetUsersDataQuery,
-    useUpdateUserPkgMutation,
-    useUpdateUserDataMutation,
-    useUpdateUserProfilePictureMutation,
-    useGetChefReviewsByUserQuery,
-    useEditRecipeRatingByUserMutation,
-    useDeleteRecipeRatingByUserMutation,
-    useEditChefReviewsByUserMutation,
-    useDeleteChefReviewByUserMutation,
-} = userApi;
+    useGetStudentDataQuery,
+    useGetStudentsDataQuery,
+    useUpdateStudentDataMutation,
+    useUpdateStudentProfilePictureMutation,
+    useUpdateStudentPkgMutation,
+    useEditRecipeRatingByStudentMutation,
+    useDeleteRecipeRatingByStudentMutation,
+    useGetChefReviewsByStudentQuery,
+    useEditChefReviewsByStudentMutation,
+    useDeleteChefReviewByStudentMutation,
+} = studentApi;
