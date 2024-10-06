@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import {
-    useGetRolePromotionApplicationQuery,
-    useGetRolePromotionApplicationsQuery,
-} from '../../../../../../features/role/roleApi';
 import { IoFilter, IoSearch } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
+
 import {
     Error,
     NoContent,
     Pagination,
     RoundSpinner,
 } from '../../../../../../shared';
-import { useEffect } from 'react';
 import Application from './Application';
+import {
+    useGetRolePromotionApplicationQuery,
+    useGetRolePromotionApplicationsQuery,
+} from '../../../../../../features/role/roleApi';
 import { usePaginationInfo } from '../../../../../../hooks';
 
 export default function PromotionApplications() {
@@ -204,7 +204,7 @@ export default function PromotionApplications() {
 
             {content}
 
-            {!loading && totalPages !== 1 && !applicationId && !error && (
+            {!loading && totalPages > 1 && !applicationId && !error && (
                 <Pagination
                     activePage={activePage}
                     totalPages={totalPages}
