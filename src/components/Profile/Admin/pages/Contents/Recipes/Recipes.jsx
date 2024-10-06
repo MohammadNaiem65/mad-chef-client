@@ -222,7 +222,7 @@ export default function Recipes() {
 
             {content}
 
-            {!loading && totalPages !== 1 && !recipeId && !error && (
+            {!loading && totalPages > 1 && !recipeId && !error && (
                 <Pagination
                     activePage={activePage}
                     totalPages={totalPages}

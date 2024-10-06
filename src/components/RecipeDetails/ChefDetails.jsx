@@ -3,8 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { BiSolidHide } from 'react-icons/bi';
 import { FaEye, FaPen, FaHeart, FaStar } from 'react-icons/fa';
-import { HiOutlineClipboardDocument, HiClipboardDocumentCheck } from 'react-icons/hi2';
-import { MdOutlineBookmarkAdd, MdBookmarkAdded, MdDeleteForever } from 'react-icons/md';
+import {
+    HiOutlineClipboardDocument,
+    HiClipboardDocumentCheck,
+} from 'react-icons/hi2';
+import {
+    MdOutlineBookmarkAdd,
+    MdBookmarkAdded,
+    MdDeleteForever,
+} from 'react-icons/md';
 import { useGetChefQuery } from '../../features/chef/chefApi';
 import {
     useAddLikeToRecipeMutation,
@@ -19,23 +26,43 @@ import {
 import { showNotification } from '../../helpers';
 import { ConfirmationModal } from '../../shared';
 
-export default function ChefDetails({ author, rating, like, recipeId, createdAt, status }) {
+export default function ChefDetails({
+    author,
+    rating,
+    like,
+    recipeId,
+    createdAt,
+    status,
+}) {
     const navigate = useNavigate();
     const [copiedId, setCopiedId] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const { _id: currUserId } = useSelector((state) => state.user);
 
     // Fetch chef data
-    const { data: chefData } = useGetChefQuery({ chef_id: author, include: 'name,img' });
+    const { data: chefData } = useGetChefQuery({
+        chef_id: author,
+        include: 'name,img',
+    });
     const { _id, name, img } = chefData?.data || {};
 
     // Fetch liked and bookmarked status
-    const { data: docLiked } = useGetLikedRecipeQuery({ userId: currUserId, recipeId });
-    const { data: docBookmarked } = useGetBookmarkedRecipeQuery({ userId: currUserId, recipeId });
+    const { data: docLiked } = useGetLikedRecipeQuery({
+        studentId: currUserId,
+        recipeId,
+    });
+    const { data: docBookmarked } = useGetBookmarkedRecipeQuery({
+        studentId: currUserId,
+        recipeId,
+    });
 
     // API mutations
-    const [updateRecipeStatus, { isSuccess: updateStatusIsSucc, isError: updateStatusIsErr }] = useUpdateRecipeStatusMutation();
-    const [deleteRecipe, { isSuccess: deleteRecipeIsSucc }] = useDeleteRecipeMutation();
+    const [
+        updateRecipeStatus,
+        { isSuccess: updateStatusIsSucc, isError: updateStatusIsErr },
+    ] = useUpdateRecipeStatusMutation();
+    const [deleteRecipe, { isSuccess: deleteRecipeIsSucc }] =
+        useDeleteRecipeMutation();
     const [addLike] = useAddLikeToRecipeMutation();
     const [removeLike] = useRemoveLikeFromRecipeMutation();
     const [addBookmark] = useBookmarkRecipeMutation();
@@ -53,9 +80,12 @@ export default function ChefDetails({ author, rating, like, recipeId, createdAt,
     }, [_id]);
 
     // Handle updating recipe status
-    const handleUpdateRecipeStatus = useCallback((newStatus) => {
-        updateRecipeStatus({ recipeId, status: newStatus });
-    }, [recipeId, updateRecipeStatus]);
+    const handleUpdateRecipeStatus = useCallback(
+        (newStatus) => {
+            updateRecipeStatus({ recipeId, status: newStatus });
+        },
+        [recipeId, updateRecipeStatus]
+    );
 
     // Handle deleting recipe
     const handleDeleteRecipe = useCallback(() => {
@@ -70,21 +100,32 @@ export default function ChefDetails({ author, rating, like, recipeId, createdAt,
     // Handle toggling like
     const handleToggleLike = useCallback(() => {
         const action = docLiked?.data?.userId ? removeLike : addLike;
-        action({ userId: currUserId, recipeId });
+        action({ studentId: currUserId, recipeId });
     }, [docLiked?.data?.userId, currUserId, recipeId, removeLike, addLike]);
 
     // Handle toggling bookmark
     const handleToggleBookmark = useCallback(() => {
-        const action = docBookmarked?.data?.userId ? removeBookmark : addBookmark;
-        action({ userId: currUserId, recipeId });
-    }, [docBookmarked?.data?.userId, currUserId, recipeId, removeBookmark, addBookmark]);
+        const action = docBookmarked?.data?.userId
+            ? removeBookmark
+            : addBookmark;
+        action({ studentId: currUserId, recipeId });
+    }, [
+        docBookmarked?.data?.userId,
+        currUserId,
+        recipeId,
+        removeBookmark,
+        addBookmark,
+    ]);
 
     // Handle notifications and navigation
     useEffect(() => {
         if (updateStatusIsSucc) {
             showNotification('success', 'Successfully updated the status.');
         } else if (updateStatusIsErr) {
-            showNotification('error', 'An error occurred while updating status.');
+            showNotification(
+                'error',
+                'An error occurred while updating status.'
+            );
         } else if (deleteRecipeIsSucc) {
             navigate('/recipes');
         }
@@ -106,13 +147,17 @@ export default function ChefDetails({ author, rating, like, recipeId, createdAt,
                     >
                         Hide <BiSolidHide />
                     </button>
-                ) : status === 'hidden' && (
-                    <button
-                        className='px-3 py-1 border-2 border-green-400 bg-green-100 text-lg text-green-400 flex items-center gap-x-1 rounded'
-                        onClick={() => handleUpdateRecipeStatus('published')}
-                    >
-                        Publish <FaEye />
-                    </button>
+                ) : (
+                    status === 'hidden' && (
+                        <button
+                            className='px-3 py-1 border-2 border-green-400 bg-green-100 text-lg text-green-400 flex items-center gap-x-1 rounded'
+                            onClick={() =>
+                                handleUpdateRecipeStatus('published')
+                            }
+                        >
+                            Publish <FaEye />
+                        </button>
+                    )
                 )}
                 <button
                     className='px-3 py-1 border-2 border-red-500 bg-red-100 text-lg text-red-500 flex items-center gap-x-1 rounded'
@@ -150,11 +195,17 @@ export default function ChefDetails({ author, rating, like, recipeId, createdAt,
                         </p>
 
                         {currUserId === author && (
-                            <p className={`px-2 py-1 font-semibold drop-shadow-sm capitalize ${
-                                status === 'pending' ? 'text-blue-300' :
-                                status === 'published' ? 'text-green-300' :
-                                status === 'rejected' ? 'text-red-300' : 'text-orange-300'
-                            }`}>
+                            <p
+                                className={`px-2 py-1 font-semibold drop-shadow-sm capitalize ${
+                                    status === 'pending'
+                                        ? 'text-blue-300'
+                                        : status === 'published'
+                                        ? 'text-green-300'
+                                        : status === 'rejected'
+                                        ? 'text-red-300'
+                                        : 'text-orange-300'
+                                }`}
+                            >
                                 {status}
                             </p>
                         )}
@@ -174,7 +225,9 @@ export default function ChefDetails({ author, rating, like, recipeId, createdAt,
                         <span className='h-1 w-1 bg-black rounded-full' />
                         <p className='text-xl flex items-center gap-x-1'>
                             <FaHeart
-                                className={`cursor-pointer ${docLiked?.data?.userId && 'text-red-400'}`}
+                                className={`cursor-pointer ${
+                                    docLiked?.data?.userId && 'text-red-400'
+                                }`}
                                 onClick={handleToggleLike}
                             />
                             <span>{like}</span>
@@ -182,9 +235,15 @@ export default function ChefDetails({ author, rating, like, recipeId, createdAt,
                         <span className='h-1 w-1 bg-black rounded-full' />
                         <p className='text-xl flex items-center gap-x-1'>
                             {docBookmarked?.data?.userId ? (
-                                <MdBookmarkAdded className='cursor-pointer' onClick={handleToggleBookmark} />
+                                <MdBookmarkAdded
+                                    className='cursor-pointer'
+                                    onClick={handleToggleBookmark}
+                                />
                             ) : (
-                                <MdOutlineBookmarkAdd className='cursor-pointer' onClick={handleToggleBookmark} />
+                                <MdOutlineBookmarkAdd
+                                    className='cursor-pointer'
+                                    onClick={handleToggleBookmark}
+                                />
                             )}
                         </p>
                     </div>
@@ -192,7 +251,7 @@ export default function ChefDetails({ author, rating, like, recipeId, createdAt,
             </div>
 
             {renderChefActions()}
-            
+
             {showModal && (
                 <ConfirmationModal
                     title='Sure want to delete this recipe?'

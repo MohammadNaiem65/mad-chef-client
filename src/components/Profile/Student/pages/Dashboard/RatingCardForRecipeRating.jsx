@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { FiEdit3 } from 'react-icons/fi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import {
-    useDeleteRecipeRatingByUserMutation,
-    useEditRecipeRatingByUserMutation,
-} from '../../../../../features/user/userApi';
+    useDeleteRecipeRatingByStudentMutation,
+    useEditRecipeRatingByStudentMutation,
+} from '../../../../../features/student/studentApi';
 import { useGetRecipeQuery } from '../../../../../features/recipe/recipeApi';
 import showNotification from '../../../../../helpers/showNotification';
 import { Avatar, ConfirmationModal, Rating } from '../../../../../shared';
@@ -19,12 +19,12 @@ export default function RatingCardForRecipeRating({ userId, rating }) {
     const { title, img } = data?.data || {};
 
     const [editRecipeRating, { isSuccess: editRecipeRatingIsSuccess }] =
-        useEditRecipeRatingByUserMutation();
+        useEditRecipeRatingByStudentMutation();
     const [deleteRecipeRating, { isSuccess: deleteRecipeRatingIsSuccess }] =
-        useDeleteRecipeRatingByUserMutation();
+        useDeleteRecipeRatingByStudentMutation();
 
     const handleDeletion = () => {
-        deleteRecipeRating({ userId, docId: _id });
+        deleteRecipeRating({ studentId: userId, docId: _id });
     };
 
     // Notify the user upon successful editing
@@ -64,7 +64,7 @@ export default function RatingCardForRecipeRating({ userId, rating }) {
                 )}
                 {editMode ? (
                     <RatingForm
-                        userId={userId}
+                        studentId={userId}
                         docId={_id}
                         title={title}
                         message={message}

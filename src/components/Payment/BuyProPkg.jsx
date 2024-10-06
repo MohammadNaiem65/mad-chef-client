@@ -8,7 +8,7 @@ import {
 } from '../../features/payment/paymentApi';
 import './BuyProPkg.css';
 import { Spinner } from '../../shared';
-import { useUpdateUserPkgMutation } from '../../features/user/userApi';
+import { useUpdateStudentPkgMutation } from '../../features/student/studentApi';
 
 const features = [
     { title: 'Unlimited Blogs', description: 'Access unlimited blogs.' },
@@ -61,7 +61,7 @@ export default function BuyProPkg() {
             isError: updatingUserPkgIsError,
             error: updatingUserPkgError,
         },
-    ] = useUpdateUserPkgMutation();
+    ] = useUpdateStudentPkgMutation();
 
     // Fetch a new payment intent after the first render
     useEffect(() => {

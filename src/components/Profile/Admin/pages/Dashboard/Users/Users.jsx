@@ -3,9 +3,9 @@ import { Helmet } from 'react-helmet-async';
 import { RxCross2 } from 'react-icons/rx';
 import { IoFilter, IoSearch } from 'react-icons/io5';
 import {
-    useGetUserDataQuery,
-    useGetUsersDataQuery,
-} from '../../../../../../features/user/userApi';
+    useGetStudentDataQuery,
+    useGetStudentsDataQuery,
+} from '../../../../../../features/student/studentApi';
 import {
     Error,
     NoContent,
@@ -29,8 +29,8 @@ export default function Users() {
         isLoading: isLoadingUserData,
         isError: isErrorUserData,
         error: errorUserData,
-    } = useGetUserDataQuery(
-        { userId },
+    } = useGetStudentDataQuery(
+        { studentId: userId },
         {
             skip: !userId,
         }
@@ -40,19 +40,19 @@ export default function Users() {
         isLoading: isLoadingUsersData,
         isError: isErrorUsersData,
         error: errorUsersData,
-    } = useGetUsersDataQuery({ page: currPage }, { skip: userId });
+    } = useGetStudentsDataQuery({ page: currPage }, { skip: userId });
     const { data, meta } = usersData || {};
 
     const { activePage, totalPages } = usePaginationInfo(meta?.page || '');
 
-    // Set the users array using the data from useGetUsersDataQuery
+    // Set the users array using the data from useGetStudentsDataQuery
     useEffect(() => {
         if (data?.length > 0 && !userId) {
             setUsers(data);
         }
     }, [data, userId]);
 
-    // Set the users array using the data from useGetUserDataQuery
+    // Set the users array using the data from useGetStudentDataQuery
     useEffect(() => {
         if (userData?.data?._id) {
             setUsers([userData?.data]);

@@ -6,7 +6,7 @@ import { MdOutlineCancel } from 'react-icons/md';
 import { useEffect } from 'react';
 
 export default function RatingForm({
-	userId,
+	studentId,
 	docId,
 	title,
 	ratingCount,
@@ -32,7 +32,7 @@ export default function RatingForm({
 			message: formData.message,
 		};
 
-		submitDocFn({ userId, docId, data });
+		submitDocFn({ studentId, docId, data });
 		setEditMode(false);
 	};
 

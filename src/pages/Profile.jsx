@@ -12,7 +12,7 @@ import {
     Sidebar,
 } from '../components/Profile';
 import { useUpdateChefProfilePictureMutation } from '../features/chef/chefApi';
-import { useUpdateUserProfilePictureMutation } from '../features/user/userApi';
+import { useUpdateStudentProfilePictureMutation } from '../features/student/studentApi';
 import { useUpdateAdminProfilePictureMutation } from '../features/admin/adminApi';
 
 export default function Profile() {
@@ -31,7 +31,7 @@ export default function Profile() {
             isSuccess: userProfileUpdateIsSucc,
             isError: userProfileUpdateIsError,
         },
-    ] = useUpdateUserProfilePictureMutation();
+    ] = useUpdateStudentProfilePictureMutation();
     const [
         updateChefProfilePicture,
         {
@@ -55,10 +55,8 @@ export default function Profile() {
         const mainPage = paths?.length > 3 ? paths[3] : 'dashboard';
         const subPage = paths?.length > 4 ? paths[4] : '';
 
-        const pathRole = role === 'student' ? 'user' : role;
-
-        if (pathRole && mainPage) {
-            let newPath = `/profile/${pathRole}/${mainPage}`;
+        if (mainPage) {
+            let newPath = `/profile/${role}/${mainPage}`;
             if (subPage) {
                 newPath += `/${subPage}`;
             }
