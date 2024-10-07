@@ -55,7 +55,7 @@ export default function Profile() {
         const mainPage = paths?.length > 3 ? paths[3] : 'dashboard';
         const subPage = paths?.length > 4 ? paths[4] : '';
 
-        if (mainPage) {
+        if (role && mainPage) {
             let newPath = `/profile/${role}/${mainPage}`;
             if (subPage) {
                 newPath += `/${subPage}`;
@@ -128,7 +128,7 @@ export default function Profile() {
             <section className='w-full xl:w-4/5 mx-auto'>
                 {/* Header */}
                 <div className='w-full pb-4 flex items-center gap-x-6'>
-                    <div className='size-20 md:size-28 aspect-square ml-4 object-cover rounded-full relative z-20 overflow-hidden group'>
+                    <div className='size-20 md:size-28 aspect-square ml-4 border-2 border-Primary/40 object-cover rounded-full relative z-20 overflow-hidden group shadow shadow-Primary'>
                         {img ? (
                             <img
                                 src={img}
