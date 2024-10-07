@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -9,6 +10,7 @@ import PublicRoute from './PublicRoute';
 const Home = lazy(() => import('../pages/Home'));
 const Recipes = lazy(() => import('../pages/Recipes'));
 const RecipeDetails = lazy(() => import('../pages/RecipeDetails'));
+const PostRecipe = lazy(() => import('../pages/PostRecipe'));
 const Profile = lazy(() => import('../pages/Profile'));
 const Payment = lazy(() => import('../pages/Payment'));
 const Blog = lazy(() => import('../pages/Blog'));
@@ -154,6 +156,14 @@ const routes = createBrowserRouter([
                 element: (
                     <PrivateRoute>
                         <RecipeDetails />
+                    </PrivateRoute>
+                ),
+            },
+            {
+                path: '/recipes/post-recipe',
+                element: (
+                    <PrivateRoute>
+                        <PostRecipe />
                     </PrivateRoute>
                 ),
             },
