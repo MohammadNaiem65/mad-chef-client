@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { Error, RoundSpinner } from '../../shared';
+import { Avatar, Error, RoundSpinner } from '../../shared';
 
 export default function PhotoUploaderModal({
     loading,
@@ -56,15 +56,21 @@ export default function PhotoUploaderModal({
                             className='text-center'
                             onSubmit={handleSubmit}
                         >
-                            <img
-                                src={
-                                    file
-                                        ? URL.createObjectURL(file)
-                                        : existingImg
-                                }
-                                alt='profile-img'
-                                className='size-24 mx-auto rounded-full object-cover'
-                            />
+                            {!existingImg && !file ? (
+                                <div className='size-24 mx-auto rounded-full object-cover overflow-hidden'>
+                                    <Avatar />
+                                </div>
+                            ) : (
+                                <img
+                                    src={
+                                        file
+                                            ? URL.createObjectURL(file)
+                                            : existingImg
+                                    }
+                                    alt='profile-img'
+                                    className='size-24 mx-auto rounded-full object-cover'
+                                />
+                            )}
 
                             <div className='mt-2 flex items-center justify-center'>
                                 <p className='w-56 px-2 py-1 bg-slate-300 text-start text-slate-900 truncate'>
@@ -76,7 +82,7 @@ export default function PhotoUploaderModal({
                                     className='ml-3 px-6 py-1 bg-Primary/50 rounded'
                                     onClick={handleSelectImg}
                                 >
-                                    Upload
+                                    Select
                                 </button>
 
                                 <input
