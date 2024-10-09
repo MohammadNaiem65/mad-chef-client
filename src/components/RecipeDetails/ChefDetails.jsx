@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { BiSolidHide } from 'react-icons/bi';
 import { FaEye, FaPen, FaHeart, FaStar } from 'react-icons/fa';
@@ -37,7 +37,7 @@ export default function ChefDetails({
     const navigate = useNavigate();
     const [copiedId, setCopiedId] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const { _id: currUserId } = useSelector((state) => state.user);
+    const { _id: currUserId, role } = useSelector((state) => state.user);
 
     // Fetch chef data
     const { data: chefData } = useGetChefQuery({
@@ -47,14 +47,20 @@ export default function ChefDetails({
     const { _id, name, img } = chefData?.data || {};
 
     // Fetch liked and bookmarked status
-    const { data: docLiked } = useGetLikedRecipeQuery({
-        studentId: currUserId,
-        recipeId,
-    });
-    const { data: docBookmarked } = useGetBookmarkedRecipeQuery({
-        studentId: currUserId,
-        recipeId,
-    });
+    const { data: docLiked } = useGetLikedRecipeQuery(
+        {
+            studentId: currUserId,
+            recipeId,
+        },
+        { skip: role !== 'student' }
+    );
+    const { data: docBookmarked } = useGetBookmarkedRecipeQuery(
+        {
+            studentId: currUserId,
+            recipeId,
+        },
+        { skip: role !== 'student' }
+    );
 
     // API mutations
     const [
@@ -99,18 +105,34 @@ export default function ChefDetails({
 
     // Handle toggling like
     const handleToggleLike = useCallback(() => {
+        if (role !== 'student') {
+            return;
+        }
+
         const action = docLiked?.data?.userId ? removeLike : addLike;
         action({ studentId: currUserId, recipeId });
-    }, [docLiked?.data?.userId, currUserId, recipeId, removeLike, addLike]);
+    }, [
+        docLiked?.data?.userId,
+        role,
+        currUserId,
+        recipeId,
+        removeLike,
+        addLike,
+    ]);
 
     // Handle toggling bookmark
     const handleToggleBookmark = useCallback(() => {
+        if (role !== 'student') {
+            return;
+        }
+
         const action = docBookmarked?.data?.userId
             ? removeBookmark
             : addBookmark;
         action({ studentId: currUserId, recipeId });
     }, [
         docBookmarked?.data?.userId,
+        role,
         currUserId,
         recipeId,
         removeBookmark,
@@ -137,9 +159,12 @@ export default function ChefDetails({
 
         return (
             <div className='flex items-center gap-x-2'>
-                <button className='px-3 py-1 border-2 border-blue-400 bg-blue-100 text-lg text-blue-400 flex items-center gap-x-1 rounded'>
+                <Link
+                    to={`/recipes/edit-recipe/${recipeId}`}
+                    className='px-3 py-1 border-2 border-blue-400 bg-blue-100 text-lg text-blue-400 flex items-center gap-x-1 rounded'
+                >
                     Edit <FaPen className='text-base' />
-                </button>
+                </Link>
                 {status === 'published' ? (
                     <button
                         className='px-3 py-1 border-2 border-orange-400 bg-orange-100 text-lg text-orange-400 flex items-center gap-x-1 rounded'
