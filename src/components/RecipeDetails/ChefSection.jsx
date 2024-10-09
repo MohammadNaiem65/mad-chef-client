@@ -26,7 +26,7 @@ import {
 import { showNotification } from '../../helpers';
 import { ConfirmationModal } from '../../shared';
 
-export default function ChefDetails({
+export default function ChefSection({
     author,
     rating,
     like,
