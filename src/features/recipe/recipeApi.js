@@ -31,6 +31,40 @@ const recipeApi = apiSlice.injectEndpoints({
                 return { url };
             },
         }),
+        postRecipe: builder.mutation({
+            query: ({ data }) => ({
+                url: '/recipes/post-recipe',
+                method: 'POST',
+                body: data,
+                formData: true,
+            }),
+        }),
+        editRecipe: builder.mutation({
+            query: ({ recipeId, data }) => ({
+                url: `/recipes/edit-recipe/${recipeId}`,
+                method: 'PATCH',
+                body: data,
+                formData: true,
+            }),
+
+            async onQueryStarted({ recipeId }, { queryFulfilled, dispatch }) {
+                try {
+                    const { data } = await queryFulfilled;
+
+                    dispatch(
+                        apiSlice.util.updateQueryData(
+                            'getRecipe',
+                            { recipeId },
+                            (draft) => {
+                                draft.data = data.data;
+                            }
+                        )
+                    );
+                } catch (error) {
+                    // Handle error in the page
+                }
+            },
+        }),
         getRecipes: builder.query({
             query: ({
                 data_filter = {},
@@ -449,6 +483,8 @@ const recipeApi = apiSlice.injectEndpoints({
 export default recipeApi;
 export const {
     useGetRecipeQuery,
+    usePostRecipeMutation,
+    useEditRecipeMutation,
     useGetRecipesQuery,
     useGetBookmarkedRecipeQuery,
     useGetBookmarkedRecipesQuery,
