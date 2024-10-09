@@ -11,6 +11,7 @@ const Home = lazy(() => import('../pages/Home'));
 const Recipes = lazy(() => import('../pages/Recipes'));
 const RecipeDetails = lazy(() => import('../pages/RecipeDetails'));
 const PostRecipe = lazy(() => import('../pages/PostRecipe'));
+const EditRecipe = lazy(() => import('../pages/EditRecipe'));
 const Profile = lazy(() => import('../pages/Profile'));
 const Payment = lazy(() => import('../pages/Payment'));
 const Blog = lazy(() => import('../pages/Blog'));
@@ -164,6 +165,14 @@ const routes = createBrowserRouter([
                 element: (
                     <PrivateRoute>
                         <PostRecipe />
+                    </PrivateRoute>
+                ),
+            },
+            {
+                path: '/recipes/edit-recipe/:recipeId',
+                element: (
+                    <PrivateRoute>
+                        <EditRecipe />
                     </PrivateRoute>
                 ),
             },
