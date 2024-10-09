@@ -109,10 +109,10 @@ export default function ChefDetails({
             return;
         }
 
-        const action = docLiked?.data?.userId ? removeLike : addLike;
+        const action = docLiked?.data?.studentId ? removeLike : addLike;
         action({ studentId: currUserId, recipeId });
     }, [
-        docLiked?.data?.userId,
+        docLiked?.data?.studentId,
         role,
         currUserId,
         recipeId,
@@ -126,12 +126,12 @@ export default function ChefDetails({
             return;
         }
 
-        const action = docBookmarked?.data?.userId
+        const action = docBookmarked?.data?.studentId
             ? removeBookmark
             : addBookmark;
         action({ studentId: currUserId, recipeId });
     }, [
-        docBookmarked?.data?.userId,
+        docBookmarked?.data?.studentId,
         role,
         currUserId,
         recipeId,
@@ -251,7 +251,7 @@ export default function ChefDetails({
                         <p className='text-xl flex items-center gap-x-1'>
                             <FaHeart
                                 className={`cursor-pointer ${
-                                    docLiked?.data?.userId && 'text-red-400'
+                                    docLiked?.data?.studentId && 'text-red-400'
                                 }`}
                                 onClick={handleToggleLike}
                             />
@@ -259,7 +259,7 @@ export default function ChefDetails({
                         </p>
                         <span className='h-1 w-1 bg-black rounded-full' />
                         <p className='text-xl flex items-center gap-x-1'>
-                            {docBookmarked?.data?.userId ? (
+                            {docBookmarked?.data?.studentId ? (
                                 <MdBookmarkAdded
                                     className='cursor-pointer'
                                     onClick={handleToggleBookmark}
