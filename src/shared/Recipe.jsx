@@ -41,7 +41,7 @@ export default function Recipe({ recipe }) {
                 <ArrowLink to={`/recipes/recipe/${_id}`} />
             </div>
 
-            {role === 'author' && currUserId === author && (
+            {role === 'chef' && currUserId === author && (
                 <p
                     className={`px-2 py-1 font-semibold capitalize absolute top-0 right-3 ${
                         status === 'pending'
