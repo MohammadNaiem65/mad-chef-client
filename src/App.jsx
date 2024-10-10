@@ -8,6 +8,7 @@ import { useAuthCheck } from './hooks';
 import { storeUserData } from './helpers';
 import { Footer, Navbar, Spinner } from './shared';
 import './App.css';
+import ScrollToTop from './shared/ScrollToTop';
 
 function App() {
     // Check for authentication credentials in localStorage
@@ -30,6 +31,7 @@ function App() {
         <Spinner />
     ) : (
         <Provider store={store}>
+            <ScrollToTop />
             <Navbar />
             <div className='min-h-[calc(100dvh-29.475rem)] md:min-h-[calc(100vh-21.5rem)] mt-[7rem] md:mt-[8.5rem] lg:mt-[10rem]'>
                 <Suspense fallback={<Spinner />}>

@@ -5,7 +5,6 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import ScrollToTop from '../shared/ScrollToTop';
 
 // Main Pages
 const Home = lazy(() => import('../pages/Home'));
@@ -157,7 +156,6 @@ const routes = createBrowserRouter([
                 path: '/recipes/recipe/:recipeId',
                 element: (
                     <PrivateRoute>
-                        <ScrollToTop />
                         <RecipeDetails />
                     </PrivateRoute>
                 ),
