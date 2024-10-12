@@ -52,26 +52,26 @@ export default function RatingField({ recipeId }) {
     }, [rating]);
 
     return (
-        <section className='mt-2 border-t-2 border-slate-300'>
+        <section className='mt-2 border-t-2 border-slate-300 '>
             {role === 'student' ? (
-                <div className='mt-5 mx-12 p-3 bg-Primary/35 flex justify-start items-start rounded'>
+                <div className='mt-5 md:mx-12 p-3 bg-Primary/35 flex rounded'>
                     <img
                         src={img}
-                        className='size-20 object-fill rounded-full bg-red-300'
+                        className='size-12 md:size-20 object-fill rounded-full bg-red-300'
                         alt='user image'
                     />
                     <form
                         onSubmit={handleSubmitRating}
-                        className='w-full px-4 rounded-b-3xl rounded-tr-3xl'
+                        className='w-full px-2 md:px-4 rounded-b-3xl rounded-tr-3xl'
                     >
-                        <div className='mb-2 flex items-center gap-x-2'>
+                        <div className='mb-2 flex flex-wrap items-center gap-x-2'>
                             <h3 className='font-semibold'>{name}</h3>
                             <span className='size-1 bg-black rounded-full' />
                             <h3 className='font-semibold capitalize'>{role}</h3>
-                            <span className='size-1 bg-black rounded-full' />
+                            <span className='size-1 hidden md:block bg-black rounded-full' />
 
                             <div className='flex items-center'>
-                                <div className='flex text-xl text-yellow-400 cursor-pointer'>
+                                <div className='flex md:text-xl text-yellow-400 cursor-pointer'>
                                     <Rating
                                         rating={rating}
                                         setRating={setRating}
@@ -80,7 +80,7 @@ export default function RatingField({ recipeId }) {
 
                                 <input
                                     type='text'
-                                    className='w-10 h-7 ml-2 px-2 py-1 border-2 border-Primary/30 outline-Primary text-slate-700'
+                                    className='w-10 h-6 md:h-7 ml-2 px-2 py-1 border-2 text-sm border-Primary/30 outline-Primary text-slate-700'
                                     value={rating}
                                     onChange={(e) => setRating(e.target.value)}
                                 />
