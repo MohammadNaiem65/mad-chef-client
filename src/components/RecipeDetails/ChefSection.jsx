@@ -237,11 +237,13 @@ export default function ChefSection({
                     </div>
 
                     <div className='text-slate-500 -mt-1 flex items-center gap-x-2'>
-                        {new Date(createdAt).toLocaleDateString('en-GB', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                        })}
+                        <p className='truncate'>
+                            {new Date(createdAt).toLocaleDateString('en-GB', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                            })}
+                        </p>
                         <span className='h-1 w-1 bg-black rounded-full' />
                         <p className='text-xl flex items-center gap-x-1'>
                             <FaStar className='text-yellow-400' />
