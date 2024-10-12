@@ -7,7 +7,7 @@ export default function Reviews() {
     const { data, isLoading, isSuccess, isError, error } =
         useGetRecipeRatingsQuery({
             limit: 6,
-            include: 'username,userImg,rating,message',
+            include: 'studentName,studentImg,rating,message',
         });
     const reviews = data?.data || [];
 
