@@ -11,13 +11,11 @@ export default function RecipeRating({ rating: ratingDoc }) {
 
     return (
         <div className='w-full mt-5 mr-12 flex'>
-            {/* <div className='size-10 md:size-12 overflow-hidden flex-1'> */}
             <img
                 src={img}
                 className='size-10 md:size-12 object-cover rounded-full flex-'
                 alt='user image'
             />
-            {/* </div> */}
             <div className='w-[15.3rem] ml-2 py-3 px-4 bg-Primary/40 rounded-b-3xl rounded-tr-3xl flex-1'>
                 <div className='flex items-center gap-x-2'>
                     <h3 className='max-w-20 font-semibold truncate'>{name}</h3>

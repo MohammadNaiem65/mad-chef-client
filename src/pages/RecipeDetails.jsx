@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import {
     ChefSection,
-    CommentSection,
+    RatingSection,
     RecipeSection,
 } from '../components/RecipeDetails';
 import { useGetRecipeQuery } from '../features/recipe/recipeApi';
@@ -59,7 +59,7 @@ export default function RecipeDetails() {
                 />
 
                 {/* Comment Section */}
-                <CommentSection />
+                <RatingSection recipeId={recipeId} />
             </section>
         );
     }
