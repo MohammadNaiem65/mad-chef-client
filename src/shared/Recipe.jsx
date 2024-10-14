@@ -17,26 +17,24 @@ export default function Recipe({ recipe }) {
             viewport={{ once: true }}
         >
             <img
-                className='size-[5rem] md:w-36 md:h-24 rounded object-cover'
+                className='size-[5rem] md:w-36 md:h-24 rounded object-cover shrink-0'
                 src={img}
                 alt="Dish's picture"
             />
-            <div className='w-3/5 lg:w-4/5 ml-2 md:ml-3'>
+            <div className='w-3/5 lg:w-4/5 ml-2 md:ml-3 grow'>
                 <Link to={`/recipes/recipe/${recipe._id}`}>
-                    <h2 className='w-[9.5rem] md:w-96 text-black  text-xl font-Vollkorn mb-1 truncate'>
+                    <h2 className='max-w-40 md:max-w-96 lg:max-w-[37.5rem] mb-1 text-black text-xl font-Vollkorn truncate'>
                         {title}
                     </h2>
                 </Link>
-                <p className='w-full truncate'>
-                    Ingredients:{' '}
-                    {ingredients?.join(', ').length >= 50
-                        ? ingredients?.join(', ').slice(0, 50) + '...'
-                        : ingredients?.join(', ')}
+                <p className='max-w-40 md:max-w-96 lg:max-w-[37.5rem] truncate'>
+                    Ingredients: {ingredients?.join(', ')}
                 </p>
                 <div className='text-xl text-yellow-500 mt-2 flex gap-1'>
                     {<Rating rating={rating} />}
                 </div>
             </div>
+
             <div className='arrows w-12 h-6 ml-auto flex justify-center items-center'>
                 <ArrowLink to={`/recipes/recipe/${_id}`} />
             </div>
