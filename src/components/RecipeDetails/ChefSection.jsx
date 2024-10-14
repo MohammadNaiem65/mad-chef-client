@@ -197,15 +197,22 @@ export default function ChefSection({
     return (
         <section className='mt-2 lg:mt-4 border-b-2 border-slate-300 flex justify-between items-center'>
             <div className='pb-2 flex items-center gap-x-2 md:gap-x-3'>
-                <img
-                    src={img}
-                    alt={`${name}'s image`}
-                    className='w-10 md:w-12 lg:w-14 aspect-square object-cover rounded-full'
-                />
+                <Link to={`/profile/chef/${author}`}>
+                    <img
+                        src={img}
+                        alt='chef image'
+                        className='size-10 md:size-12 lg:size-14 object-cover rounded-full'
+                    />
+                </Link>
                 <div className='font-Vollkorn'>
                     <div className='flex gap-x-2'>
                         <p className='font-semibold flex items-center lg:text-lg group'>
-                            {name}
+                            <Link
+                                to={`/profile/chef/${author}`}
+                                className='hover:underline'
+                            >
+                                {name}
+                            </Link>
                             <span className='block md:hidden group-hover:block'>
                                 {copiedId ? (
                                     <HiClipboardDocumentCheck className='ml-2 text-xl text-Primary cursor-pointer' />
