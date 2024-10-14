@@ -119,6 +119,64 @@ const chefApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
+
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                const { chef_id, data } = arg;
+
+                // Optimistically add the review
+                const patchResultOne = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getChefReviews',
+                        { chef_id, sort: 'createdAt', limit: 3 },
+                        (draft) => {
+                            // Filtered out the review of current user
+                            const filteredReviews = draft.data.filter(
+                                (review) => review.studentId !== data.studentId
+                            );
+
+                            // Remove the first element if the array is full
+                            if (filteredReviews >= 3) {
+                                filteredReviews.shift();
+                            }
+
+                            draft.data = [data, ...filteredReviews];
+                        }
+                    )
+                );
+
+                const patchResultTwo = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getChefReviews',
+                        {
+                            chef_id,
+                            sort: 'rating,createdAt',
+                            page: 1,
+                            limit: 10,
+                        },
+                        (draft) => {
+                            // Filtered out the review of current user
+                            const filteredReviews = draft.data.filter(
+                                (review) => review.studentId !== data.studentId
+                            );
+
+                            // Remove the first element if the array is full
+                            if (filteredReviews === 10) {
+                                filteredReviews.shift();
+                            }
+
+                            draft.data = [data, ...filteredReviews];
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    // Revert the optimistic patch updates
+                    patchResultOne.undo();
+                    patchResultTwo.undo();
+                }
+            },
         }),
         updateChefProfilePicture: builder.mutation({
             query: ({ formData }) => ({
