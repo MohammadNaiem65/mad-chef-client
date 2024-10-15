@@ -31,7 +31,7 @@ export default function Banner({ chefData }) {
     }, [email]);
 
     return (
-        <section className='col-span-4 lg:col-span-3 mb-10 p-6 bg-Primary/20 text-gray-400 font-Popins md:flex items-center gap-x-5 rounded'>
+        <section className='col-span-4 lg:col-span-3 p-6 bg-Primary/20 text-gray-400 font-Popins md:flex items-center gap-x-5 rounded'>
             <img
                 className='size-52 mx-auto p-[1px] border-2 border-Primary/70 rounded-full object-cover flex-shrink-0'
                 src={img}

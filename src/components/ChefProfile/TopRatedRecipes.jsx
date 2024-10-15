@@ -14,9 +14,9 @@ export default function TopRatedRecipes({ chefId }) {
 
     let content;
     if (isLoading) {
-        content = <RoundSpinner />;
+        content = <RoundSpinner className='mt-20' />;
     } else if (!isLoading && isError) {
-        content = <Error message={error?.data?.message} />;
+        content = <Error message={error?.data?.message} className={'mt-16'} />;
     } else if (!isLoading && isSuccess && recipes?.length === 0) {
         content = <NoContent />;
     } else if (!isLoading && isSuccess && recipes?.length > 0) {
@@ -33,10 +33,8 @@ export default function TopRatedRecipes({ chefId }) {
                         className='w-full h-28 object-cover'
                     />
                     <div className='p-2'>
-                        <h3 className='text-base font-Vollkorn leading-4'>
-                            {title?.length > 35
-                                ? title?.slice(0, 34) + '...'
-                                : title}
+                        <h3 className='text-base font-Vollkorn line-clamp-2 leading-4'>
+                            {title}
                         </h3>
                         <p className='text-sm'>
                             Region:{' '}
@@ -75,7 +73,7 @@ export default function TopRatedRecipes({ chefId }) {
 
     return (
         <section className='text-black'>
-            <h2 className='mb-4 text-xl text-black text-start font-Vollkorn font-semibold'>
+            <h2 className='mb-2 text-xl text-black text-start font-Vollkorn font-semibold'>
                 Top Recipes
             </h2>
 

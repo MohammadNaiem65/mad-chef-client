@@ -30,9 +30,13 @@ export default function Recipes({ chefId }) {
     if (isFetching) {
         content = <RoundSpinner className='mt-32' />;
     } else if (!isFetching && isError) {
-        content = <Error message={error.message} />;
+        content = <Error message={error?.data?.message} />;
     } else if (!isFetching && isSuccess && recipes?.length === 0) {
-        content = <NoContent message='No data found.' />;
+        content = (
+            <div className='mt-32'>
+                <NoContent message='No data found.' />
+            </div>
+        );
     } else if (!isFetching && isSuccess && recipes?.length > 0) {
         content = recipes.map((recipe) => (
             <Recipe key={recipe._id} recipe={recipe} />
