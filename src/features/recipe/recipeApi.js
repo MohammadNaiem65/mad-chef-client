@@ -303,7 +303,7 @@ const recipeApi = apiSlice.injectEndpoints({
                 const patchResult = dispatch(
                     apiSlice.util.updateQueryData(
                         'getRecipeRatings',
-                        { recipeId },
+                        { recipeId, sort: 'createdAt,rating', page: 1 },
                         (draft) => {
                             draft.data = [data, ...draft.data];
                         }
