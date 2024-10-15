@@ -58,7 +58,7 @@ export default function RecipeDetails() {
                     method={method}
                 />
 
-                {/* Comment Section */}
+                {/* Rating Section */}
                 <RatingSection recipeId={recipeId} />
             </section>
         );
