@@ -321,7 +321,11 @@ const routes = createBrowserRouter([
             },
             {
                 path: '/profile/chef/:chefId',
-                element: <ChefProfile />,
+                element: (
+                    <PrivateRoute>
+                        <ChefProfile />
+                    </PrivateRoute>
+                ),
             },
             {
                 path: '/payment',
