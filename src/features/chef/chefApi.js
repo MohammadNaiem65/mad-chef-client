@@ -203,6 +203,38 @@ const chefApi = apiSlice.injectEndpoints({
                 }
             },
         }),
+        updateChefData: builder.mutation({
+            query: ({ data }) => ({
+                url: '/chefs/chef/update-data',
+                method: 'PATCH',
+                body: data,
+            }),
+
+            async onQueryStarted(
+                { data },
+                { queryFulfilled, dispatch, getState }
+            ) {
+                try {
+                    await queryFulfilled;
+
+                    const existingData = getState().user;
+
+                    const argDataKeys = Object.keys(data);
+
+                    // Store the previous data
+                    const updatedData = { ...existingData };
+
+                    // Add the updated from the argument data
+                    argDataKeys.forEach(
+                        (key) => (updatedData[key] = data[key])
+                    );
+
+                    dispatch(addUserData(updatedData));
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+        }),
     }),
 });
 
@@ -213,4 +245,5 @@ export const {
     useGetChefReviewsQuery,
     useAddChefReviewMutation,
     useUpdateChefProfilePictureMutation,
+    useUpdateChefDataMutation,
 } = chefApi;
