@@ -25,7 +25,11 @@ export default function TopChefs() {
         content = <NoContent message='No data found.' />;
     } else if (!isLoading && isSuccess && chefs?.length > 0) {
         content = (
-            <section className='mt-8 px-10 md:px-0 grid grid-cols-1 md:grid-cols-4 md:grid-rows-[13rem_8rem_13rem] gap-4'>
+            <section
+                className={`mt-8 px-10 md:px-0 grid grid-cols-1 md:grid-cols-4 gap-4 ${
+                    width >= 1024 && 'grid-rows-[13rem_8rem_13rem]'
+                }`}
+            >
                 {chefs.map((chef, index) =>
                     (index === 2 || index === 3) && width >= 1024 ? (
                         <HorizontalCard key={index} chef={chef} index={index} />

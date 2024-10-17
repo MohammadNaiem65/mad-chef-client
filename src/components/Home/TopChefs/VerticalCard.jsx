@@ -1,12 +1,19 @@
+import { useWindowSize } from '../../../hooks';
 import { ArrowLink, Rating } from '../../../shared';
 
 export default function VerticalCard({ chef, index }) {
     const { _id, name, img, rating, yearsOfExperience, recipes } = chef || {};
 
+    const { width } = useWindowSize();
+
     return (
         <div
-            className={`h-[22rem] font-semibold flex flex-col justify-between relative rounded overflow-hidden ${
-                index === 4 && 'md:col-[3/4]'
+            className={`h-[22rem] font-semibold flex flex-col justify-between relative rounded overflow-hidden  ${
+                index === 4 && width >= 1024
+                    ? 'lg:col-[3/4]'
+                    : width > 768
+                    ? 'col-span-1'
+                    : width <= 768 && 'col-span-2'
             }`}
         >
             <img
