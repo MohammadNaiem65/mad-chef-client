@@ -29,7 +29,7 @@ export default function ForgetPassword() {
 
             setTimeout(() => {
                 navigate('/login');
-            }, 2500);
+            }, 1300);
         } catch (resError) {
             setLoading(false);
 
@@ -96,7 +96,7 @@ export default function ForgetPassword() {
                             type='submit'
                             disabled={loading}
                         >
-                            Login
+                            Send Email
                         </button>
                     )}
                 </form>
