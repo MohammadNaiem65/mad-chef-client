@@ -13,6 +13,7 @@ import {
     removeNotifications,
     showNotification,
 } from '../helpers';
+import { useWindowSize } from '../hooks';
 
 // Password regex for validation
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -30,6 +31,8 @@ export default function Register() {
     const [errors, setErrors] = useState({});
 
     const navigate = useNavigate();
+    const { width } = useWindowSize();
+    const deviceType = width < 375 && 'extra-sm';
 
     // RTK Query hooks for authentication
     const [authenticate, { error: authenticationErr }] =
@@ -139,12 +142,18 @@ export default function Register() {
             <Helmet>
                 <title>Register - Mad Chef</title>
             </Helmet>
-            <section className='w-11/12 md:w-4/5 lg:w-1/3 mx-auto my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 relative rounded'>
+            <section
+                className={`w-11/12 md:w-4/5 lg:w-1/3 mx-auto my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 relative rounded ${
+                    deviceType === 'extra-sm' && 'w-full'
+                }`}
+            >
                 <h2 className='text-[2.6rem] text-Primary text-center font-semibold font-Popins'>
                     Register
                 </h2>
                 <form
-                    className='w-10/12 md:w-fit mx-auto mt-6 md:mt-5 md:px-5'
+                    className={`w-10/12 md:w-fit mx-auto mt-6 md:mt-5 md:px-5 ${
+                        deviceType === 'extra-sm' && 'w-11/12'
+                    }`}
                     onSubmit={handleSubmitForm}
                 >
                     {/* Dynamically render form fields */}

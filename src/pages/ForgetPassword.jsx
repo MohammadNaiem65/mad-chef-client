@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { sendPasswordResetEmail } from '../helpers/authHelper';
 import { formatFirebaseError, showNotification } from '../helpers';
 import { RoundSpinner } from '../shared';
+import { useWindowSize } from '../hooks';
 
 export default function ForgetPassword() {
     const [email, setEmail] = useState('');
@@ -11,6 +12,8 @@ export default function ForgetPassword() {
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
+    const { width } = useWindowSize();
+    const deviceType = width < 375 && 'extra-sm';
 
     const handleInputValueChange = (e) => {
         setError('');
@@ -44,13 +47,19 @@ export default function ForgetPassword() {
             <Helmet>
                 <title>Forget Password - Mad Chef</title>
             </Helmet>
-            <section className='w-11/12 md:w-4/5 lg:w-1/3 mx-auto mt-48 md:my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 relative rounded'>
+            <section
+                className={`w-11/12 md:w-4/5 lg:w-1/3 mx-auto mt-48 md:my-14 px-1 md:px-10 py-12 md:py-8 text-slate-500 font-Popins bg-gradient-to-bl from-Primary/30 to-Primary/70 relative rounded ${
+                    deviceType === 'extra-sm' && 'w-full'
+                }`}
+            >
                 <h2 className='text-2xl lg:text-[2.6rem] text-Primary text-center font-semibold font-Popins'>
                     Recover Account
                 </h2>
 
                 <form
-                    className='w-10/12 md:w-fit mx-auto mt-6 md:mt-5 md:px-5'
+                    className={`w-10/12 md:w-fit mx-auto mt-6 md:mt-5 md:px-5 ${
+                        deviceType === 'extra-sm' && 'w-11/12'
+                    }`}
                     onSubmit={handleSubmitForm}
                 >
                     <label
