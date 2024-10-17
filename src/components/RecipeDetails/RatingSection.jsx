@@ -14,14 +14,19 @@ import {
 import { usePaginationInfo } from '../../hooks';
 
 export default function RatingSection({ recipeId }) {
-    const { page, setPage } = useState(1);
+    const [page, setPage] = useState(1);
     const [addRecipeRating] = useAddRecipeRatingMutation();
+
     const {
         data,
         isLoading: ratingsIsLoading,
         isError: ratingIsError,
         error: ratingsError,
-    } = useGetRecipeRatingsQuery({ recipeId, sort: 'createdAt,rating', page });
+    } = useGetRecipeRatingsQuery({
+        recipeId,
+        sort: 'createdAt,rating',
+        page: page,
+    });
     const { data: ratings, meta } = data || {};
     const { activePage, totalPages } = usePaginationInfo(meta?.page);
 
@@ -34,8 +39,8 @@ export default function RatingSection({ recipeId }) {
     } else if (!ratingsIsLoading && !ratingIsError && ratings?.length === 0) {
         content = <NoContent message='No ratings yet' />;
     } else if (!ratingsIsLoading && !ratingIsError && ratings?.length > 0) {
-        content = ratings.map((rating) => (
-            <StudentRating key={rating?._id} rating={rating} />
+        content = ratings.map((rating, index) => (
+            <StudentRating key={index} rating={rating} />
         ));
     }
 
