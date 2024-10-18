@@ -17,6 +17,8 @@
 
 [Mad Chef](https://mad-chef.web.app/) is a Recipe sharing website where Users (formally Students) and Chefs meets and shares their expertise to help the Users to improve their cooking skills.
 
+Information about the server side can be found _[here](https://github.com/MohammadNaiem65/mad-chef-server)_ or _https://github.com/MohammadNaiem65/mad-chef-server_
+
 ## Technologies
 
 **Design:** React, Tailwind CSS, Framer Motion, React Icons, React Hot Toast
@@ -40,7 +42,9 @@
 
 ## Testing
 
-For testing, credentials for Student, Chef and Admin are given below
+A live demo of this project can be found here: _[Live Demo](https://mad-chef.web.app/)_ or _https://mad-chef.web.app/_
+
+For testing, credentials for Student, Chef and Admin are given below:
 
 1. Student Email Address:
 
