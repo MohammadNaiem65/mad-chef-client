@@ -1,53 +1,74 @@
+<div align="center">
+  <a href="https://mad-chef.web.app/">
+    <img src="https://i.ibb.co/pf16mPh/logo-lg.png" alt="Logo" width="200" />
+  </a>
+</div>
 
-![Logo](https://i.ibb.co/pf16mPh/logo-lg.png)
+## Table of Contents
 
+1. [Introduction](#introduction)
+2. [Technologies](#technologies)
+3. [Features](#features)
+4. [Technical Features](#technical-features)
+5. [Testing](#testing)
+6. [Feedback Or Contribute](#feedback-or-contribute)
 
-# MadChef
+## Introduction
 
-Mad Chef is a Recipe sharing website where users and chefs meets and shares their expreties to help the users to improve their cooking skills.
+[Mad Chef](https://mad-chef.web.app/) is a Recipe sharing website where Users (formally Students) and Chefs meets and shares their expertise to help the Users to improve their cooking skills.
 
-
-
-## Overview
-
-This is the Client Side repository of the project. The main technologies to create this project is given below.
-
-
-
-
-## Tech Stack
+## Technologies
 
 **Design:** React, Tailwind CSS, Framer Motion, React Icons, React Hot Toast
 
-**Architectural:** Redux, Firebase, Stripe Js, React Helmet, Async Mutex 
+**Architectural:** Redux Toolkit, Firebase, Stripe Js, React Helmet, Async Mutex
 
+## Features
 
-## Running Tests
+-   Students can view recipes, interact by liking, rating and can bookmark recipes.
+-   Students can take Pro subscription to directly take assessment from the Chef by Consultation and Messaging (Working on it).
+-   Students can apply to be Chef.
+-   Chef can post recipes, update and delete recipes.
+-   Chef can accept or reject consultation
+-   Admin manages users and contents of the platform.
 
-To run tests, run the following command
+## Technical Features
 
-1. First install the dependencies: 
+-   Single page login (authentication) for Student, Chef and Admin
+-   Advanced recipe searching by Chef or recipe name, region, rating and other filters
+-   Dynamic role based Profile page and complex nested content management
+
+## Testing
+
+For testing, credentials for Student, Chef and Admin are given below
+
+1. Student Email Address:
+
 ```bash
-  pnpm install
+  student@mad-chef.web.app
 ```
 
-2. Set up the environment variables 
-3. Run from local machine:
+2. Chef Email Address:
+
 ```bash
-  pnpm dev
+  gordon-ramsay@gmail.com
 ```
 
-**Or, Using the live link:**
-[MadChef](https://mad-chef.web.app/)
+3. Admin Email Address:
 
+```bash
+  admin@mad-chef.web.app
+```
 
-****Credentials for Admin and Chef will be added soon***
+4. Password:
 
+```bash
+  mad-chef.Com@101
+```
 
-## Feedback
+## Feedback Or Contribute
 
-If you have any feedback, please reach out to us at 
+If you have any feedback or want to contribute, please reach out to us at:
 
 **=> Email: ahmedrtusar71@gmail.com**  
 **=> LinkedIn: https://www.linkedin.com/in/rifat-ahmed-tusar/**
-
