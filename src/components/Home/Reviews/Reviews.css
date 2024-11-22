@@ -1,14 +1,24 @@
 .outer-container {
-    -webkit-mask: linear-gradient(90deg, transparent, #f8f4f4 10%, #f8f4f4 90%, transparent);
-    mask: linear-gradient(90deg, transparent, gray 10%, gray 90%, transparent)
+    -webkit-mask: linear-gradient(
+        90deg,
+        transparent,
+        #f8f4f4 10%,
+        #f8f4f4 90%,
+        transparent
+    );
+    mask: linear-gradient(90deg, transparent, gray 10%, gray 90%, transparent);
 }
 
 .inner-container {
-animation: scroll 30s linear infinite;
+    animation: scroll 65s linear infinite;
+}
+
+.inner-container:hover {
+    animation-play-state: paused;
 }
 
 @keyframes scroll {
     to {
-        transform: translate(calc(-50% - .5rem));
+        transform: translate(calc(-50% - 0.5rem));
     }
 }
