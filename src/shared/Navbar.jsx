@@ -1,6 +1,6 @@
 // External imports
 import { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
     AnimatePresence,
@@ -8,6 +8,7 @@ import {
     useMotionValueEvent,
     useScroll,
 } from 'framer-motion';
+import { BiMessageRoundedDetail } from 'react-icons/bi';
 import { FaBars, FaXmark } from 'react-icons/fa6';
 
 // Internal imports
@@ -17,6 +18,7 @@ import SmActiveLink from './SmActiveLink';
 import { useUnAuthenticateMutation } from '../features/auth/authApi';
 import { removeNotifications, showNotification } from '../helpers';
 import { useWindowSize } from '../hooks';
+import { useLocation } from 'react-router-dom';
 
 // Constants
 const ROUTES = ['home', 'recipes', 'profile', 'register'];
@@ -46,11 +48,12 @@ export default function Navbar() {
     // Local states
     const [showNavbar, setShowNavbar] = useState(true);
     const [showHamburger, setShowHamburger] = useState(false);
+    const { pathname } = useLocation();
 
     // Hooks
     const { scrollY } = useScroll();
     const { width } = useWindowSize();
-    const { _id: userId } = useSelector((state) => state.user);
+    const { _id: userId, role } = useSelector((state) => state.user);
     const [unAuthenticate, { isLoading, isSuccess, isError }] =
         useUnAuthenticateMutation();
 
@@ -105,8 +108,26 @@ export default function Navbar() {
     const renderLargeNavigation = () => (
         <div className='text-lg hidden lg:flex items-center gap-x-6'>
             {ROUTES.slice(0, -1).map((route, index) => (
-                <LgActiveLink key={index} route={route} />
+                <LgActiveLink
+                    key={index}
+                    route={route}
+                    currLocation={pathname}
+                />
             ))}
+
+            {role && (
+                <NavLink
+                    to={`/profile/${role}/messages`}
+                    className={`text-2xl ${
+                        pathname === `/profile/${role}/messages`
+                            ? 'text-Primary'
+                            : ''
+                    }`}
+                >
+                    <BiMessageRoundedDetail />
+                </NavLink>
+            )}
+
             {userId ? (
                 <button
                     className='btn btn-primary'
@@ -140,20 +161,31 @@ export default function Navbar() {
                         animate='animate'
                         exit='initial'
                     >
-                        {ROUTES.map((route, index) => (
-                            <SmActiveLink
-                                key={index}
-                                userId={userId}
-                                route={route}
-                                setShowHamburger={setShowHamburger}
-                                handleLogout={handleLogout}
-                            />
-                        ))}
+                        {ROUTES?.toSpliced(-1, 0, 'messages').map(
+                            (route, index) => (
+                                <SmActiveLink
+                                    key={index}
+                                    userId={userId}
+                                    text={route}
+                                    route={
+                                        route === 'messages'
+                                            ? `profile/${role}/messages`
+                                            : route
+                                    }
+                                    currLocation={pathname}
+                                    setShowHamburger={setShowHamburger}
+                                    handleLogout={handleLogout}
+                                />
+                            )
+                        )}
                     </motion.div>
                 </motion.div>
             )}
         </AnimatePresence>
     );
+
+    const navigationContent =
+        width > 768 ? renderLargeNavigation() : renderSmallNavigation();
 
     return (
         <motion.section
@@ -167,7 +199,7 @@ export default function Navbar() {
             className='min-h-[4.625rem] md:h-[5.5rem] lg:min-h-[7rem] px-9 md:px-8 lg:px-16 border-b-2 border-slate-300 backdrop-blur-md font-semibold font-Vollkorn text-lg flex justify-between items-center gap-x-6 fixed left-0 right-0 z-[1000]'
         >
             {renderLogo()}
-            {width > 768 ? renderLargeNavigation() : renderSmallNavigation()}
+            {navigationContent}
             {width <= 768 && (
                 <div className='lg:hidden relative'>
                     {showHamburger ? (

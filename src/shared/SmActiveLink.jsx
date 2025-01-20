@@ -3,7 +3,9 @@ import { motion } from 'framer-motion';
 
 export default function SmActiveLink({
     route,
+    text,
     userId,
+    currLocation,
     setShowHamburger,
     handleLogout,
 }) {
@@ -11,6 +13,8 @@ export default function SmActiveLink({
         initial: { y: '5rem', transition: { duration: 0.4 } },
         animate: { y: 0, transition: { duration: 0.4 } },
     };
+
+    console.log(route, currLocation);
 
     return (
         <div className='overflow-hidden'>
@@ -22,11 +26,16 @@ export default function SmActiveLink({
                 {!(userId && route === 'register') ? (
                     <NavLink
                         to={`/${route}`}
-                        className={({ isActive }) =>
-                            isActive ? 'text-Primary' : ''
+                        className={
+                            (route !== 'profile' &&
+                                currLocation.includes(route)) ||
+                            (route === 'profile' &&
+                                !currLocation.includes('messages'))
+                                ? 'text-Primary'
+                                : ''
                         }
                     >
-                        {route}
+                        {text}
                     </NavLink>
                 ) : (
                     <button onClick={handleLogout}>Logout</button>
