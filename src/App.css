@@ -1,24 +1,24 @@
 /* For all browsers */
-body::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 10px;
 }
 
-body::-webkit-scrollbar-track {
-    background-color: #D5E2FD;
+::-webkit-scrollbar-track {
+    background-color: #d5e2fd;
 }
 
-body::-webkit-scrollbar-thumb {
-    background-color: #A4C1FD;
+::-webkit-scrollbar-thumb {
+    background-color: #a4c1fd;
     border-radius: 100vw;
 }
 
-body::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background-color: #7596f0;
 }
 
 /* For firefox */
-@supports (scrollbar-color: #A4C1FD transparent) {
+@supports (scrollbar-color: #a4c1fd transparent) {
     main {
-        scrollbar-color: #A4C1FD transparent;
+        scrollbar-color: #a4c1fd transparent;
     }
 }
