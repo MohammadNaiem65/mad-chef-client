@@ -115,7 +115,7 @@ export default function Navbar() {
                 />
             ))}
 
-            {role && (
+            {role !== 'admin' && (
                 <NavLink
                     to={`/profile/${role}/messages`}
                     className={`text-2xl ${
@@ -161,23 +161,39 @@ export default function Navbar() {
                         animate='animate'
                         exit='initial'
                     >
-                        {ROUTES?.toSpliced(-1, 0, 'messages').map(
-                            (route, index) => (
-                                <SmActiveLink
-                                    key={index}
-                                    userId={userId}
-                                    text={route}
-                                    route={
-                                        route === 'messages'
-                                            ? `profile/${role}/messages`
-                                            : route
-                                    }
-                                    currLocation={pathname}
-                                    setShowHamburger={setShowHamburger}
-                                    handleLogout={handleLogout}
-                                />
-                            )
-                        )}
+                        {role !== 'admin'
+                            ? ROUTES?.toSpliced(-1, 0, 'messages').map(
+                                  (route, index) => (
+                                      <SmActiveLink
+                                          key={index}
+                                          userId={userId}
+                                          text={route}
+                                          route={
+                                              route === 'messages'
+                                                  ? `profile/${role}/messages`
+                                                  : route
+                                          }
+                                          currLocation={pathname}
+                                          setShowHamburger={setShowHamburger}
+                                          handleLogout={handleLogout}
+                                      />
+                                  )
+                              )
+                            : ROUTES?.map((route, index) => (
+                                  <SmActiveLink
+                                      key={index}
+                                      userId={userId}
+                                      text={route}
+                                      route={
+                                          route === 'messages'
+                                              ? `profile/${role}/messages`
+                                              : route
+                                      }
+                                      currLocation={pathname}
+                                      setShowHamburger={setShowHamburger}
+                                      handleLogout={handleLogout}
+                                  />
+                              ))}
                     </motion.div>
                 </motion.div>
             )}
