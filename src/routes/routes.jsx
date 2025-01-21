@@ -12,7 +12,6 @@ const Recipes = lazy(() => import('../pages/Recipes'));
 const RecipeDetails = lazy(() => import('../pages/RecipeDetails'));
 const PostRecipe = lazy(() => import('../pages/PostRecipe'));
 const EditRecipe = lazy(() => import('../pages/EditRecipe'));
-const Profile = lazy(() => import('../pages/Profile'));
 const ChefProfile = lazy(() => import('../pages/ChefProfile'));
 const Payment = lazy(() => import('../pages/Payment'));
 const Login = lazy(() => import('../pages/Login'));
@@ -24,9 +23,16 @@ const Banner = lazy(() => import('../components/Recipes/Banner'));
 // Payment pages
 const UpgradeToPro = lazy(() => import('../components/Payment/BuyProPkg'));
 
+// Profile Pages
+const Profile = lazy(() => import('../pages/Profile'));
+const Blank = lazy(() => import('../components/Profile/Blank'));
+
 // * Student Profile Pages
 const StudentMessages = lazy(() =>
-    import('../components/Profile/Student/pages/Messages')
+    import('../components/Profile/Student/pages/Messages/Messages')
+);
+const StudentMessage = lazy(() =>
+    import('../components/Profile/Student/pages/Messages/Message')
 );
 const StudentMyProfile = lazy(() =>
     import('../components/Profile/Student/pages/MyProfile/MyProfile')
@@ -210,6 +216,16 @@ const routes = createBrowserRouter([
                     {
                         path: '/profile/student/messages',
                         element: <StudentMessages />,
+                        children: [
+                            {
+                                path: '/profile/student/messages',
+                                element: <Blank />,
+                            },
+                            {
+                                path: '/profile/student/messages/:messageId',
+                                element: <StudentMessage />,
+                            },
+                        ],
                     },
                     {
                         path: '/profile/student/consults',
