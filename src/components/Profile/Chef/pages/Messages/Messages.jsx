@@ -1,15 +1,31 @@
-import { Helmet } from "react-helmet-async";
+import { Suspense, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { Spinner } from '../../../../../shared';
+import Conversations from '../../../Student/pages/Messages/Conversations';
 
 export default function Messages() {
-    return (
-		<>
-			<Helmet>
-				<title>Messages | Profile - Mad Chef</title>
-			</Helmet>
+    useEffect(() => {
+        window.scrollTo(0, 130);
+    }, []);
 
-			<section className='w-full'>
-				<p className='text-center text-xl mt-36 '>Coming Soon...</p>
-			</section>
-		</>
-	);
+    return (
+        <>
+            <Helmet>
+                <title>Messages | Profile - Mad Chef</title>
+            </Helmet>
+
+            <section className='w-full min-h-[24.5rem] border-b border-gray-300 flex'>
+                {/* Conversations */}
+                <Conversations />
+
+                {/* Chat */}
+                <section className='flex-grow'>
+                    <Suspense fallback={<Spinner />}>
+                        <Outlet />
+                    </Suspense>
+                </section>
+            </section>
+        </>
+    );
 }
