@@ -2,7 +2,7 @@ import { Suspense, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Spinner } from '../../../../../shared';
-import Conversations from '../../../Student/pages/Messages/Conversations';
+import Conversations from '../../../Conversations';
 
 export default function Messages() {
     useEffect(() => {
