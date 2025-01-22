@@ -154,7 +154,13 @@ export default function Profile() {
                 <section className='w-full border-t border-gray-300 flex'>
                     {role === 'admin' ? <AdminSidebar /> : <Sidebar />}
 
-                    <section className='w-[88%] md:w-3/4'>
+                    <section
+                        className={`w-[88%] ${
+                            pathname.includes('messages')
+                                ? 'md:w-[95%]'
+                                : 'md:w-3/4'
+                        }`}
+                    >
                         {/* Main content */}
                         <Suspense fallback={<Spinner />}>
                             <Outlet />

@@ -32,7 +32,11 @@ export default function Sidebar() {
     };
 
     return (
-        <aside className='w-[12%] md:w-1/4 py-3 border-r border-gray-300 font-Popins text-lg'>
+        <aside
+            className={`w-[12%] py-3 border-r border-gray-300 font-Popins text-lg border-b ${
+                pathname.includes('messages') ? 'md:w-[5%]' : 'md:w-1/4'
+            }`}
+        >
             <div className='min-h-[17.25rem]'>
                 <Link
                     to={`/profile/${role}/dashboard`}
@@ -48,7 +52,15 @@ export default function Sidebar() {
                     ) : (
                         <AiOutlineDashboard className='mx-auto md:mx-0 text-3xl md:text-2xl' />
                     )}
-                    <span className='hidden md:inline'>Dashboard</span>
+                    <span
+                        className={`hidden ${
+                            pathname.includes('messages')
+                                ? 'md:hidden'
+                                : 'md:inline'
+                        }`}
+                    >
+                        Dashboard
+                    </span>
                 </Link>
                 <Link
                     to={`/profile/${role}/messages`}
@@ -60,11 +72,19 @@ export default function Sidebar() {
                     title='Messages'
                 >
                     {mainPath === 'messages' ? (
-                        <BiSolidMessageRoundedDetail className='mx-auto md:mx-0 text-3xl md:text-2xl' />
+                        <BiSolidMessageRoundedDetail className='mx-auto md:mx-0 text-3xl md:text-3xl' />
                     ) : (
                         <BiMessageRoundedDetail className='mx-auto md:mx-0 text-3xl md:text-2xl' />
                     )}
-                    <span className='hidden md:inline'>Messages</span>
+                    <span
+                        className={`hidden ${
+                            pathname.includes('messages')
+                                ? 'md:hidden'
+                                : 'md:inline'
+                        }`}
+                    >
+                        Messages
+                    </span>
                 </Link>
                 <Link
                     to={`/profile/${role}/consults`}
@@ -76,7 +96,15 @@ export default function Sidebar() {
                     title='Consults'
                 >
                     <BiSupport className='mx-auto md:mx-0 text-2xl' />{' '}
-                    <span className='hidden md:inline'>Consults</span>
+                    <span
+                        className={`hidden ${
+                            pathname.includes('messages')
+                                ? 'md:hidden'
+                                : 'md:inline'
+                        }`}
+                    >
+                        Consults
+                    </span>
                 </Link>
                 {role === 'student' && (
                     <Link
@@ -93,7 +121,13 @@ export default function Sidebar() {
                         ) : (
                             <BsCreditCard2Front className='mx-auto md:mx-0 text-2xl' />
                         )}
-                        <span className='hidden md:inline truncate'>
+                        <span
+                            className={`hidden ${
+                                pathname.includes('messages')
+                                    ? 'md:hidden'
+                                    : 'md:inline'
+                            }`}
+                        >
                             Payment History
                         </span>
                     </Link>
@@ -113,7 +147,15 @@ export default function Sidebar() {
                 ) : (
                     <FaRegUserCircle className='mx-auto md:mx-0 text-2xl' />
                 )}
-                <span className='hidden md:inline'>My Profile</span>
+                <span
+                    className={`hidden ${
+                        pathname.includes('messages')
+                            ? 'md:hidden'
+                            : 'md:inline'
+                    }`}
+                >
+                    My Profile
+                </span>
             </Link>
             <button
                 disabled={isLoading}
@@ -122,7 +164,15 @@ export default function Sidebar() {
                 title='Logout'
             >
                 <LuLogOut className='text-2xl' />
-                <span className='hidden md:inline'>Logout</span>
+                <span
+                    className={`hidden ${
+                        pathname.includes('messages')
+                            ? 'md:hidden'
+                            : 'md:inline'
+                    }`}
+                >
+                    Logout
+                </span>
             </button>
         </aside>
     );
