@@ -75,6 +75,9 @@ const StudentPaymentHistory = lazy(() =>
 const ChefMessages = lazy(() =>
     import('../components/Profile/Chef/pages/Messages/Messages')
 );
+const ChefMessage = lazy(() =>
+    import('../components/Profile/Chef/pages/Messages/Message')
+);
 const ChefConsults = lazy(() =>
     import('../components/Profile/Chef/pages/Consults/Consults')
 );
@@ -272,6 +275,16 @@ const routes = createBrowserRouter([
                     {
                         path: '/profile/chef/messages',
                         element: <ChefMessages />,
+                        children: [
+                            {
+                                path: '/profile/chef/messages',
+                                element: <Blank />,
+                            },
+                            {
+                                path: '/profile/chef/messages/:messageId',
+                                element: <ChefMessage />,
+                            },
+                        ],
                     },
                     {
                         path: '/profile/chef/consults',
